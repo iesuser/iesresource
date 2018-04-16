@@ -1,0 +1,217 @@
+# Webalizer V2.21-02 Incremental Data - 12/27/2013 14:36:25
+2013 12 27 14 36 25
+254 202 4 34 7 3 2916616 5 5 0
+1 41 56 10 27
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+11 11 170381 1 0 0
+165 127 1885654 3 3 3
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+37 30 363518 1 1 1
+0 0 0 0 0 0
+41 34 497063 1 1 1
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+37 30 363518 1
+0 0 0 0
+48 39 553779 1
+0 0 0 0
+0 0 0 0
+11 11 170381 0
+41 34 497063 1
+56 41 578320 1
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+52 38 552180 1
+9 9 201375 0
+0 0 0 0
+0
+0
+0
+202
+0
+0
+0
+0
+0
+0
+0
+0
+10
+0
+0
+0
+0
+0
+0
+0
+0
+42
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+# -urls- 
+/
+0 5 0 1810 5 2
+/block/formenu/qm_round_items.js
+0 6 0 31998 0 0
+/products/products.js
+0 5 0 64290 0 0
+/staff/newEdit_staff.php
+0 6 0 83421 0 0
+/products/mysqlajaxtableeditor/js/jscalendar/skins/aqua/theme.css
+0 5 0 27880 0 0
+/products/mysqlajaxtableeditor/js/jscalendar/lang/calendar-en.js
+0 5 0 18000 0 0
+/products/mysqlajaxtableeditor/js/ajax_table_editor.js
+0 5 0 66950 0 0
+/block/style.css
+0 6 0 17160 0 0
+/js/jquery-1.7.2.min.js
+0 5 0 474200 0 0
+/block/formenu/qm_pure_css.js
+0 6 0 4872 0 0
+/login.php
+0 8 0 10172 0 0
+/products/mysqlajaxtableeditor/js/jscalendar/calendar-setup.js
+0 5 0 45365 0 0
+/products/mysqlajaxtableeditor/js/scriptaculous-js/scriptaculous.js
+0 5 0 13415 0 0
+/products/mysqlajaxtableeditor/css/icon_styles.css
+0 5 0 7675 0 0
+/products/mysqlajaxtableeditor/js/jscalendar/calendar.js
+0 5 0 246485 0 0
+/staff/departments.php
+0 23 0 466431 0 0
+/favicon.ico
+0 5 0 7030 0 0
+/products/mysqlajaxtableeditor/js/prototype.js
+0 5 0 630660 0 0
+/block/formenu/qm.js
+0 6 0 20952 0 0
+/products/mysqlajaxtableeditor/js/lang/lang_vars-en.js
+0 5 0 5755 0 0
+/staff/getAjaxXmlsStaff.php
+0 1 0 168 0 0
+/images/edit.png
+1 4 0 1804 0 0
+/js/mask.js
+0 6 0 77292 0 0
+/block/datetimepicker/datetimepicker_css_ge.js
+0 6 0 221274 0 0
+/images/clear.png
+1 5 0 3805 0 0
+/products/mysqlajaxtableeditor/css/table_styles.css
+0 5 435522791284 13015 0 0
+/products/mysqlajaxtableeditor/images/ajax_loader.gif
+1 5 25959 16040 0 0
+/staff/baratebi.php
+0 3 3543544802479207279 85950 0 0
+/images/submit.png
+1 5 3615882771236388864 3400 0 0
+/images/filter2.png
+1 5 0 1715 0 0
+/staff/departmetns.js
+0 6 0 18174 0 0
+/block/datetimepicker/images/cal.gif
+1 5 0 635 0 0
+/block/formenu/qm_round_corners.js
+0 6 0 23130 0 0
+/products/products.php
+0 14 0 132237 0 0
+# End Of Table - urls
+# -sites- (monthly)
+93.186.210.150
+0 61 47 753555 1 1386798680
+/
+149.3.65.246
+0 56 41 578320 1 1386777089
+/
+host-92-241-94-170-customer.wanex.net
+0 11 11 170381 0 0
+-
+31.146.177.238
+0 126 103 1414360 3 1388154967
+/
+# End Of Table - sites (monthly)
+# -sites- (daily)
+31.146.177.238
+0 41 34 497063 1 1388154967
+/
+# End Of Table - sites (daily)
+# -referrers- 
+http://iesresource.iliauni.edu.ge/staff/newEdit_staff.php
+1 18
+- (Direct Request)
+0 11
+http://iesresource.iliauni.edu.ge/staff/baratebi.php
+1 3
+http://iesresource.iliauni.edu.ge/products/products.php
+1 172
+http://iesresource.iliauni.edu.ge/login.php
+1 14
+http://iesresource.iliauni.edu.ge/
+1 9
+http://iesresource.iliauni.edu.ge/staff/departments.php
+1 27
+# End Of Table - referrers
+# -agents- 
+Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.41 Safari/537.36
+0 126
+Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36
+0 72
+Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36
+0 56
+# End Of Table - agents
+# -search strings- 
+# End Of Table - search strings
+# -usernames- 
+# End Of Table - usernames

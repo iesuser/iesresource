@@ -1,0 +1,239 @@
+@charset "utf-8";
+/* CSS Document */
+ 
+body
+{
+	margin: 0;
+	font-size:12px;
+	color:#333;
+	font-family:Arial, Helvetica, sans-serif;
+}
+
+
+.Btns
+{
+	margin-top:3px;
+	margin-left:20px;
+	height:30px;	
+	
+}
+
+.Btn
+{
+	border: 1px solid #CCC;
+	height:25px;
+	width:160px;
+	vertical-align:middle;
+	display:table-cell;
+	padding-left:10px;
+	font-size:12px;
+	background-color:#DCDCDC;
+	cursor:pointer;
+	color:#000;
+	margin:0px;
+}
+.Btn:hover
+{
+	color:#7E9EFF;
+	background-color:#F1F1F1;
+}
+
+.splitDiv
+{
+	width:10px;
+	display:table-cell;
+}
+
+.filterTitle
+{
+	width:734px;
+	background-color:#bbccff;
+	text-align:center;
+	height:16px;
+	padding-top:5px;
+	font-weight:bold;
+	border:1px solid #ccc;
+	border-bottom-width:0px;
+}
+
+.filterForm
+{
+	background-color:#FCFCFC;
+	border:#CCC solid 1px;
+	
+}
+
+.filterForm tr
+{
+	height:25px;
+	padding:0px;
+	margin:0px;
+}
+
+.filterForm td
+{
+	vertical-align:middle;
+	color:#7E9EFF;
+	padding:7px;
+	padding-right:15px;
+	margin:0px;
+}
+
+.filterForm td input, .filterForm td select
+{
+	border:1px solid #CCC;
+	width:80px !important;
+}
+
+.filterFormLabel
+{
+	text-align:right;
+	padding-right:0px !important;
+}
+
+.rightDottedBorder
+{
+	border-right:1px solid #DDD;
+}
+
+.formstyle
+{
+	padding-top:10px;
+	padding-bottom:5px;
+	padding-left:5px;
+	padding-right:5px;
+	background-color:#FCFCFC;
+	border:#CCC solid 1px; <!--es aris dziebis formatis sazgvrebis siske-->
+}
+
+.formstyle tr
+{
+	height:35px;
+}
+
+
+.formstyle td
+{
+	vertical-align:middle;
+	color:#7E9EFF;
+}
+
+
+.formstyle input, .formstyle select
+{
+	border:#CCC solid 1px;
+}
+
+.formtitle
+{
+	text-align:center;
+	font-size:12px;
+	font-weight:bold;
+	background-color:#bbccff;
+	color:#000 !important;
+	height:27px;
+}
+
+.tablecolm1
+{
+	font-size:10px;
+	text-align:right;
+	vertical-align:middle;	
+}
+
+table.tableStyle
+{
+	border-top: 1px solid #CCC;
+	border-left: 1px solid #CCC;
+	border-spacing:0px;
+	font-size:12px;
+}
+
+table.tableStyle tr:hover
+{
+	background-color:#fbfbb2;
+	cursor:pointer;
+}
+
+.tableHeader
+{
+	background-color:#BCF;
+}
+
+tr.tableHeader:hover
+{
+	background-color:#BCF !important;
+}
+
+.tableStyle td
+{
+	border-right: 1px solid #CCC;
+	border-bottom: 1px solid #CCC;
+	padding:5px;
+}
+
+.departamentTableRow
+{
+	background-color: #ced9fa;
+	font-weight:bold;	
+}
+
+
+.groupLaboratoryTableRow
+{
+	background-color:#fafafa;
+}
+
+
+div.warningMinus15Day, div.warningMinus30Day, div.warningExpDay
+{
+	padding:5px;
+	margin:5px 5px 5px 5px;
+}
+
+div.warningMinus15Day
+{
+	border:1px solid #F93;
+	background-color:#FFF9F4;
+}
+
+div.warningMinus30Day
+{
+	border:1px solid #FC3;
+	background-color: #FFF9EA;
+}
+
+div.warningExpDay
+{
+	border:1px solid #F00;
+	background-color:#FFF4F4;
+	
+}
+
+div.headerDivImg
+{
+	font-size:16px;
+	color:#7E9EFF;
+	text-align:center;
+	padding:5px;
+	margin:15px 15px 5px 15px;
+	border:1px solid #F00;
+	background-color:#FFF4F4;
+}
+
+a.linToUser
+{
+	font-weight:bold;
+	color:#7E9EFF;
+}
+div.titleTextImg
+{
+	border:1px solid #CCC;
+	margin:5px 15px 5px 15px;
+}
+
+/*.table th, .table td { 
+     border-top: none !important;
+     border-left: none !important;
+ }
+*/
