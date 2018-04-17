@@ -47,7 +47,7 @@ include("../block/db.php");
                    		<option value=""></option>
     				   <?php
                   $table = mysqli_query($db, "SELECT id,name FROM departments ORDER by id ASC");
-                  while($row = mysql_fetch_array($table))
+                  while($row = mysqli_fetch_array($table))
                   {
                       $name = $row["name"];
                       $dep_id = $row["id"];

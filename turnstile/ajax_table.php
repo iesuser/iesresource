@@ -1,4 +1,4 @@
-<?php 
+<?php
 include("../block/globalVariables.php");
 include("../block/db.php");
 
@@ -50,8 +50,8 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
     <div class="col-md-12">
       <!-- ცხრილი -->
       <table style="margin-top: 100px;" class="table table-bordered" id="result_table">
-    
- 
+
+
         <tr style="background: #bbccff;" id="theader">
           <th ">თანამშრომელი</th>
           <th>თარიღი</th>
@@ -63,15 +63,15 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
         </tr>
 
     <?php # mysql ორი ცხრილის გაერთიანება.
-    $result = mysql_query("SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_inventari.turnstile_records_arranged.*
+    $result = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_inventari.turnstile_records_arranged.*
                             FROM ies_staff.staff LEFT JOIN ies_inventari.turnstile_records_arranged
-                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE $where ORDER BY `date_time` DESC LIMIT $row_count" , $db);
-    if (mysql_num_rows($result) == 0) {
+                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE $where ORDER BY `date_time` DESC LIMIT $row_count");
+    if (mysqli_num_rows($result) == 0) {
       echo "ჩანაწერი არ მოიძებნა. ";
       exit;
     }
     $i = 0;
-      while ($myrow = mysql_fetch_assoc($result)){
+      while ($myrow = mysqli_fetch_assoc($result)){
         echo '<tr><td>'.$myrow['first_name']." ".$myrow['last_name'].'</td> <td>' . $myrow['date_time'] . '<td>' . $myrow['card_number'] . '<td>' . $myrow['on_duty'] . '<td>' . $myrow['off_duty']. '<td>' . $myrow['in_time'] . '<td>' . $myrow['out_time'];
         $i++;
       }
@@ -86,8 +86,8 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
 
  <script>
   // javascript - ცხრილში სახელების ძიება. input-ში ტექსტის ჩაწერისას სათითაოდ td-ებში ამოწმებს არის თუ არა მსგავსი ტექსტი, რაც არ დაემთხვევა იმას მალავს.
-  
-  function table_search() { 
+
+  function table_search() {
   var input, filter, table, tr, td, i;
   input = document.getElementById("search");
   filter = input.value;
@@ -101,7 +101,7 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
       } else {
         tr[i].style.display = "none";
       }
-    }       
+    }
   }
 }
 
@@ -124,8 +124,8 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
 //               $('#theader th').eq(6).css('width', '187px');
 //         } else {
 //             $('#theader').css('position','static');
-            
+
 //         }
-//   }) 
+//   })
 
  </script>
