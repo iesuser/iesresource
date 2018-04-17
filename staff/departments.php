@@ -44,16 +44,16 @@ if(isset($_GET['dep_id']) and ($_GET['dep_id'] != '') or isset($_GET['gr_lb_id']
   {
 	  $WHERE = "dep_id=".$_GET['dep_id'];
 	  $query = "SELECT id FROM group_laboratories WHERE department_id=".$_GET['dep_id'];
-	  $result = mysql_query($query) or die($query);
-	  while($row = mysql_fetch_array($result))
+	  $result = mysqli_query($db, $query) or die($query);
+	  while($row = mysqli_fetch_array($result))
 	  {
 		  $WHERE .= " OR gr_lb_id='".$row['id']."'";
 	  }
   }
   // AND contract_end_date > Now()
   $query = "SELECT * FROM  `staff` WHERE ".$WHERE." ORDER BY head_of_department DESC";
-  $staff = mysql_query($query) or die($query);
-  if(mysql_num_rows($staff) == 0)
+  $staff = mysqli_query($db, $query) or die($query);
+  if(mysqli_num_rows($staff) == 0)
   {
   ?>
   <tr>
@@ -62,7 +62,7 @@ if(isset($_GET['dep_id']) and ($_GET['dep_id'] != '') or isset($_GET['gr_lb_id']
   <?php
   }
   else
-  while($stf = mysql_fetch_array($staff)):
+  while($stf = mysqli_fetch_array($staff)):
   	  $staff_id = $stf['id'];
 	  $first_name = $stf['first_name'];
 	  $last_name = $stf['last_name'];
