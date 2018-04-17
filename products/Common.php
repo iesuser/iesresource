@@ -26,9 +26,9 @@ class Common
 	
 	function mysqlConnect()
 	{
-		if($this->dbc = mysql_connect($this->mysqlHost, $this->mysqlUser, $this->mysqlDbPass)) 
+		if($this->dbc = mysqli_connect($this->mysqlHost, $this->mysqlUser, $this->mysqlDbPass)) 
 		{	
-			if(!mysql_select_db ($this->mysqlDb))
+			if(!mysqli_select_db ($this->mysqlDb))
 			{
 				$this->logError(sprintf($this->langVars->errNoSelect,$this->mysqlDb),__FILE__, __LINE__);
 			}

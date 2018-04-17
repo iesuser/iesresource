@@ -200,13 +200,13 @@ class Example1 extends Common
             <td class="filterFormLabel">დეპარტამენტი:</td>
             <td class="rightDottedBorder">
 				<?php 
-                 mysql_select_db($dbStaff,$db);	//მონაცემთა ბაზის გადართვა
+                 mysqli_select_db($dbStaff,$db);	//მონაცემთა ბაზის გადართვა
                 ?>
              	<select name="ganyofileba" id="ganyofileba" style="width:156px" onchange="javascript:onDepartmentSelected();">
                		<option value=""></option>
 				   <?php
-                    $table = mysql_query("SELECT id,name FROM departments ORDER by id ASC");
-                    while($row = mysql_fetch_array($table))
+                    $table = mysqli_query("SELECT id,name FROM departments ORDER by id ASC");
+                    while($row = mysqli_fetch_array($table))
                     {
                         $name = $row["name"];
                         ?>
@@ -271,13 +271,13 @@ class Example1 extends Common
             <td class="filterFormLabel">ზომის ერთეული:</td>
             <td class="rightDottedBorder">
 				<?php 
-                 mysql_select_db($dbInventari,$db);	//მონაცემთა ბაზის გადართვა
+                 mysqli_select_db($dbInventari,$db);	//მონაცემთა ბაზის გადართვა
                 ?>
                 <select name="zomis_erteuli" id="zomis_erteuli" style="width:156px" >
                 	<option value=""></option>
                     <?php
-					$table = mysql_query("SELECT name FROM zomis_erteuli");
-					while($row = mysql_fetch_array($table))
+					$table = mysqli_query("SELECT name FROM zomis_erteuli");
+					while($row = mysqli_fetch_array($table))
 					{
 						$name = $row["name"];
 					?>
@@ -323,7 +323,7 @@ class Example1 extends Common
     </form>
 
 <?php 
- mysql_select_db($dbInventari,$db);	//მონაცემთა ბაზის გადართვა
+ mysqli_select_db($dbInventari,$db);	//მონაცემთა ბაზის გადართვა
 
 ?>
 
