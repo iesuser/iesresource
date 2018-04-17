@@ -12,6 +12,7 @@
  */
 class AjaxTableEditor
 {
+
 	var $action;
 	var $retArr = array();
 	var $warnings = array();
@@ -205,7 +206,8 @@ class AjaxTableEditor
 	
 	function doQuery($query)
 	{
-		$result = mysql_query($query);
+		global $db;
+		$result = mysqli_query($db, $query);
 		if (!$result)
 		{
 			$message = '<br /><br  />'.$this->langVars->errQuery.' <br />'.$query.'<br /><br /> '.$this->langVars->errMysql.'<br /> '.mysql_error();
@@ -466,7 +468,7 @@ class AjaxTableEditor
 		$rv = false;
 		$query = "select id, hidden from mate_columns where mate_user_id = '$this->mateUserId' and mate_var_prefix = '$this->varPrefix' and mate_column = '$column'";
 		$result = $this->doQuery($query);
-		if($row = mysql_fetch_assoc($result))
+		if($row = mysqli_fetch_assoc($result))
 		{
 			if($row['hidden'] == 'Yes')
 			{
@@ -487,7 +489,7 @@ class AjaxTableEditor
 			$column = $this->escapeData($this->info);
 			$query = "select id from mate_columns where mate_user_id = '$this->mateUserId' and mate_var_prefix = '$this->varPrefix' and mate_column = '$column'";
 			$result = $this->doQuery($query);
-			if($row = mysql_fetch_assoc($result))
+			if($row = mysqli_fetch_assoc($result))
 			{
 				$mateColId = $row['id'];
 				$query = "update mate_columns set hidden = 'No' where id = '$mateColId'";
@@ -510,7 +512,7 @@ class AjaxTableEditor
 			{
 				$query = "select id from mate_columns where mate_user_id = '$this->mateUserId' and mate_var_prefix = '$this->varPrefix' and mate_column = '$column'";
 				$result = $this->doQuery($query);
-				if($row = mysql_fetch_assoc($result))
+				if($row = mysqli_fetch_assoc($result))
 				{
 					$mateColId = $row['id'];
 					$query = "update mate_columns set hidden = 'Yes' where id = '$mateColId'";
@@ -630,7 +632,7 @@ class AjaxTableEditor
 					{
 						$query = "select id from mate_columns where mate_user_id = '$this->mateUserId' and mate_var_prefix = '$this->varPrefix' and mate_column = '$col'";
 						$result = $this->doQuery($query);
-						if($row = mysql_fetch_assoc($result))
+						if($row = mysqli_fetch_assoc($result))
 						{
 							$mateColId = $row['id'];
 							$query = "update mate_columns set order_num = '$orderNum' where id = '$mateColId'";
@@ -657,7 +659,7 @@ class AjaxTableEditor
 				$newTableColumns = array();
 				$query = "select mate_column from mate_columns where mate_user_id = '$this->mateUserId' and mate_var_prefix = '$this->varPrefix' and hidden = 'No' and order_num > 0 order by order_num asc";
 				$result = $this->doQuery($query);
-				while($row = mysql_fetch_assoc($result))
+				while($row = mysqli_fetch_assoc($result))
 				{
 					if(isset($this->tableColumns[$row['mate_column']]) && stristr($this->tableColumns[$row['mate_column']]['perms'],'O'))
 					{
@@ -689,7 +691,7 @@ class AjaxTableEditor
 				$id = $this->escapeData($info);
 				$query = "select * from $this->tableName where $this->primaryKeyCol = '$id'";
 				$result = $this->doQuery($query);
-				if($row = mysql_fetch_assoc($result))
+				if($row = mysqli_fetch_assoc($result))
 				{
 					if(isset($this->userButtons[$buttonKey]['call_back_fun']) && is_callable($this->userButtons[$buttonKey]['call_back_fun']))
 					{
@@ -711,7 +713,7 @@ class AjaxTableEditor
 		$iconKey = $this->escapeData($this->info[1]);
 		$query = "select * from $this->tableName where $this->primaryKeyCol = '$id'";
 		$result = $this->doQuery($query);
-		if($row = mysql_fetch_assoc($result))
+		if($row = mysqli_fetch_assoc($result))
 		{
 			if(isset($this->userIcons[$iconKey]['call_back_fun']) && is_callable($this->userIcons[$iconKey]['call_back_fun']))
 			{
@@ -734,7 +736,7 @@ class AjaxTableEditor
 			{
 				$query = "select * from $this->tableName where $this->primaryKeyCol = '$id'";
 				$result = $this->doQuery($query);
-				if($row = mysql_fetch_assoc($result))
+				if($row = mysqli_fetch_assoc($result))
 				{
 					$sets = array();
 					foreach($this->tableColumns as $col => $info)
@@ -774,7 +776,7 @@ class AjaxTableEditor
 		{
 			$query = "select * from $this->tableName where $this->primaryKeyCol = '$id'";
 			$result = $this->doQuery($query);
-			if($row = mysql_fetch_assoc($result))
+			if($row = mysqli_fetch_assoc($result))
 			{
 				$sets = array();
 				foreach($this->tableColumns as $col => $info)
@@ -830,7 +832,7 @@ class AjaxTableEditor
 		$this->extraOrderByInfo = empty($this->extraOrderByInfo) ? '' : ', '.$this->extraOrderByInfo;
 		$query = $this->selectClause.' '.$this->joinClause.' '.$this->whereClause.' order by '.$this->addTickMarks($this->orderByColumn).' '.$this->getAscOrDesc().' '.$this->extraOrderByInfo;
 		$result = $this->doQuery($query);
-		if(mysql_num_rows($result) > 0)
+		if(mysqli_num_rows($result) > 0)
 		{
 			$csvRow = array();
 			foreach($this->tableColumns as $col => $info)
@@ -842,7 +844,7 @@ class AjaxTableEditor
 			}
 			$csvInfo .= implode(',', $csvRow).$csvLb;
 			
-			while($row = mysql_fetch_assoc($result))
+			while($row = mysqli_fetch_assoc($result))
 			{
 				$csvRow = array();
 				foreach($this->tableColumns as $col => $info)
@@ -928,7 +930,7 @@ class AjaxTableEditor
 			$this->formatSelectClause();
 			$query = $this->selectClause.' '.$this->joinClause.' where '.$this->tableName.'.'.$this->primaryKeyCol." = '$id'";
 			$result = $this->doQuery($query);
-			if($row = mysql_fetch_assoc($result))
+			if($row = mysqli_fetch_assoc($result))
 			{
 				$html .= '<table '.$this->viewTableInfo.'>';
 				foreach($this->tableColumns as $col => $info)
@@ -1306,7 +1308,7 @@ class AjaxTableEditor
 				$id = $this->escapeData(current($this->info));
 				$query = "select * from $this->tableName where $this->primaryKeyCol = '$id'";
 				$result = $this->doQuery($query);
-				if($row = mysql_fetch_assoc($result))
+				if($row = mysqli_fetch_assoc($result))
 				{
 					$html .= '<form id="'.$this->varPrefix.'_edit_form" name="'.$this->varPrefix.'_edit_form"><table '.$this->editTableInfo.'>';
 					foreach($this->tableColumns as $col => $info)
@@ -1434,7 +1436,7 @@ class AjaxTableEditor
 			$jsUpdateFun = 'updateRow(\''.$id.'\',\''.$this->varPrefix.'\');';
 			$query = "select * from $this->tableName where $this->primaryKeyCol = '$id'";
 			$result = $this->doQuery($query);
-			if($row = mysql_fetch_assoc($result))
+			if($row = mysqli_fetch_assoc($result))
 			{
 				$html .= '<form id="'.$this->varPrefix.'_edit_form" name="'.$this->varPrefix.'_edit_form"><table '.$this->editTableInfo.'>';
 				foreach($this->tableColumns as $col => $info)
@@ -1954,7 +1956,7 @@ class AjaxTableEditor
 		$this->numResults = 0;
 		$query = 'select count(*) as num_results from '.$this->tableName.' '.$this->joinClause.' '.$this->whereClause;
 		$result = $this->doQuery($query);
-		if($row = mysql_fetch_assoc($result))
+		if($row = mysqli_fetch_assoc($result))
 		{
 			$this->numResults = $row['num_results'];
 		}
@@ -1992,7 +1994,7 @@ class AjaxTableEditor
 			$this->information[] = '<div id="mateViewQuery" align="left">'.nl2br($query).'</div>';
 		}
 		$result = $this->doQuery($query);
-		if(mysql_num_rows($result) > 0)
+		if(mysqli_num_rows($result) > 0)
 		{
 			$html .= '<div><form id="'.$this->varPrefix.'_table_form" style="margin: 0px;"><table '.$this->tableInfo.'>
 			<tr class="header">';
@@ -2031,7 +2033,7 @@ class AjaxTableEditor
 			}
 			$html .= '</tr>';
 			$bgColor = $this->evenRowColor;
-			while($row = mysql_fetch_assoc($result))
+			while($row = mysqli_fetch_assoc($result))
 			{
 				$numRows++;
 				$rowInfo = array();
@@ -2347,7 +2349,7 @@ class AjaxTableEditor
 		$this->joinClause = '';
 		$this->tableColumns = $originalColumns;
 		$result = $this->doQuery($query);
-		if($row = mysql_fetch_assoc($result))
+		if($row = mysqli_fetch_assoc($result))
 		{
 			return true;
 		}
@@ -2372,7 +2374,7 @@ class AjaxTableEditor
 		$this->joinClause = '';
 		$this->tableColumns = $originalColumns;
 		$result = $this->doQuery($query);
-		if(mysql_num_rows($result) == count($idArr))
+		if(mysqli_num_rows($result) == count($idArr))
 		{
 			return true;
 		}

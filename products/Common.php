@@ -28,7 +28,7 @@ class Common
 	{
 		if($this->dbc = mysqli_connect($this->mysqlHost, $this->mysqlUser, $this->mysqlDbPass)) 
 		{	
-			if(!mysqli_select_db ($this->mysqlDb))
+			if(!mysqli_select_db ($this->dbc ,$this->mysqlDb))
 			{
 				$this->logError(sprintf($this->langVars->errNoSelect,$this->mysqlDb),__FILE__, __LINE__);
 			}
