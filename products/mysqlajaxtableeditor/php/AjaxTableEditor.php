@@ -218,17 +218,19 @@ class AjaxTableEditor
 	
 	function escapeData($data) 
 	{
+		global $db;
+
 		if (ini_get('magic_quotes_gpc')) 
 		{
 			$data = stripslashes($data);
 		}
 		if(isset($this->dbc))
 		{
-			return mysql_real_escape_string (trim ($data), $this->dbc);
+			return mysqli_real_escape_string (trim ($data), $this->dbc);
 		}
 		else
 		{
-			return mysql_real_escape_string (trim ($data));
+			return mysqli_real_escape_string ($db, trim ($data));
 		}			
 	}
 	

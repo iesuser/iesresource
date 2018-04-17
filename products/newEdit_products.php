@@ -60,8 +60,8 @@ if ($mtvleli<1)
 }
 else
 {
-	$result = mysql_query("SELECT * FROM inventari WHERE id=$mtvleli");    
-	$myrow = mysql_fetch_array($result); 
+	$result = mysqli_query($db, "SELECT * FROM inventari WHERE id=$mtvleli");    
+	$myrow = mysqli_fetch_array($result); 
 	//echo $myrow."weeeeeeee";
 	$inventaris_nomeri = $myrow["inventaris_nomeri"];
 	$inventaris_shida_nomeri = $myrow["inventaris_shida_nomeri"];
@@ -152,8 +152,8 @@ else
         <td>
           <select name="zomis_erteuli" id="zomis_erteuli" style="width:156px" >
             <?php
-		$table = mysql_query("SELECT name FROM zomis_erteuli");
-		while($row = mysql_fetch_array($table))
+		$table = mysqli_query($db, "SELECT name FROM zomis_erteuli");
+		while($row = mysqli_fetch_array($table))
 		{
 			$name = $row["name"];
 			
@@ -185,13 +185,13 @@ else
             <tr>
         <td class="tablecolm1">დეპარტამენტი/დირექცია</td>
         <td><?php
-			mysql_select_db($dbStaff,$db);	//მონაცემთა ბაზის გადართვა
+			mysqli_select_db($db, $dbStaff);	//მონაცემთა ბაზის გადართვა
         ?>
           <select name="ganyofileba" id="ganyofileba" style="width:156px" onchange="javascript:onDepartmentSelect();">
             <option value=""></option>
             <?php
-		$table = mysql_query("SELECT id,name FROM departments ORDER by id ASC");
-		while($row = mysql_fetch_array($table))
+		$table = mysqli_query($db, "SELECT id,name FROM departments ORDER by id ASC");
+		while($row = mysqli_fetch_array($table))
 		{
 			$name = $row["name"];
 			?>
@@ -209,8 +209,8 @@ else
           <?php
 		  if(isset($dep_id))
 		  {
-			$table = mysql_query("SELECT id,name FROM group_laboratories WHERE department_id='$dep_id'");
-			while($row = mysql_fetch_array($table))
+			$table = mysqli_query($db, "SELECT id,name FROM group_laboratories WHERE department_id='$dep_id'");
+			while($row = mysqli_fetch_array($table))
 			{
 				$name = $row["name"];
 				
@@ -233,8 +233,8 @@ else
 				$query = "SELECT * FROM  `staff` WHERE dep_id='$dep_id'";
 				if(isset($gr_lb_id)) $query .= " AND gr_lb_id='$gr_lb_id'";
 				else $query .= " AND gr_lb_id='0'";
-				$table1 = mysql_query($query);
-				while($row1 = mysql_fetch_array($table1))
+				$table1 = mysqli_query($db, $query);
+				while($row1 = mysqli_fetch_array($table1))
 				{
 				$first_name = $row1["first_name"];
 				$last_name = $row1["last_name"];
