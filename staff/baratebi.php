@@ -19,11 +19,11 @@ if(isset($_GET['id'])) //რედაქტირება
 	$tableLabel = "დეპარტამენტის რედაქტირება";
 	$btnLabel  = "რედაქტირება";
 	$id = $_GET['id'];
-	mysql_select_db($dbStaff,$db);
-	
+	mysqli_select_db($db, $dbStaff);
+
 	$query = "SELECT * FROM departments WHERE id=$id";
-	$departments = mysql_query($query) or die($query); 
-	$department = mysql_fetch_array($departments); 
+	$departments = mysqli_query($db, $query) or die($query);
+	$department = mysqli_fetch_array($departments);
 	$name = $department['name'];
 }else //დამატება
 {
@@ -35,17 +35,17 @@ if(isset($_GET['id'])) //რედაქტირება
 ?>
 
 
-<!-- Create Menu Settings: (Menu ID, Is Vertical, Show Timer, Hide Timer, On Click, Right to Left, Horizontal Subs, Flush Left) --> 
-<script type="text/javascript">qm_create(0,false,0,250,false,false,false,false);</script> 
+<!-- Create Menu Settings: (Menu ID, Is Vertical, Show Timer, Hide Timer, On Click, Right to Left, Horizontal Subs, Flush Left) -->
+<script type="text/javascript">qm_create(0,false,0,250,false,false,false,false);</script>
 
 
-<?php	
+<?php
 include("../block/globalVariables.php");
 include("../block/db.php");
-mysql_select_db($dbStaff,$db);
+mysqli_select_db($db, $dbStaff);
 ////////////////////////////////
-if ($isAdmin)   
-                { 
+if ($isAdmin)
+                {
 ////////////////////////////////
 $currentDay = new DateTime(date("Y-m-d"));
 $currentDay->modify('-15 day');
@@ -59,20 +59,20 @@ $query4 = "SELECT DATEDIFF(salary_card_end_date, NOW()) AS datedf, salary_card_e
 $query5 = "SELECT DATEDIFF(salary_card_end_date, NOW()) AS datedf, salary_card_end_date, id, first_name, last_name FROM staff WHERE DATEDIFF(salary_card_end_date, NOW()) < $secondWarningForSalaryCardEndDate AND  DATEDIFF(salary_card_end_date, NOW()) > 0";
 $query6 = "SELECT DATEDIFF(salary_card_end_date, NOW()) AS datedf, salary_card_end_date, id, first_name, last_name FROM staff WHERE DATEDIFF(salary_card_end_date, NOW()) <= 0 AND DATEDIFF(salary_card_end_date, NOW()) > -$expDayForSalaryCardEndDate";
 
-$table1 = mysql_query($query1);
-$table2 = mysql_query($query2);
-$table3 = mysql_query($query3);
-$table4 = mysql_query($query4);
-$table5 = mysql_query($query5);
-$table6 = mysql_query($query6);
+$table1 = mysqli_query($db, $query1);
+$table2 = mysqli_query($db, $query2);
+$table3 = mysqli_query($db, $query3);
+$table4 = mysqli_query($db, $query4);
+$table5 = mysqli_query($db, $query5);
+$table6 = mysqli_query($db, $query6);
 
 
-if(mysql_num_rows($table1) > 0 or mysql_num_rows($table2) > 0 or mysql_num_rows($table3) > 0 or mysql_num_rows($table4) > 0 or mysql_num_rows($table5) > 0 or mysql_num_rows($table6) > 0):
+if(mysqli_num_rows($table1) > 0 or mysqli_num_rows($table2) > 0 or mysqli_num_rows($table3) > 0 or mysqli_num_rows($table4) > 0 or mysqli_num_rows($table5) > 0 or mysqli_num_rows($table6) > 0):
 ?>
 
 <?php
 
-while($row = mysql_fetch_array($table1))
+while($row = mysqli_fetch_array($table1))
 {
 	$id=$row["id"];
 	$contract_end_date = $row["contract_end_date"];
@@ -86,7 +86,7 @@ while($row = mysql_fetch_array($table1))
 <?php
 }
 
-while($row = mysql_fetch_array($table2))
+while($row = mysqli_fetch_array($table2))
 {
 	$id=$row["id"];
 	$contract_end_date = $row["contract_end_date"];
@@ -100,7 +100,7 @@ while($row = mysql_fetch_array($table2))
 <?php
 }
 
-while($row = mysql_fetch_array($table3))
+while($row = mysqli_fetch_array($table3))
 {
 	$id=$row["id"];
 	$contract_end_date = $row["contract_end_date"];
@@ -114,7 +114,7 @@ while($row = mysql_fetch_array($table3))
 <?php
 }
 
-while($row = mysql_fetch_array($table4))
+while($row = mysqli_fetch_array($table4))
 {
 	$id=$row["id"];
 	$salary_card_end_date = $row["salary_card_end_date"];
@@ -128,7 +128,7 @@ while($row = mysql_fetch_array($table4))
 <?php
 }
 
-while($row = mysql_fetch_array($table5))
+while($row = mysqli_fetch_array($table5))
 {
 	$id=$row["id"];
 	$salary_card_end_date = $row["salary_card_end_date"];
@@ -142,7 +142,7 @@ while($row = mysql_fetch_array($table5))
 <?php
 }
 
-while($row = mysql_fetch_array($table6))
+while($row = mysqli_fetch_array($table6))
 {
 	$id=$row["id"];
 	$salary_card_end_date = $row["salary_card_end_date"];
@@ -159,7 +159,7 @@ while($row = mysql_fetch_array($table6))
 </div>
 <?php
 endif;
-mysql_select_db($dbInventari,$db);
+mysqli_select_db($db, $dbInventari);
 				}
 ?>
 

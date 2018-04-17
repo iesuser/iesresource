@@ -21,11 +21,11 @@ if(isset($_GET['id'])) //რედაქტირება
 	$tableLabel = "დეპარტამენტის რედაქტირება";
 	$btnLabel  = "რედაქტირება";
 	$id = $_GET['id'];
-	mysql_select_db($dbStaff,$db);
-	
+	mysqli_select_db($db, $dbStaff);
+
 	$query = "SELECT * FROM departments WHERE id=$id";
-	$departments = mysql_query($query) or die($query); 
-	$department = mysql_fetch_array($departments); 
+	$departments = mysqli_query($db, $query) or die($query);
+	$department = mysqli_fetch_array($departments);
 	$name = $department['name'];
 }else //დამატება
 {

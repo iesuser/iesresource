@@ -1,7 +1,7 @@
 <?php
 include("../block/globalVariables.php");
 include("../block/db.php");
-session_start();
+include("../block/mainmenu.php");
 if($_SESSION['name'] != $siteMaintenanceUsername) die("Error 333");
 //if(!HaveAccess("seismicData")){echo CreatePageData($_POST," ../login.php"); exit();}
 ?>
@@ -16,18 +16,18 @@ if($_SESSION['name'] != $siteMaintenanceUsername) die("Error 333");
 <script type='text/javascript' src='../block/datetimepicker/datetimepicker_css_ge.js'></script>
 <script type='text/javascript' src="../js/jquery-1.7.2.min.js"></script>
 <?php include("../block/formenu/formenu.php");?>
-</head><?php include("../block/mainmenu.php");?>
+</head>
 <body>
 <?php
-mysql_select_db($dbStaff,$db);
+mysqli_select_db($db, $dbStaff);
 if(isset($_GET['id'])) //რედაქტირება
 {
 	$tableLabel = "თანამშრომლების რედაქტირება";
 	$btnLabel  = "რედაქტირება";
-	$id = $_GET['id'];	
+	$id = $_GET['id'];
 	$query = "SELECT * FROM staff WHERE id=$id";
-	$staffs = mysql_query($query) or die($query);
-	$staff = mysql_fetch_array($staffs); 
+	$staffs = mysqli_query($db, $query) or die($query);
+	$staff = mysqli_fetch_array($staffs);
 	$dep_id = $staff['dep_id'];
 	$gr_lb_id = $staff['gr_lb_id'];
 	$first_name = $staff['first_name'];
@@ -49,11 +49,11 @@ if(isset($_GET['id'])) //რედაქტირება
 	$password = $staff['password'];
 	$head_of_department=$staff['head_of_department'];
   $head_of_department=$staff['head_of_department'];
-	
-	
-	
+
+
+
 }else //დამატება
-{ 
+{
 
   $id =-1;
 	$tableLabel = "თანამშრომლების დამატება";
@@ -96,8 +96,8 @@ if(isset($_GET['id'])) //რედაქტირება
             <option value=""></option>
             <?php
 			$query = "SELECT * FROM departments ORDER by id ASC";
-            $departmnets = mysql_query($query) or die($query);
-            while($departmnet = mysql_fetch_array($departmnets))
+            $departmnets = mysqli_query($db, $query) or die($query);
+            while($departmnet = mysqli_fetch_array($departmnets))
             {
 				$db_department_id = $departmnet["id"];
 				$db_department_name = $departmnet["name"];
@@ -114,8 +114,8 @@ if(isset($_GET['id'])) //რედაქტირება
                 <option value=""></option>
 				<?php
                 $query = "SELECT * FROM group_laboratories WHERE department_id='$dep_id' ORDER by id ASC";
-                $group_laboratories = mysql_query($query) or die($query);
-                while($group_laboratory = mysql_fetch_array($group_laboratories))
+                $group_laboratories = mysqli_query($db, $query) or die($query);
+                while($group_laboratory = mysqli_fetch_array($group_laboratories))
                 {
                     $db_group_laboratories_id = $group_laboratory["id"];
                     $db_group_laboratories_name = $group_laboratory["name"];
@@ -164,25 +164,25 @@ if(isset($_GET['id'])) //რედაქტირება
         <td class="tablecolm1"  style="height:50px;">დეპარტამენტის უფროსი</td>
         <td><input type="checkbox" name="head_of_department" id="head_of_department"  onchange="javascript:showHideRows()" <?php if($head_of_department == "კი") echo "checked='checked'"; ?> /></td>
       </tr>
-      
+
 	  <tr id="password1" style="display:none">
         <td class="tablecolm1"   style="height:50px;">პაროლი</td>
         <td><input type="text" name="password" id="password"  value=""<?php echo $password?>" style="width:150px;margin-left:5px;" maxlength="11" /></td>
       </tr>
-      
+
       <tr>
         <td class="tablecolm1"  style="height:50px;">ხელშეკრულების დაწყების თარიღი</td>
-        <td><input type="text" name="contract_start_date" id="contract_start_date" onkeyup= "return maskdate(event,this);" value="<?php $contract_start_date = ($contract_start_date =="0000-00-00")?  "" : $contract_start_date; echo $contract_start_date;?>" style="width:150px;margin-left:5px;" 
+        <td><input type="text" name="contract_start_date" id="contract_start_date" onkeyup= "return maskdate(event,this);" value="<?php $contract_start_date = ($contract_start_date =="0000-00-00")?  "" : $contract_start_date; echo $contract_start_date;?>" style="width:150px;margin-left:5px;"
 ="10"/>
             <a href="javascript:NewCssCal('contract_start_date','yyyymmdd','arrow',false,24,false,true)">
-            <img border="0" src="../block/datetimepicker/images/cal.gif" width="16" height="16" alt="Pick a date"></a>        
+            <img border="0" src="../block/datetimepicker/images/cal.gif" width="16" height="16" alt="Pick a date"></a>
         </td>
       </tr>
             <tr>
         <td class="tablecolm1"  style="height:50px;">ხელშეკრულების დასრულების თარიღი</td>
         <td><input type="text" name="contract_end_date" id="contract_end_date" onkeyup= "return maskdate(event,this);" value="<?php $contract_end_date = ($contract_end_date =="0000-00-00")?  "" : $contract_end_date; echo $contract_end_date;?>" style="width:150px;margin-left:5px;" maxlength="10"/>
             <a href="javascript:NewCssCal('contract_end_date','yyyymmdd','arrow',false,24,false,true)">
-            <img border="0" src="../block/datetimepicker/images/cal.gif" width="16" height="16" alt="Pick a date"></a>        
+            <img border="0" src="../block/datetimepicker/images/cal.gif" width="16" height="16" alt="Pick a date"></a>
         </td>
       </tr>
       <tr>
@@ -193,17 +193,17 @@ if(isset($_GET['id'])) //რედაქტირება
         <td class="tablecolm1"  style="height:50px;">სახელფასო ბარათის ვადის დასაწყისი</td>
         <td><input type="text" name="salary_card_start_date" id="salary_card_start_date" onkeyup= "return maskdate(event,this);" value="<?php $salary_card_start_date = ($salary_card_start_date =="0000-00-00")?  "" : $salary_card_start_date; echo $salary_card_start_date;?>" style="width:150px;margin-left:5px;" maxlength="10"/>
             <a href="javascript:NewCssCal('salary_card_start_date','yyyymmdd','arrow',false,24,false,true)">
-            <img border="0" src="../block/datetimepicker/images/cal.gif" width="16" height="16" alt="Pick a date"></a>        
+            <img border="0" src="../block/datetimepicker/images/cal.gif" width="16" height="16" alt="Pick a date"></a>
         </td>
       </tr>
       <tr>
         <td class="tablecolm1"  style="height:50px;">სახელფასო ბარათის ვადის დასასრული</td>
         <td><input type="text" name="salary_card_end_date" id="salary_card_end_date" onkeyup= "return maskdate(event,this);" value="<?php $salary_card_end_date = ($salary_card_end_date =="0000-00-00")?  "" : $salary_card_end_date; echo $salary_card_end_date;?>" style="width:150px;margin-left:5px;" maxlength="10"/>
             <a href="javascript:NewCssCal('salary_card_end_date','yyyymmdd','arrow',false,24,false,true)">
-            <img border="0" src="../block/datetimepicker/images/cal.gif" width="16" height="16" alt="Pick a date"></a>        
+            <img border="0" src="../block/datetimepicker/images/cal.gif" width="16" height="16" alt="Pick a date"></a>
         </td>
       </tr>
-      
+
                   <tr>
         <td class="tablecolm1"  style="height:50px;">ტელეფონი(სახლი)</td>
         <td><input type="text" name="home_number" id="home_number" value="<?php echo $home_number?>" style="width:150px;margin-left:5px;" /></td>
@@ -219,7 +219,7 @@ if(isset($_GET['id'])) //რედაქტირება
       <tr>
         <td class="tablecolm1">დამატებითი ინფორმაცია</td>
         <td><textarea style="resize: none;" cols="35" rows="6" name="komentari" id="komentari"><?php echo $komentari;?></textarea></td>
-      </tr>     
+      </tr>
       <tr>
         <td colspan="2" align="center" style="border-top:1px dotted #CCC;height:45px;">
           <div class="Btns">

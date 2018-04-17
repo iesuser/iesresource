@@ -3,6 +3,7 @@ include("../block/globalVariables.php");
 include("../block/db.php");
 //if(!HaveAccess("seismicData")){echo CreatePageData($_POST," ../login.php"); exit();}
 ?>
+<?php include("../block/mainmenu.php");?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -10,10 +11,10 @@ include("../block/db.php");
 <title>დეპარტამენტები</title>
 <link href="../block/style.css" rel="stylesheet" type="text/css"/>
 <?php include("../block/formenu/formenu.php");?>
-</head><?php include("../block/mainmenu.php");?>
+</head>
 <body>
 <?php
-mysql_select_db($dbStaff,$db);
+mysqli_select_db($db, $dbStaff);
 if(isset($_GET['dep_id']) and ($_GET['dep_id'] != '') or isset($_GET['gr_lb_id']) and $_GET['gr_lb_id'] != ''):
 ?>
 
@@ -35,7 +36,7 @@ if(isset($_GET['dep_id']) and ($_GET['dep_id'] != '') or isset($_GET['gr_lb_id']
     <td>ელ-ფოსტა</td>
     <td>&nbsp;</td>
   </tr>
-  <?php    
+  <?php
   if(isset($_GET['gr_lb_id']))
   {
 	 $WHERE =  "gr_lb_id=".$_GET['gr_lb_id'];
@@ -71,7 +72,7 @@ if(isset($_GET['dep_id']) and ($_GET['dep_id'] != '') or isset($_GET['gr_lb_id']
 	  $position = $stf['position'];
 	  $contract_start_date = ($stf['contract_start_date'] =="0000-00-00")?  "" : $stf['contract_start_date'];
 	  $contract_end_date = ($stf['contract_end_date'] =="0000-00-00")?  "" : $stf['contract_end_date'];
-	  $contract_number = $stf['contract_number'];  
+	  $contract_number = $stf['contract_number'];
 	  $salary_card_start_date = ($stf['salary_card_start_date'] =="0000-00-00")?  "" : $stf['salary_card_start_date'];
 	  $salary_card_end_date = ($stf['salary_card_end_date'] =="0000-00-00")?  "" : $stf['salary_card_end_date'];
 	  $home_number = $stf['home_number'];
@@ -120,8 +121,8 @@ endif;
 <table  border="0" class="tableStyle" style="margin-left:15px; margin-top:15px;min-width:800px">
 <?php
 $query = "SELECT * FROM departments ORDER by id ASC";
-$departaments =  mysql_query($query) or die($query);
-while($departament = mysql_fetch_array($departaments)):
+$departaments =  mysqli_query($db, $query) or die($query);
+while($departament = mysqli_fetch_array($departaments)):
 $department_id = $departament['id'];
 $departament_name = $departament['name'];
 ?>
@@ -135,8 +136,8 @@ $departament_name = $departament['name'];
   </tr>
 <?php
 $query = "SELECT * FROM group_laboratories WHERE department_id = $department_id";
-$group_laboratories =  mysql_query($query) or die($query);
-while($group_laboratorie = mysql_fetch_array($group_laboratories)):
+$group_laboratories =  mysqli_query($db, $query) or die($query);
+while($group_laboratorie = mysqli_fetch_array($group_laboratories)):
 $group_laboratorie_id = $group_laboratorie['id'];
 $group_laboratorie_name = $group_laboratorie['name'];
 ?>

@@ -16,16 +16,16 @@ if($_SESSION['name'] != $siteMaintenanceUsername) die("Error 333");
 </head><?php include("../block/mainmenu.php");?>
 <body>
 <?php
-mysql_select_db($dbStaff,$db);
+mysqli_select_db($db, $dbStaff);
 if(isset($_GET['id'])) //რედაქტირება
 {
 	$tableLabel = "ლაბორატორიის/ჯგუფის რედაქტირება";
 	$btnLabel  = "რედაქტირება";
 	$id = $_GET['id'];
-	
+
 	$query = "SELECT * FROM group_laboratories WHERE id=$id";
-	$group_laboratories = mysql_query($query) or die($query); 
-	$group_laboratory = mysql_fetch_array($group_laboratories); 
+	$group_laboratories = mysqli_query($db, $query) or die($query);
+	$group_laboratory = mysqli_fetch_array($group_laboratories);
 	$department_id = $group_laboratory['department_id'];
 	$name = $group_laboratory['name'];
 }else //დამატება
@@ -52,12 +52,12 @@ if(isset($_GET['id'])) //რედაქტირება
             <option value=""></option>
             <?php
 			$query = "SELECT * FROM departments ORDER by id ASC";
-            $departmnets = mysql_query($query) or die($query);
-            while($departmnet = mysql_fetch_array($departmnets))
+            $departmnets = mysqli_query($db, $query) or die($query);
+            while($departmnet = mysqli_fetch_array($departmnets))
             {
 				$db_department_id = $departmnet["id"];
 				$db_department_name = $departmnet["name"];
-                
+
                 ?>
             <option value="<?php echo $db_department_id;?>" <?php if($db_department_id == $department_id) echo "selected='selected'";?>><?php echo $db_department_name;?></option>
             <?php
