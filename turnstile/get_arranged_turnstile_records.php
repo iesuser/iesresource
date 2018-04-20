@@ -2,7 +2,7 @@
 # გამოაქვს ეკრანზე შეცდომები, სერვერზე გაშვებისას უნდა გავთიშოთ.
 include("../block/db.php");
 include("../block/globalVariables.php");
-$selected_db = mysql_select_db($dbInventari, $db);
+$selected_db = mysqli_select_db($db, $dbInventari);
 $starttime = microtime(true);
 ?>
 <!DOCTYPE html>
@@ -16,27 +16,27 @@ $starttime = microtime(true);
 	<?php
 	# აბრუნებს ბოლო ჩანაწერის თარიღს, იმისთვის, რომ turnstile_record-დან წაოიღოს მხოლოდ ახალი ჩანაწერები.
 
-		$result = mysql_query("SELECT MAX(`date_time`) FROM `turnstile_records`", $db);
-		 if (mysql_num_rows($result) == 0) {
+		$result = mysqli_query($db, "SELECT MAX(`date_time`) FROM `turnstile_records`");
+		 if (mysqli_num_rows($result) == 0) {
         	die("turnstile_records ცხრილში არ არის არცერთი ჩანაწერი");
         }
-        $row =	mysql_fetch_row($result);
+        $row =	mysqli_fetch_row($result);
         $end_date = substr($row[0], 0,10);
 
         $sql = "SELECT MAX(`date_time`) AS max_date FROM `turnstile_records_arranged` HAVING max_date IS NOT NULL";
-		$max_date_array = mysql_query($sql, $db) or die($sql);
+		$max_date_array = mysqli_query($db, $sql) or die($sql);
 
 		$test = mysqli_fetch_assoc($max_date_array);
 
-		if (mysql_num_rows($max_date_array) == 0) {
+		if (mysqli_num_rows($max_date_array) == 0) {
         	echo "No rows found.";
         	$max_date = '2001-01-01';
         	// print($max_date. '  ----  '. $end_date);
         }else{
-	        $max_date_row = mysql_fetch_row($max_date_array);
+	        $max_date_row = mysqli_fetch_row($max_date_array);
 	        $max_date = date('Y-m-d', strtotime($max_date_row[0] . ' +1 day'));
 	    }
-		
+
 		print($max_date. '  ----  '. $end_date);
         ?>
 
@@ -45,16 +45,16 @@ $starttime = microtime(true);
 
 	<?php
 		$sql =  "SELECT * FROM `turnstile_records` WHERE `date_time` > '$max_date' AND `date_time` < '$end_date'";
-		$result = mysql_query($sql, $db);
+		$result = mysqli_query($db, $sql);
 
-		$row = mysql_fetch_array($result, MYSQL_ASSOC);
+		$row = mysqli_fetch_array($result, MYSQL_ASSOC);
 
 
 		// $result = mysql_query("SELECT * FROM `turnstile_records` ");
-		 if (mysql_num_rows($result) == 0) {
+		 if (mysqli_num_rows($result) == 0) {
         	die("არსებული მონაცემები უკვე დამუშავებულია (turnstile_records_arranged) ან არ არის ახალი ჩანაწერები turnstile_records-ში");
         	// exit;
-    	}  	
+    	}
 # ფუნქცია ალაგებს ჩანაწერს In/Out -ებად. ყოველ In-ს მოსდევს Out. მხოლოდ იმ In-ებს იღებს რომელსაც შემდეგი ჩანაწერი Out აქვს. (3)
     	// დასამატებელია მორიგეების ჩანაწერები, მორიგის ჩანაწერი უნდა ამოიღოს იმ შემთხვევაშიც, როც In-ის შემდეგ Out არ მოდის.
     	// ბაზაში არ არის დამატებული ველი card_number (ერთადერთ საიდენტიფიკაციო ველი ტურნიკეტის ჩანაწერიდან)
@@ -69,19 +69,19 @@ $starttime = microtime(true);
 #    	}
 ########################################################################################################
 
-    	
+
 function process($info){
 	# წერს დალაგებულ მასივს $informacia-ში
 	$informacia = array();
 	foreach ($info as $key => $value){
 		// $value = array_reverse($value);
 		$sum = count($value);
-		for ($i=0; $i < $sum; $i++) { 
+		for ($i=0; $i < $sum; $i++) {
 			$j = $i+1;
 			if($j!=$sum ){
-				if($value[$i]['in_out_state'] == '0' && 
+				if($value[$i]['in_out_state'] == '0' &&
 				   $value[$j]['in_out_state'] == '1'){
-					
+
 					$informacia[$key][] = $value[$i];
 					$informacia[$key][] = $value[$j];
 				}
@@ -93,16 +93,16 @@ function process($info){
 
 # ბაზიდან იღებს მონაცემებს და წერს მასივში $myrow. (1)
 $personal = array();
-while ($myrow = mysql_fetch_assoc($result)){
+while ($myrow = mysqli_fetch_assoc($result)){
 	if($myrow['card_number'] != '' && $myrow['card_number'] != '5457624'){
 		$name = $myrow['card_number'];
 		// print_r($myrow);
-# ქმნის ახალ მასივს, სადაც ერთი თანამშრომლის მონაცემებს ერთ Key-ს აკუთვნებს. Name => personal	(2)		
+# ქმნის ახალ მასივს, სადაც ერთი თანამშრომლის მონაცემებს ერთ Key-ს აკუთვნებს. Name => personal	(2)
 		if($name != '' && $name != ' '){
 				if(!array_key_exists($name, $personal)){
 					$personal[$name] = array();
 				}
-			$personal[$name][] = $myrow;	
+			$personal[$name][] = $myrow;
 		}
 	}
 }
@@ -127,12 +127,12 @@ $informacia = process($personal);
 						$out = $informacia[$key][$j]; # შემდეგი
 						// print_r($out);
 						// exit;
-						if($informacia[$key][$i]['in_out_state'] == '0' && 
+						if($informacia[$key][$i]['in_out_state'] == '0' &&
 							$informacia[$key][$j]['in_out_state'] == '1'){
 							if(substr($informacia[$key][$i]['date_time'],0,10) != substr($informacia[$key][$j]['date_time'],0,10)){
-							# ქმნის მასივის კლონს, რომ ჩაამატოს მორიგის გაწყვეტილ ჩანაწერში ორი ახალი მასივი.	
-								$out_clone = (array)clone(object)$out;								
-								$in_clone = (array)clone(object)$in;								
+							# ქმნის მასივის კლონს, რომ ჩაამატოს მორიგის გაწყვეტილ ჩანაწერში ორი ახალი მასივი.
+								$out_clone = (array)clone(object)$out;
+								$in_clone = (array)clone(object)$in;
 								$date_out = substr($informacia[$key][$i]['date_time'],0,10).' 23:59:00';
 								$date_in = substr($informacia[$key][$j]['date_time'],0,10).' 00:01:00';
 								$out_clone = str_replace($out_clone['date_time'], $date_out, $out_clone);
@@ -144,7 +144,7 @@ $informacia = process($personal);
 							# უმატებს length-ს 2-ს, რადგან ყოველი ჩამატების შემდეგ მასივის სიგრძე იმატებს ორით და ციკლს ბოლომდე არ გადის.
 								$length +=2;
 							}
-						}	
+						}
 					}
 				}
 			}
@@ -159,8 +159,8 @@ $informacia = process($personal);
 					if($j != $length){
 						$date = substr($value[$i]['date_time'], 0,10);
 						$next_date = substr($value[$j]['date_time'], 0,10);
-						if($date == $next_date 
-							&& $value[$i]['in_out_state'] == '0' 
+						if($date == $next_date
+							&& $value[$i]['in_out_state'] == '0'
 							&& $value[$j]['in_out_state'] == '1'){
 							if(!array_key_exists($key, $time_array)){
 								$time_array[$key] = array();
@@ -173,10 +173,10 @@ $informacia = process($personal);
 							# ასწორებს ინდექსის ნომრებს
 							 $time_array[$key][$date] = array_values($time_array[$key][$date]);
 						}
-					}	
-				}	
+					}
+				}
 			}
-			return $time_array;	
+			return $time_array;
 		}
 
 
@@ -202,7 +202,7 @@ $date_time = create_time_array($informacia);
 					# სამსახურში გატარებული დროის რაოდენობა შესვენებთან ერთად.
 					$sum_time = new DateTime('00:00:00');
 					$e = clone $sum_time;
-					for ($i=0; $i < count($n)-1; $i++) { 
+					for ($i=0; $i < count($n)-1; $i++) {
 						$j = $i+1;
 						if($i%2==0){
 							$diff_time = date_diff(date_create($n[$j]), date_create($n[$i]));
@@ -216,28 +216,28 @@ $date_time = create_time_array($informacia);
 					$sql_out_time = substr($out_time, 11);
 					$on_duty = $work_time->format("%H:%I:%S");
 					$off_duty = date_diff(date_create($total_time_str), date_create($work_time_str))->format('%H:%I:%S');
-					# წერს მონაცეებს ბაზაში 
+					# წერს მონაცეებს ბაზაში
 
 					if($sql_query_values != ''){
 						$sql_query_values .= ", ";
 					}
 					$sql_query_values .= "( '" . $date . "', '" . $card_number . "', '" . $on_duty . "', '" . $off_duty . "', '" . $sql_in_time . "', '" . $sql_out_time. "')";
 					$values_count += 1;
-					
+
 					if($values_count > 5000){
 						$sql_query = $sql_query_header . $sql_query_values;
-						mysql_query($sql_query, $db);
+						mysqli_query($db, $sql_query);
 						echo $sql_query;
 						$sql_query_values = "";
 						$values_count = 0;
 					}
 				}
-					
+
 			}
-			
+
 			if ($values_count > 0){
 				$sql_query = $sql_query_header . $sql_query_values;
-				mysql_query($sql_query, $db);
+				mysqli_query($db, $sql_query);
 			}
 		}
 
@@ -249,9 +249,7 @@ $endtime = microtime(true);
 $duration = $endtime - $starttime;
 print("<br>".$duration);
 exit;
-?>		
-</pre>														   				
+?>
+</pre>
 </body>
 </html>
-
-

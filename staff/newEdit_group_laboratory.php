@@ -1,7 +1,7 @@
 <?php
 include("../block/globalVariables.php");
 include("../block/db.php");
-session_start();
+include("../block/mainmenu.php");
 if($_SESSION['name'] != $siteMaintenanceUsername) die("Error 333");
 //if(!HaveAccess("seismicData")){echo CreatePageData($_POST," ../login.php"); exit();}
 ?>
@@ -13,7 +13,7 @@ if($_SESSION['name'] != $siteMaintenanceUsername) die("Error 333");
 <link href="../block/style.css" rel="stylesheet" type="text/css"/>
 <script type='text/javascript' src='departmetns.js'></script>
 <?php include("../block/formenu/formenu.php");?>
-</head><?php include("../block/mainmenu.php");?>
+</head>
 <body>
 <?php
 mysqli_select_db($db, $dbStaff);

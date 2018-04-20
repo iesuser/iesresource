@@ -35,19 +35,19 @@ if(isset($_POST['komentari'])) {$komentari=$_POST['komentari'];}  else echo "122
 /////////////mushaobs ////////////////////
 
 if(isset($_POST['dasaxuriProduqti']) and $_POST['dasaxuriProduqti'] > 0)
-{ 
+{
 	$dasaxuriProduqti = $_POST['dasaxuriProduqti'];
 	if(isset($gadacemis_tarigi))
 	{
 		$query = "UPDATE inventari SET gadacera_chamoceris_tarigi='$gadacemis_tarigi' WHERE id='$dasaxuriProduqti'";
-		mysql_query($query) or die($query);	
-	}	
+		mysqli_query($db, $query) or die($query);
+	}
 }
 
 if ($mtvleli>0)
 {
 	if(isset($inventaris_nomeri) && isset($inventaris_shida_nomeri) && isset($shida_gadaceris_aqtis_nomeri) && isset($shesyidvis_tarigi)&& isset($invetaris_dasaxeleba)&& isset($inventaris_modeli)&& isset($zomis_erteuli)&& isset($Tanxa)&& isset($raodenoba) && isset($saboloo_girebuleba)&&isset($narcheni_girebuleba)&&isset($pasuxismgebeli)&&isset($otaxis_nomeri)&&isset($ganyofileba)&&isset($gadacemis_tarigi)&&isset($gadacera_chamoceris_tarigi)&&isset($cvlileba) &&isset($mdgomareoba) &&isset($naecheni_girebulebis_angarishi)&&isset($komentari))
-		{			
+		{
 		 $sql = "UPDATE inventari SET inventaris_nomeri='$inventaris_nomeri',
 		 		inventaris_shida_nomeri='$inventaris_shida_nomeri',
 				shida_gadaceris_aqtis_nomeri='$shida_gadaceris_aqtis_nomeri',
@@ -72,34 +72,34 @@ if ($mtvleli>0)
 				mdgomareoba='$mdgomareoba',
 				naecheni_girebulebis_angarishi='$naecheni_girebulebis_angarishi',
 				komentari='$komentari' WHERE id='$mtvleli'";
- 		$result=mysql_query($sql);   
-		}		
-		     	
-	
+ 		$result=mysqli_query($db, $sql);
+		}
+
+
 }
 
-else 
+else
 
 {
 	if(isset($inventaris_nomeri) && isset($inventaris_shida_nomeri) && isset($shesyidvis_tarigi)&& isset($invetaris_dasaxeleba)&& isset($inventaris_modeli)&& isset($zomis_erteuli)&& isset($Tanxa)&& isset($raodenoba) && isset($saboloo_girebuleba)&&isset($narcheni_girebuleba)&&isset($pasuxismgebeli)&&isset($otaxis_nomeri)&&isset($ganyofileba)&&isset($gadacemis_tarigi)&&isset($gadacera_chamoceris_tarigi)&&isset($cvlileba) &&isset($mdgomareoba) &&isset($naecheni_girebulebis_angarishi)&&isset($komentari))
 		{
 			$sql = "INSERT INTO inventari(inventaris_nomeri,inventaris_shida_nomeri,shida_gadaceris_aqtis_nomeri,shesyidvis_tarigi,chamoceris_tarigi,CPV,invetaris_dasaxeleba,inventaris_modeli,seriuli_nomeri,zomis_erteuli,jgufi_laboratoria,Tanxa,raodenoba,saboloo_girebuleba,narcheni_girebuleba,pasuxismgebeli,otaxis_nomeri,ganyofileba,gadacemis_tarigi,gadacera_chamoceris_tarigi,cvlileba,mdgomareoba,naecheni_girebulebis_angarishi,komentari)
-VALUES('$inventaris_nomeri','$inventaris_shida_nomeri','$shida_gadaceris_aqtis_nomeri','$shesyidvis_tarigi','$chamoceris_tarigi','$CPV','$invetaris_dasaxeleba','$inventaris_modeli','$seriuli_nomeri','$zomis_erteuli','$jgufi_laboratoria','$Tanxa','$raodenoba','$saboloo_girebuleba','$narcheni_girebuleba','$pasuxismgebeli','$otaxis_nomeri','$ganyofileba','$gadacemis_tarigi','$gadacera_chamoceris_tarigi','$cvlileba','$mdgomareoba','$naecheni_girebulebis_angarishi','$komentari')";	
-$result=mysql_query($sql);
-          
+VALUES('$inventaris_nomeri','$inventaris_shida_nomeri','$shida_gadaceris_aqtis_nomeri','$shesyidvis_tarigi','$chamoceris_tarigi','$CPV','$invetaris_dasaxeleba','$inventaris_modeli','$seriuli_nomeri','$zomis_erteuli','$jgufi_laboratoria','$Tanxa','$raodenoba','$saboloo_girebuleba','$narcheni_girebuleba','$pasuxismgebeli','$otaxis_nomeri','$ganyofileba','$gadacemis_tarigi','$gadacera_chamoceris_tarigi','$cvlileba','$mdgomareoba','$naecheni_girebulebis_angarishi','$komentari')";
+$result=mysqli_query($db, $sql);
+
 
 			if($result == true) {echo"<p> წარმატებით დაემატა<?p>";}
-			else{echo"<p> ჩანაწერი არ ჩაემატა 11</p>";}	
+			else{echo"<p> ჩანაწერი არ ჩაემატა 11</p>";}
 		}
-		else 
+		else
 		{
-			
+
 		echo "<p>ბაზა არ დაემატა 22</p>.";
-		}		
-		     	
+		}
+
 }
 ?>
-<?php 
+<?php
 header('Location: products.php');
 
 ?>

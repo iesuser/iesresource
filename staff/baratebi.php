@@ -10,8 +10,8 @@ include("../block/db.php");
 <title>დეპარტამენტი</title>
 <link href="../block/style.css" rel="stylesheet" type="text/css"/>
 <script type='text/javascript' src='departmetns.js'></script>
-<?php include("../block/formenu/formenu.php");?>
 </head><?php include("../block/mainmenu.php");?>
+<?php include("../block/formenu/formenu.php");?>
 <body>
 <?php
 if(isset($_GET['id'])) //რედაქტირება

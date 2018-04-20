@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 
 
@@ -22,25 +22,25 @@ function HaveAccess( $permition )
 
 		}
 
-		$nickname = $_SESSION['nickname'];	
+		$nickname = $_SESSION['nickname'];
 
-		if($table_user = mysql_query("SELECT * FROM operators WHERE nickname='".$nickname."'"))
+		if($table_user = mysqli_query($db, "SELECT * FROM operators WHERE nickname='".$nickname."'"))
 
-		$count = mysql_num_rows($table_user);
+		$count = mysqli_num_rows($table_user);
 
-		else return false;	
+		else return false;
 
-		if (($count==1) && ($operator = mysql_fetch_array($table_user)))
+		if (($count==1) && ($operator = mysqli_fetch_array($table_user)))
 
-		{		
+		{
 
-			if ($permition == "index") return true;	
+			if ($permition == "index") return true;
 
 			elseif ($operator[$permition]) return true;
 
 			else setcookie("currenturl","", time() - 3600,"/");
 
-		}		
+		}
 
 	}
 
@@ -56,7 +56,7 @@ function CreatePageData($array,$page)
 
 {
 
-$str1= 
+$str1=
 
 "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
 
@@ -74,7 +74,7 @@ $str1=
 
 <form name='postform' action='$page' method='post'>";
 
-$str2= 
+$str2=
 
 "</form>
 
@@ -86,7 +86,7 @@ $str2=
 
 </body>
 
-</html>"; 
+</html>";
 
 $strpost = "";
 
@@ -98,7 +98,7 @@ $str .= $str1;
 
 $str .= $strpost;
 
-$str .= $str2; 
+$str .= $str2;
 
 return $str;
 
@@ -124,7 +124,7 @@ function PrimaryValuesToId($networkCode,$code,$locationCode)
 
 	}
 
-	
+
 
 	if(strlen($code) < 3 || strlen($code) > 4)
 
@@ -136,7 +136,7 @@ function PrimaryValuesToId($networkCode,$code,$locationCode)
 
 	}
 
-	
+
 
 	if(strlen($locationCode) != 2)
 
@@ -146,9 +146,9 @@ function PrimaryValuesToId($networkCode,$code,$locationCode)
 
 	}
 
-	
 
-	if ($errorText == '') 
+
+	if ($errorText == '')
 
 	{
 
@@ -226,7 +226,7 @@ function PrimaryValuesToId($networkCode,$code,$locationCode)
 
 		$msec = substr($timeAndMsec, 20, strlen($timeAndMsec) - 20);
 
-		$insertWave = mysql_query("INSERT INTO primary_waves(primary_id, type, time, msec, weight, sign)	
+		$insertWave = mysql_query("INSERT INTO primary_waves(primary_id, type, time, msec, weight, sign)
 
 									VALUES('$primary_id', '$type', '$time', '$msec', '$weight', '$sign')");
 
@@ -260,9 +260,9 @@ function InsertUpdateDeletePrimaryWave($primary_id, $type, $timeAndMsec, $weight
 
 		{
 
-			$insertWave = mysql_query("INSERT INTO primary_waves(primary_id, type, time, msec, weight, sign)	
+			$insertWave = mysql_query("INSERT INTO primary_waves(primary_id, type, time, msec, weight, sign)
 
-										 VALUES('$primary_id', '$type', '$time', '$msec', '$weight', '$sign')");										 
+										 VALUES('$primary_id', '$type', '$time', '$msec', '$weight', '$sign')");
 
 			if(!$insertWave) die("error: insert Primary " + $type + " Wave, insertUpdate_eq.php");
 
@@ -296,11 +296,11 @@ function insertUpdatePrimaryWave($primaryId, $type, $timeAndMsec, $quality, $wei
 
 	$msec = substr($timeAndMsec, 20, strlen($timeAndMsec) - 20);
 
-	if(mysql_num_rows(mysql_query("SELECT primary_id FROM primary_waves WHERE primary_id='$primaryId' AND type='$type'")) == 0)
+	if(mysqli_num_rows(mysqli_query($db, "SELECT primary_id FROM primary_waves WHERE primary_id='$primaryId' AND type='$type'")) == 0)
 
 	{
 
-		if(!mysql_query("INSERT INTO primary_waves (primary_id, type, time, msec, quality, weight, onsetType, eqCalculated)
+		if(!mysqli_query($db, "INSERT INTO primary_waves (primary_id, type, time, msec, quality, weight, onsetType, eqCalculated)
 
 									   	     VALUES('$primaryId', '$type', '$time', '$msec', '$quality', $weight, '$onsetType', '$eqCalculated')"))
 
@@ -310,7 +310,7 @@ function insertUpdatePrimaryWave($primaryId, $type, $timeAndMsec, $quality, $wei
 
 	{
 
-		if(!mysql_query("UPDATE primary_waves SET time='$time', msec='$msec', quality=$quality, weight=$weight,
+		if(!mysqli_query($db, "UPDATE primary_waves SET time='$time', msec='$msec', quality=$quality, weight=$weight,
 
 							    onsetType='$onsetType', eqCalculated='$eqCalculated'
 
@@ -332,11 +332,11 @@ function insertUpdatePrimaryMagnitude($primaryId, $type, $value, $rezidual)
 
 {
 
-	if(mysql_num_rows(mysql_query("SELECT primary_id FROM primary_magnitudes WHERE primary_id='$primaryId' AND type='$type'")) == 0)
+	if(mysqli_num_rows(mysqli_query($db, "SELECT primary_id FROM primary_magnitudes WHERE primary_id='$primaryId' AND type='$type'")) == 0)
 
 	{
 
-		if(!mysql_query("INSERT INTO primary_magnitudes (primary_id, type, value, rezidual)
+		if(!mysqli_query($db, "INSERT INTO primary_magnitudes (primary_id, type, value, rezidual)
 
 									   	     VALUES('$primaryId', '$type', $value, $rezidual)"))
 
@@ -346,7 +346,7 @@ function insertUpdatePrimaryMagnitude($primaryId, $type, $value, $rezidual)
 
 	{
 
-		if(!mysql_query("UPDATE primary_magnitudes SET value=$value, rezidual=$rezidual
+		if(!mysqli_query($db, "UPDATE primary_magnitudes SET value=$value, rezidual=$rezidual
 
 						 WHERE primary_id=$primaryId AND type='$type'"))
 
@@ -366,11 +366,11 @@ function insertUpdatePrimaryAmplitude($primaryId, $waveType, $axis, $value, $dom
 
 {
 
-	if(mysql_num_rows(mysql_query("SELECT primary_id FROM primary_amplitudes WHERE primary_id='$primaryId' AND waveType='$waveType' AND axis='$axis'")) == 0)
+	if(mysqli_num_rows(mysqli_query($db, "SELECT primary_id FROM primary_amplitudes WHERE primary_id='$primaryId' AND waveType='$waveType' AND axis='$axis'")) == 0)
 
 	{
 
-		if(!mysql_query("INSERT INTO primary_amplitudes (primary_id, waveType, axis, value, dominantPeriod, time, velocity, program)
+		if(!mysqli_query($db, "INSERT INTO primary_amplitudes (primary_id, waveType, axis, value, dominantPeriod, time, velocity, program)
 
 									   	     VALUES('$primaryId', '$waveType', '$axis', $value, $dominantPeriod, $time, $velocity, '$program')"))
 
@@ -380,7 +380,7 @@ function insertUpdatePrimaryAmplitude($primaryId, $waveType, $axis, $value, $dom
 
 	{
 
-		if(!mysql_query("UPDATE primary_amplitudes SET value=$value, dominantPeriod=$dominantPeriod, time=$time, velocity=$velocity, program='$program'
+		if(!mysqli_query($db, "UPDATE primary_amplitudes SET value=$value, dominantPeriod=$dominantPeriod, time=$time, velocity=$velocity, program='$program'
 
 						 WHERE primary_id='$primaryId' AND type='$waveType' AND axis='$axis'"))
 
@@ -400,11 +400,11 @@ function DeletePrimaryWavesMagnitudesAndAmplitudes($primaryId)
 
 {
 
-	if(!mysql_query("DELETE FROM primary_waves WHERE primary_id='$primaryId'")) return false;
+	if(!mysqli_query($db, "DELETE FROM primary_waves WHERE primary_id='$primaryId'")) return false;
 
-	if(!mysql_query("DELETE FROM primary_magnitudes WHERE primary_id='$primaryId'")) return false;
+	if(!mysqli_query($db, "DELETE FROM primary_magnitudes WHERE primary_id='$primaryId'")) return false;
 
-	if(!mysql_query("DELETE FROM primary_amplitudes WHERE primary_id='$primaryId'")) return false;
+	if(!mysqli_query($db, "DELETE FROM primary_amplitudes WHERE primary_id='$primaryId'")) return false;
 
 	return true;
 
@@ -418,17 +418,17 @@ function getStationId($networkCode, $stationCode, $locationCode)
 
 {
 
-	if(mysql_num_rows($stations = mysql_query("SELECT station_id FROM stations_details
+	if(mysqli_num_rows($stations = mysqli_query($db, "SELECT station_id FROM stations_details
 
 				WHERE network_code='$networkCode' AND alternative_code='$stationCode' AND location_code='$locationCode'"))>0)
 
 	{
 
-		$station = mysql_fetch_array($stations);
+		$station = mysqli_fetch_array($stations);
 
 		return $station['station_id'];
 
-	}elseif(mysql_num_rows($stations = mysql_query("SELECT station_id 
+	}elseif(mysqli_num_rows($stations = mysqli_query($db, "SELECT station_id
 
 													FROM stations
 
@@ -438,7 +438,7 @@ function getStationId($networkCode, $stationCode, $locationCode)
 
 	{
 
-		$station = mysql_fetch_array($stations);
+		$station = mysqli_fetch_array($stations);
 
 		return $station['station_id'];
 
@@ -454,11 +454,11 @@ function insertUpdateEqMagnitude($eqId, $type, $value, $minValue, $maxValue, $un
 
 {
 
-	if(mysql_num_rows(mysql_query("SELECT eqId FROM magnitudes WHERE eqId='$eqId' AND `type`='$type'")) == 0)
+	if(mysqli_num_rows(mysqli_query($db, "SELECT eqId FROM magnitudes WHERE eqId='$eqId' AND `type`='$type'")) == 0)
 
 	{
-											 
-		if(!mysql_query("INSERT INTO magnitudes (eqId, `type`, value, `minValue`, `maxValue`, uncertainty, stationCount)
+
+		if(!mysqli_query($db, "INSERT INTO magnitudes (eqId, `type`, value, `minValue`, `maxValue`, uncertainty, stationCount)
 
 									   	     VALUES($eqId, '$type', $value, $minValue, $maxValue, $uncertainty, $stationCount)"))
 
@@ -467,7 +467,7 @@ function insertUpdateEqMagnitude($eqId, $type, $value, $minValue, $maxValue, $un
 	}else
 
 	{
-		if(!mysql_query("UPDATE magnitudes SET value=$value, `minValue`=$minValue, `maxValue`=$maxValue, uncertainty=$uncertainty, stationCount=$stationCount WHERE eqId='$eqId' AND `type`='$type'"))
+		if(!mysqli_query($db, "UPDATE magnitudes SET value=$value, `minValue`=$minValue, `maxValue`=$maxValue, uncertainty=$uncertainty, stationCount=$stationCount WHERE eqId='$eqId' AND `type`='$type'"))
 
 		return false;
 
@@ -483,7 +483,7 @@ function getPrimaryCount($eqId)
 
 {
 
-	return mysql_num_rows(mysql_query("SELECT id FROM primaries WHERE eq_id='$eqId'"));
+	return mysqli_num_rows(mysqli_query($db, "SELECT id FROM primaries WHERE eq_id='$eqId'"));
 
 }
 
@@ -493,7 +493,7 @@ function getPrimaryUsedCount($eqId)
 
 {
 
-	return mysql_num_rows(mysql_query("SELECT id FROM primaries WHERE eq_id='$eqId' AND eqCalculated='Yes'"));
+	return mysqli_num_rows(mysqli_query($db, "SELECT id FROM primaries WHERE eq_id='$eqId' AND eqCalculated='Yes'"));
 
 }
 
@@ -503,17 +503,17 @@ function getPrimaryPhasesCount($eqId)
 
 {
 
-	$primaries = mysql_query("SELECT id FROM primaries WHERE eq_id='$eqId'");
+	$primaries = mysqli_query($db, "SELECT id FROM primaries WHERE eq_id='$eqId'");
 
 	$phasesCount = 0;
 
-	while($primary = mysql_fetch_array($primaries))
+	while($primary = mysqli_fetch_array($primaries))
 
 	{
 
 		$primaryId = $primary['id'];
 
-		$phasesCount += mysql_num_rows(mysql_query("SELECT primary_id FROM primary_waves WHERE primary_id=$primaryId"));
+		$phasesCount += mysqli_num_rows(mysqli_query($db, "SELECT primary_id FROM primary_waves WHERE primary_id=$primaryId"));
 
 	}
 
@@ -527,17 +527,17 @@ function getPrimaryUsedPhasesCount($eqId)
 
 {
 
-	$primaries = mysql_query("SELECT id FROM primaries WHERE eq_id='$eqId'");
+	$primaries = mysqli_query($db, "SELECT id FROM primaries WHERE eq_id='$eqId'");
 
 	$phasesUsedCount = 0;
 
-	while($primary = mysql_fetch_array($primaries))
+	while($primary = mysqli_fetch_array($primaries))
 
 	{
 
 		$primaryId = $primary['id'];
 
-		$phasesUsedCount += mysql_num_rows(mysql_query("SELECT primary_id FROM primary_waves WHERE primary_id=$primaryId AND eqCalculated='Yes'"));
+		$phasesUsedCount += mysqli_num_rows(mysqli_query($db, "SELECT primary_id FROM primary_waves WHERE primary_id=$primaryId AND eqCalculated='Yes'"));
 
 	}
 
@@ -563,7 +563,7 @@ function updateEqStationCounts($eqId)
 
 		    WHERE id='$eqId'";
 
-	if(!mysql_query($sql))
+	if(!mysqli_query($db, $sql))
 
 		return false;
 
@@ -583,7 +583,7 @@ function updateEqStationCounts($eqId)
 
 	if(!$deletePrimaryWaves) exit("error: delete Primary waves, insertUpdate_eq.php");
 
-	
+
 
 	$deletePrimary = mysql_query("DELETE FROM primaries WHERE id='$primary_id'");
 
@@ -613,7 +613,7 @@ function nextAutoID($tbl)
 
 
 
-function millisecsBetween($dateOne, $dateTwo, $abs = true) 
+function millisecsBetween($dateOne, $dateTwo, $abs = true)
 
 {
 
@@ -631,7 +631,7 @@ function millisecsBetween($dateOne, $dateTwo, $abs = true)
 
 
 
-//funqcia shlis mititebuli direqtoriis shigtavs 
+//funqcia shlis mititebuli direqtoriis shigtavs
 
 function delete_directory_content($dir)
 
@@ -639,7 +639,7 @@ function delete_directory_content($dir)
 
 	$handle=opendir($dir);
 
-	while (($file = readdir($handle))!==false) 
+	while (($file = readdir($handle))!==false)
 
 	{
 
@@ -673,7 +673,7 @@ function printImage($imgsPath, $value,$link)
 
 	else $onClick = '';
 
-	
+
 
 	switch($value)
 
@@ -687,7 +687,7 @@ function printImage($imgsPath, $value,$link)
 
 		case 3: echo "<img src='".$imgsPath."red.png"."' ".$onClick."/>"; break;
 
-	}	
+	}
 
 }
 
@@ -715,7 +715,7 @@ function getFirstFileNameFromFolder($path)
 
 
 
-	while (false !== ($fileName = $d->read())) 
+	while (false !== ($fileName = $d->read()))
 
 	{
 
@@ -841,13 +841,13 @@ function SHMtimeToPhpPlusMsec($shmTime) //7-SEP-2009_22:41:38.3 to 2009-09-07 22
 
 	if(strlen($shmTime) < 21) return "";
 
-	
+
 
 	list($day, $month, $yearAndTime) = split('[-]', $shmTime);
 
 	list($year, $time) = split('[_]', $yearAndTime);
 
-	
+
 
 	$day = str_pad($day, 2 , "0", STR_PAD_LEFT);
 
@@ -881,7 +881,7 @@ function SHMtimeToPhpPlusMsec($shmTime) //7-SEP-2009_22:41:38.3 to 2009-09-07 22
 
 	}
 
-	
+
 
 	return $year."-".$month."-".$day." ".$time;
 

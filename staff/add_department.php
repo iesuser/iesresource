@@ -22,7 +22,7 @@ if($id == "")
 {
 
 	$query = "UPDATE  `ies_staff`.`departments` SET  `name` =  '$name' WHERE  `departments`.`id` =$id;";
-	mysql_query($db, $query) or die($query);
+	mysqli_query($db, $query) or die($query);
 	header('Location: departments.php');
 }
 ?>

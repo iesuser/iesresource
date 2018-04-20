@@ -9,8 +9,8 @@ if(isset($_GET['barcode'])) {
 	echo "\n<record>\n";
 	$barcode=$_GET['barcode'];
 	//$barcode=str_pad($barcode, 9, "0", STR_PAD_LEFT);
-	$table = mysql_query("SELECT * FROM inventari WHERE inventaris_nomeri=$barcode ORDER BY gadacemis_tarigi DESC LIMIT 1");
-	while($row = mysql_fetch_array($table)) {
+	$table = mysqli_query($db, "SELECT * FROM inventari WHERE inventaris_nomeri=$barcode ORDER BY gadacemis_tarigi DESC LIMIT 1");
+	while($row = mysqli_fetch_array($table)) {
                 $inventaris_nomeri = $row["inventaris_nomeri"];
                 $inventaris_shida_nomeri = $row["inventaris_shida_nomeri"];
                 $shesyidvis_tarigi = $row["shesyidvis_tarigi"];
@@ -36,7 +36,7 @@ if(isset($_GET['barcode'])) {
                 $naecheni_girebulebis_angarishi = $row["naecheni_girebulebis_angarishi"];
                 $invetaris_dasaxeleba = $row["invetaris_dasaxeleba"];
                 echo "   <id>\n";
-                echo "      <name>$invetaris_dasaxeleba</name>\n";   
+                echo "      <name>$invetaris_dasaxeleba</name>\n";
                 echo "      <modeli>$inventaris_modeli</modeli>\n";
                 echo "      <mdgomareoba>$mdgomareoba</mdgomareoba>\n";
                 echo "      <otaxi>$otaxis_nomeri</otaxi>\n";
@@ -44,7 +44,7 @@ if(isset($_GET['barcode'])) {
                 echo "      <gany>$ganyofileba</gany>\n";
 		echo "   </id>\n";
         }
-	if (mysql_num_rows($table)==0) {
+	if (mysqli_num_rows($table)==0) {
                 echo "      <result>empty</result>\n";
         }
 	echo "</record>";

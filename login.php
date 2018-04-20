@@ -26,16 +26,16 @@ if(isset($_POST['submit']))
    }
    else
    {
-	   $name = mysql_real_escape_string($_POST['username']); // The function mysql_real_escape_string() stops hackers!
-	   $pass = mysql_real_escape_string($_POST['password']); // We won't use MD5 encryption here because it is the simple tutorial, if you don't know what MD5 is, dont worry!
+	   $name = mysqli_real_escape_string($_POST['username']); // The function mysql_real_escape_string() stops hackers!
+	   $pass = mysqli_real_escape_string($_POST['password']); // We won't use MD5 encryption here because it is the simple tutorial, if you don't know what MD5 is, dont worry!
 	   $pass = md5($pass);
-	   $staffs = mysql_query("SELECT * FROM staff WHERE email = '$name' AND password = '$pass'"); // This code uses MySQL to get all of the users in the database with that username and password.
-	   $we=mysql_num_rows($staffs);
-	   $staff = mysql_fetch_array($staffs);
+	   $staffs = mysqli_query($db, "SELECT * FROM staff WHERE email = '$name' AND password = '$pass'"); // This code uses MySQL to get all of the users in the database with that username and password.
+	   $we=mysqli_num_rows($staffs);
+	   $staff = mysqli_fetch_array($staffs);
 	   $first_name = $staff['first_name'];
 	   $last_name = $staff['last_name'];
 	   $dep_id = $staff['dep_id'];
-	   
+
 	   if($we < 1)
 	   {
 		 header('Location: login.php?wronguserpass=1');
@@ -44,12 +44,12 @@ if(isset($_POST['submit']))
 	   $_SESSION['name'] = $name; // Make it so the username can be called by $_SESSION['name']
 	   $_SESSION['first_name'] = $first_name;
 	   $_SESSION['last_name'] = $last_name;
-	   
+
 	   $query = "SELECT name FROM departments WHERE id = '$dep_id'";
 	  // die($query);
-	   $departments = mysql_query($query);
-	   $departament = mysql_fetch_array($departments);  
-	   $_SESSION['departmentName'] = $departament['name'];	  
+	   $departments = mysqli_query($db, $query);
+	   $departament = mysqli_fetch_array($departments);
+	   $_SESSION['departmentName'] = $departament['name'];
    }
    $_SESSION['loggedin'] = "YES"; // Set it so the user is logged in!
    header('Location: products/products.php');
@@ -65,7 +65,7 @@ table.login{
 table.login td{
 	font-weight:bold;
 	color:#7E9EFF;
-	height: 25px;	
+	height: 25px;
 }
 img.language{
 	border: 1px solid #CCC;
@@ -94,7 +94,7 @@ span.warning
     <table width="274" border="0" class='login'>
     <tr>
     <td colspan="2"><div align="center">ადმინისტრაციის ბლოკი</div></td>
-    
+
       <tr>
         <td width="79"><div align="right">ელ-ფოსტა </div></td>
         <td width="183"><input type='text' name='username' /></td>
@@ -111,7 +111,7 @@ span.warning
 		{
         ?>
         <p style="color:#F03;font-size:12px;margin-bottom:5px">* სახელი ან პაროლი არასწორია</p>
-        <?php   
+        <?php
 		}
 		?>
       </tr>

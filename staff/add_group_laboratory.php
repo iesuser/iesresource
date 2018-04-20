@@ -19,7 +19,7 @@ if($id == "")
 {
 
 	$query = "UPDATE  `ies_staff`.`group_laboratories` SET  `name` =  '$name', `department_id` =  '$department_id' WHERE  `group_laboratories`.`id`=$id;";
-	mysql_query($db, $query) or die($query);
+	mysqli_query($db, $query) or die($query);
 	header('Location: departments.php');
 }
 ?>

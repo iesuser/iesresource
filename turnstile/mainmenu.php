@@ -3,14 +3,14 @@
   $parts = Explode('/', $currentFile);
   $currentFile = $parts[count($parts) - 1];
   session_start(); // NEVER forget this!
-  if(!isset($_SESSION['loggedin'])){      
+  if(!isset($_SESSION['loggedin'])){
     header('Location: ../login.php');
     die("To access this page, you need to <a href='../login.php'>LOGIN</a>"); // Make sure they are logged in!
   } // What the !isset() code does, is check to see if the variable $_SESSION['loggedin'] is there, and if it isn't it kills the script telling the user to log in!
 
 
 
-  if($currentFile!="products.php" and isset($_SESSION['loggedin']) and isset($_SESSION['departmentName'])) 	   
+  if($currentFile!="products.php" and isset($_SESSION['loggedin']) and isset($_SESSION['departmentName']))
     die("მხოლოდ ადმინისტრატორებს შეუძლიათ ამ გვერდის ნახვა"); // Make sure they are logged in!
 
   if(isset($_SESSION['loggedin']) and !isset($_SESSION['departmentName']))
@@ -35,14 +35,14 @@
   .nav>li>a{
     /*padding: 10px 6px;*/
   }
-  
+
   .navbar-inverse .navbar-nav>li>a{
     color: #555555;
     font-size: 12px;
   }
   .navbar-inverse .navbar-nav>li>a:hover{
     color: #555555;
-    
+
   }
   .active{
     /*color: #555555;*/
@@ -56,7 +56,7 @@
 .navbar-inverse .navbar-nav>li>a{
   text-shadow: none;
 }
-        
+
 .navbar-toggle{
   background: #333;
 }
@@ -77,16 +77,16 @@
 
 
 
-  
+
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
-        <span class="icon-bar"></span> 
+        <span class="icon-bar"></span>
       </button>
-     
+
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
@@ -99,16 +99,16 @@
           </a>
           <ul class="dropdown-menu">
             <li><a href="turnstile.php">დასწრება</a></li>
-            
+
             <li><a href="#">ექსპედიცია/შვებულება</a></li>
-            
+
           </ul>
-      </li> 
+      </li>
       <?php if ($_SESSION['name'] == $siteMaintenanceUsername) { ?>
       <li><a href="../staff/baratebi.php">შეტყობინებები</a></li>
-      <?php }?>  
-      <?php }?>  
-        
+      <?php }?>
+      <?php }?>
+
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a ><span class="glyphicon glyphicon-user"></span> <?php  echo $_SESSION['first_name']." ".$_SESSION['last_name'] ?> </a></li>
