@@ -11,6 +11,11 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
 }else{
   $row_count = 100;
 }
+if (isset($_POST['staff'])) {
+  $employee = $_POST['staff'];
+} else {
+  $employee = null;
+}
 
 
 
@@ -65,7 +70,7 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
     <?php # mysql ორი ცხრილის გაერთიანება.
     $result = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_inventari.turnstile_records_arranged.*
                             FROM ies_staff.staff LEFT JOIN ies_inventari.turnstile_records_arranged
-                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE $where ORDER BY `date_time` DESC LIMIT $row_count");
+                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE $employee AND $where ORDER BY `date_time` DESC LIMIT $row_count");
     if (mysqli_num_rows($result) == 0) {
       echo "ჩანაწერი არ მოიძებნა. ";
       exit;
