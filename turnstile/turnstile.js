@@ -23,7 +23,9 @@ function date_filter(){
 		  	start_date: $("#tarigi_dan").val(),
 		  	end_date: $("#tarigi_mde").val(),
 		  	row_count: $("#row_count option:selected").val(),
-		  	employee: $("#staff").val()
+		  	employee: $("#staff option:selected").val(),
+		  	laboratory: $("#jgufi_laboratoria option:selected").val(),
+		  	department: $("#ganyofileba option:selected").val()
 		},
 		success: function(responce){
 			$("#table_content").html(responce);

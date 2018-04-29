@@ -34,6 +34,22 @@ if (isset($_POST['staff'])) {
      $where = " 1 ";
   }
 
+  // DAMATEBULI
+  if(isset($_POST['employee']))
+  {
+    $employee = intval($_POST['employee']);
+  }
+
+  if(isset($_POST['laboratory']))
+  {
+    $laboratory = intval($_POST['laboratory']);
+  }
+
+  if(isset($_POST['department']))
+  {
+    $department = intval($_POST['department']);
+  }
+
 ?>
 
 
@@ -68,9 +84,25 @@ if (isset($_POST['staff'])) {
         </tr>
 
     <?php # mysql ორი ცხრილის გაერთიანება.
-    $result = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_inventari.turnstile_records_arranged.*
+    if (!empty($employee)){
+      $result = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_inventari.turnstile_records_arranged.*
                             FROM ies_staff.staff LEFT JOIN ies_inventari.turnstile_records_arranged
-                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE $employee AND $where ORDER BY `date_time` DESC LIMIT $row_count");
+                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE ies_staff.staff.id = $employee AND $where ORDER BY `date_time` DESC LIMIT $row_count");
+    } else if (!empty($laboratory)){
+      $result = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_inventari.turnstile_records_arranged.*
+                            FROM ies_staff.staff LEFT JOIN ies_inventari.turnstile_records_arranged
+                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE ies_staff.staff.gr_lb_id = $laboratory AND $where ORDER BY `date_time` DESC LIMIT $row_count");
+    } else if (!empty($department)){
+      $result = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_inventari.turnstile_records_arranged.*
+                            FROM ies_staff.staff LEFT JOIN ies_inventari.turnstile_records_arranged
+                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE ies_staff.staff.dep_id = $department AND $where ORDER BY `date_time` DESC LIMIT $row_count");
+    } else 
+    {
+      $result = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_inventari.turnstile_records_arranged.*
+                            FROM ies_staff.staff LEFT JOIN ies_inventari.turnstile_records_arranged
+                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE $where ORDER BY `date_time` DESC LIMIT $row_count");
+    }
+    
     if (mysqli_num_rows($result) == 0) {
       echo "ჩანაწერი არ მოიძებნა. ";
       exit;
