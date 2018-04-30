@@ -13,19 +13,20 @@ function clear_text(){
 }
 
 
-// ajax requestebis გაგზვნა-მიღება 
+// ajax requestebis გაგზვნა-მიღება
 
 function date_filter(){
 	$.ajax({
 		type: "POST",
 		url: "ajax_table.php",
-		data: { 
+		data: {
 		  	start_date: $("#tarigi_dan").val(),
 		  	end_date: $("#tarigi_mde").val(),
 		  	row_count: $("#row_count option:selected").val(),
 		  	employee: $("#staff option:selected").val(),
 		  	laboratory: $("#jgufi_laboratoria option:selected").val(),
-		  	department: $("#ganyofileba option:selected").val()
+		  	department: $("#ganyofileba option:selected").val(),
+				filter_date_frequency: $('input[name=optradio]:checked').val();
 		},
 		success: function(responce){
 			$("#table_content").html(responce);
@@ -48,7 +49,7 @@ function select_department(){
 		type: "POST",
 		url: "ajax_requests.php",
 		dataType: "json",
-		data: { 
+		data: {
 		  	department: $("#ganyofileba option:selected").val(),
 		},
 		success: function(responce){
@@ -76,7 +77,7 @@ function select_laboratory(){
 		type: "POST",
 		url: "ajax_requests.php",
 		dataType: "json",
-		data: { 
+		data: {
 		  	laboratory: $("#jgufi_laboratoria option:selected").val()
 		},
 		success: function(responce){
@@ -92,6 +93,3 @@ function select_laboratory(){
     	}
 	});
 }
-
-
-

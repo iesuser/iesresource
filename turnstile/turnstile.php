@@ -86,9 +86,9 @@ include("../block/db.php");
            		<td class="filterFormLabel" style="color:#7E9EFF;">დალაგება: </td>
                 <td  colspan="4">
 
-                  <label class="radio-inline" style="color:#7E9EFF;"><input type="radio" id='day' name="optradio" checked="checked">დღე</label>
-                  <label class="radio-inline" style="color:#7E9EFF;"><input type="radio" id='week' name="optradio">კვირა</label>
-                  <label class="radio-inline" style="color:#7E9EFF;"><input type="radio" id='month' name="optradio">თვე</label>
+                  <label class="radio-inline" style="color:#7E9EFF;"><input type="radio" id='day' name="optradio" value="day" checked="checked">დღე</label>
+                  <label class="radio-inline" style="color:#7E9EFF;"><input type="radio" id='week' name="optradio" value="week">კვირა</label>
+                  <label class="radio-inline" style="color:#7E9EFF;"><input type="radio" id='month' name="optradio" value="month">თვე</label>
 
                 </td>
 
