@@ -43,12 +43,30 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
     $department = intval($_POST['department']);
   }
 
+  $yofnis_dro = "სამსახურში ყოფნის დრო";
+  $shesvenebaze_dro = "შესვენებაზე ყოფნის დრო";
+  $mosvlis_dro = "მოსვლის დრო";
+  $wasvlis_dro = "წასვლის დრო";
+
+
+
   // დღეების კვირების და თვეების მიხედვით ფილტრი
   if(isset($_POST['filter_date_frequency'])) {
      $filter_date_frequency = $_POST['filter_date_frequency'];
     if ($filter_date_frequency == "week") {
+        $yofnis_dro = $yofnis_dro."(საშუალო)";
+        $shesvenebaze_dro = $shesvenebaze_dro."(საშუალო)";
+        $mosvlis_dro = $mosvlis_dro."(საშუალო)";
+        $wasvlis_dro = $wasvlis_dro."(საშუალო)";
 
     }
+    elseif ($filter_date_frequency == "month") {
+      $yofnis_dro = $yofnis_dro."(საშუალო)";
+      $shesvenebaze_dro = $shesvenebaze_dro."(საშუალო)";
+      $mosvlis_dro = $mosvlis_dro."(საშუალო)";
+      $wasvlis_dro = $wasvlis_dro."(საშუალო)";
+    }
+  }
 ?>
 
 
@@ -73,28 +91,28 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
 
 
         <tr style="background: #bbccff;" id="theader">
-          <th ">თანამშრომელი</th>
+          <th>თანამშრომელი</th>
           <th>თარიღი</th>
           <th>ბარათის ნომერი</th>
-          <th>სამსახურში ყოფნის დრო</th>
-          <th>შესვენებაზე ყოფნის დრო</th>
-          <th>მოსვლის დრო</th>
-          <th>წასვლის დრო</th>
+          <th><?php echo $yofnis_dro; ?></th>
+          <th><?php echo $shesvenebaze_dro; ?></th>
+          <th><?php echo $mosvlis_dro; ?></th>
+          <th><?php echo $wasvlis_dro; ?></th>
         </tr>
 
     <?php # mysql ორი ცხრილის გაერთიანება.
     if (!empty($employee)){
       $result = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_inventari.turnstile_records_arranged.*
                             FROM ies_staff.staff LEFT JOIN ies_inventari.turnstile_records_arranged
-                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE ies_staff.staff.id = $employee AND $where AND $filter_date_frequency ORDER BY `date_time` DESC LIMIT $row_count");
+                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE ies_staff.staff.id = $employee AND $where ORDER BY `date_time` DESC LIMIT $row_count");
     } else if (!empty($laboratory)){
       $result = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_inventari.turnstile_records_arranged.*
                             FROM ies_staff.staff LEFT JOIN ies_inventari.turnstile_records_arranged
-                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE ies_staff.staff.gr_lb_id = $laboratory AND $where AND $filter_date_frequency ORDER BY `date_time` DESC LIMIT $row_count");
+                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE ies_staff.staff.gr_lb_id = $laboratory AND $where ORDER BY `date_time` DESC LIMIT $row_count");
     } else if (!empty($department)){
       $result = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_inventari.turnstile_records_arranged.*
                             FROM ies_staff.staff LEFT JOIN ies_inventari.turnstile_records_arranged
-                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE ies_staff.staff.dep_id = $department AND $where AND $filter_date_frequency ORDER BY `date_time` DESC LIMIT $row_count");
+                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE ies_staff.staff.dep_id = $department AND $where ORDER BY `date_time` DESC LIMIT $row_count");
     } else
     {
       $result = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_inventari.turnstile_records_arranged.*
