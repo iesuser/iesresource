@@ -53,18 +53,12 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
   // დღეების კვირების და თვეების მიხედვით ფილტრი
   if(isset($_POST['filter_date_frequency'])) {
      $filter_date_frequency = $_POST['filter_date_frequency'];
-    if ($filter_date_frequency == "week") {
+    if ($filter_date_frequency == "week" || $filter_date_frequency == "month") {
         $yofnis_dro = $yofnis_dro."(საშუალო)";
         $shesvenebaze_dro = $shesvenebaze_dro."(საშუალო)";
         $mosvlis_dro = $mosvlis_dro."(საშუალო)";
         $wasvlis_dro = $wasvlis_dro."(საშუალო)";
 
-    }
-    elseif ($filter_date_frequency == "month") {
-      $yofnis_dro = $yofnis_dro."(საშუალო)";
-      $shesvenebaze_dro = $shesvenebaze_dro."(საშუალო)";
-      $mosvlis_dro = $mosvlis_dro."(საშუალო)";
-      $wasvlis_dro = $wasvlis_dro."(საშუალო)";
     }
   }
 ?>
@@ -124,6 +118,17 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
       echo "ჩანაწერი არ მოიძებნა. ";
       exit;
     }
+
+  /* TEST
+    $arr = array();
+    while ($row = mysqli_fetch_assoc($result)){
+      if (!array_key_exists($row['card_number'], $arr))
+      {
+        $arr[$row['card_number']]['first_name'] = $row['first_name'];
+      }
+    }
+    var_dump($arr);
+*/
     $i = 0;
       while ($myrow = mysqli_fetch_assoc($result)){
         echo '<tr><td>'.$myrow['first_name']." ".$myrow['last_name'].'</td> <td>' . $myrow['date_time'] . '<td>' . $myrow['card_number'] . '<td>' . $myrow['on_duty'] . '<td>' . $myrow['off_duty']. '<td>' . $myrow['in_time'] . '<td>' . $myrow['out_time'];
