@@ -20,7 +20,7 @@ include("../block/db.php");
 <link href="animate.css" rel="stylesheet" type="text/css"/>
 <?php include("../block/formenu/formenu.php");?>
 </head>
-<body>
+<body onload="date_filter()">
 
 
 <script type='text/javascript' src="../js/mask.js"></script>
@@ -145,7 +145,7 @@ include("../block/db.php");
 <div id="table_content">
 <?php
 
-  include('ajax_table.php');
+  //include('ajax_table.php');
 
 ?>
 </div>

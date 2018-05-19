@@ -14,9 +14,19 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
   $row_count = 100;
 }
 
+// PAGE TEST
+if (isset($_POST['page'])){
+    ChromePhp::log("this is the current page".$_POST['page']);
+    $page = $_POST['page'];
+  } else {
+  
+    $page = 1; 
+  }
+
+
 // საწყისი და საბოლოო თარიღის სხვადასხვა ვარიანტები
   if(!empty($start_date) and !empty($end_date)){
-   	$where = " `date_time` >= '$start_date' and `date_time` <= '$end_date' ";
+    $where = " `date_time` >= '$start_date' and `date_time` <= '$end_date' ";
     $date_1 = strtotime($start_date);
     $date_2 = strtotime($end_date);
     $dw = date("w", $date_1);
@@ -25,10 +35,10 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
     //ChromePhp::log($mo);
   }
   elseif (!empty($start_date) and empty($end_date)) {
-   	$where = " `date_time` >= '$start_date' ";
+    $where = " `date_time` >= '$start_date' ";
   }
   elseif(empty($start_date) and !empty($end_date)){
-   	$where = " `date_time` <= '$end_date' ";
+    $where = " `date_time` <= '$end_date' ";
 
   }
   else{
@@ -64,7 +74,10 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
   if(isset($_POST['filter_date_frequency'])) {
      $filter_date_frequency = $_POST['filter_date_frequency'];
     if ($filter_date_frequency == "week" || $filter_date_frequency == "month") {
-        $edit_tarigi_html = '';
+        if ($filter_date_frequency == "week")
+            $edit_tarigi_html = '<th>კვირა</th>';
+        else if ($filter_date_frequency == "month")
+            $edit_tarigi_html = '<th>თვე</th>';
         $yofnis_dro = $yofnis_dro."(საშუალო)";
         $shesvenebaze_dro = $shesvenebaze_dro."(საშუალო)";
         $mosvlis_dro = $mosvlis_dro."(საშუალო)";
@@ -100,16 +113,210 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
           $weeks = array();
           $one_week = array();
           $add_week = false;
+
+////////////// STAGE 1
+          if ($from->format('w') == 0)
+          {
+            date_add($next_days,date_interval_create_from_date_string("1 day"));
+          } else if ($from->format('w') == 2)
+          { 
+            if ($dif >= 6)
+            {
+              array_push($one_week, date_format($next_days, 'Y-m-d'));
+              array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d')); 
+              array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
+              array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
+              date_add($next_days,date_interval_create_from_date_string("3 days"));
+              array_push($weeks, $one_week);
+              $one_week = array();
+              $add_week = true;
+            } else {
+              for ($m = 0; $m <= $dif; $m++)
+              {
+                if ($next_days->format('w') == 6)
+                {
+                  $add_week = true;
+                  break;
+                } else {
+                  array_push($one_week, date_format($next_days, 'Y-m-d'));
+                  date_add($next_days,date_interval_create_from_date_string("1 day"));
+                }
+              }
+              array_push($weeks, $one_week);
+              $one_week = array();
+            }
+          } else if ($from->format('w') == 3)
+          {
+              if ($dif >= 5)
+              {
+                array_push($one_week, date_format($next_days, 'Y-m-d'));
+                array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d')); 
+                array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
+                date_add($next_days,date_interval_create_from_date_string("3 days"));
+                array_push($weeks, $one_week);
+                $one_week = array();
+                $add_week = true;
+              } else {
+              for ($m = 0; $m <= $dif; $m++)
+              {
+                if ($next_days->format('w') == 6)
+                {
+                  //date_sub($next_days,date_interval_create_from_date_string("1 day"));
+                  $add_week = true;
+                  break;
+                } else {
+                  array_push($one_week, date_format($next_days, 'Y-m-d'));
+                  date_add($next_days,date_interval_create_from_date_string("1 day"));
+                }
+              }
+              array_push($weeks, $one_week);
+              $one_week = array();
+            }
+          } else if ($from->format('w') == 4)
+          {
+            if ($dif >= 4)
+              {
+                array_push($one_week, date_format($next_days, 'Y-m-d'));
+                array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d')); 
+                date_add($next_days,date_interval_create_from_date_string("3 days"));
+                array_push($weeks, $one_week);
+                $one_week = array();
+                $add_week = true;
+              }  else {
+              for ($m = 0; $m <= $dif; $m++)
+              {
+                if ($next_days->format('w') == 6)
+                {
+                 // date_sub($next_days,date_interval_create_from_date_string("1 day"));
+                  $add_week = true;
+                  break;
+                } else {
+                  array_push($one_week, date_format($next_days, 'Y-m-d'));
+                  date_add($next_days,date_interval_create_from_date_string("1 day"));
+                }
+              }
+              array_push($weeks, $one_week);
+              $one_week = array();
+            }
+          } else if ($from->format('w') == 5)
+            {  
+              if ($dif >= 3)
+                {
+                array_push($one_week, date_format($next_days, 'Y-m-d'));
+                date_add($next_days,date_interval_create_from_date_string("3 days"));
+                array_push($weeks, $one_week);
+                $one_week = array();
+                $add_week = true;
+              }  else {
+              for ($m = 0; $m <= $dif; $m++)
+              {
+                if ($next_days->format('w') == 6)
+                {
+                  //date_sub($next_days,date_interval_create_from_date_string("1 day"));
+                  $add_week = true;
+                  break;
+                } else {
+                  array_push($one_week, date_format($next_days, 'Y-m-d'));
+                  date_add($next_days,date_interval_create_from_date_string("1 day"));
+                }
+              }
+              array_push($weeks, $one_week);
+              $one_week = array();
+            }
+          } else if ($from->format('w') == 6 && $dif >= 2)
+          {
+            date_add($next_days,date_interval_create_from_date_string("2 days")); 
+            $add_week = true;
+          } else if ($from->format('w') == 1 || $dif < 7)
+              $add_week = true;
+
+
+
+///////////////////////////////////////////////////
+
+//////////////////// STAGE 2
+
+          if ($next_days->diff($to)->days >= 6)
+          {
+              //ChromePhp::log($next_days->diff($to)->days);
+            if ($next_days->diff($to)->days == 6)
+            {
+              array_push($one_week, date_format($next_days, 'Y-m-d'));
+              array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d')); 
+              array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
+              array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
+              array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
+              array_push($weeks, $one_week);
+              $one_week = array();
+            } else if($next_days->diff($to)->days > 6){
+               ChromePhp::log(date_format($next_days, 'Y-m-d'));
+              $rng = $next_days->diff($to)->days / 7;
+              $rng2 = $next_days->diff($to)->days % 7;
+              for ($i = 0; $i < floor($rng); $i++)
+              {
+                 array_push($one_week, date_format($next_days, 'Y-m-d'));
+                 array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d')); 
+                 array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
+                 array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
+                 array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
+                 date_add($next_days,date_interval_create_from_date_string("3 days"));
+                 //ChromePhp::log(date_format($next_days, 'Y-m-d'));
+                 array_push($weeks, $one_week);
+                 $one_week = array();
+              }
+              //date_add($next_days,date_interval_create_from_date_string("3 days"));
+              ChromePhp::log(date_format($next_days, 'Y-m-d'));
+              ChromePhp::log("yes");
+              if($next_days->diff($to)->days >= 0)
+              {
+                ChromePhp::log("gela");
+                  for ($k = 0; $k <= $rng2; $k++)
+                  {
+                    if ($next_days->format('w') == 6 || $next_days->format('w') == 0)
+                    {
+                      break;
+                    } else {
+                      array_push($one_week, date_format($next_days, 'Y-m-d'));
+                      date_add($next_days,date_interval_create_from_date_string("1 day"));
+                    }
+                  }
+                  if (!empty($one_week))
+                  array_push($weeks, $one_week);
+              }
+
+            }
+          } else {
+            //ChromePhp::log($next_days->diff($to)->days);
+              if ($add_week)
+              {
+                   $rng3 = $next_days->diff($to)->days;
+                   ChromePhp::log($next_days);
+                   for ($k = 0; $k <= $rng3; $k++)
+                   {
+                    if ($next_days->format('w') == 6 || $next_days->format('w') == 0)
+                    {
+                      break;
+                    } else {
+                      array_push($one_week, date_format($next_days, 'Y-m-d'));
+                      date_add($next_days,date_interval_create_from_date_string("1 day"));
+                    }
+                   }
+                   if (!empty($one_week))
+                      array_push($weeks, $one_week);
+              }
+               //ChromePhp::log($next_days);
+          }
+          /*
           while ($next_days->diff($to)->days <= $dif)
           {
             
             $dif_2 = $next_days->diff($to)->days;
             
-            if ($next_days->format('w') == 1 && $dif_2 <= $dif)
+            if ($next_days->format('w') != 0 && $next_days->format('w') != 6)
             {
               $add_week = true;
               ChromePhp::log("dif 1: " . $dif . ", dif 2: " . $dif_2);
-              ChromePhp::log("this day is monday! " . date_format($next_days, 'Y-m-d'));
+              ChromePhp::log("this is a working day! " . date_format($next_days, 'Y-m-d'));
             }
             if ($add_week)
               array_push($one_week, date_format($next_days, 'Y-m-d'));
@@ -123,14 +330,19 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
             date_add($next_days,date_interval_create_from_date_string("1 day"));
             ChromePhp::log("this is dif 2: " . $dif_2);
             if ($dif_2 == 0)
+            {
+              array_push($weeks, $one_week);
               break;
-          }
+            }
+          } */
           ChromePhp::log($weeks);
-          var_dump($weeks);
+          //var_dump($weeks);
           $week_month_main_array = $weeks;
+          $pages = ceil(sizeof($week_month_main_array) / $row_count); 
         }
       }
   }
+
 
 
 ?>
@@ -167,24 +379,39 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
           <th><?php echo $wasvlis_dro; ?></th>
         </tr>
 
-    <?php # mysql ორი ცხრილის გაერთიანება.
+    <?php 
+
+    # mysql ორი ცხრილის გაერთიანება.
+
     if (!empty($employee)){
       $result = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_inventari.turnstile_records_arranged.*
                             FROM ies_staff.staff LEFT JOIN ies_inventari.turnstile_records_arranged
-                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE ies_staff.staff.id = $employee AND $where ORDER BY `date_time` DESC LIMIT $row_count");
+                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE ies_staff.staff.id = $employee AND $where ORDER BY `date_time` DESC");
+      if ($filter_date_frequency == "week" || $filter_date_frequency == "month"){
+      $query = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_staff.staff.card_number FROM ies_staff.staff WHERE ies_staff.staff.id = $employee");
+      } 
     } else if (!empty($laboratory)){
       $result = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_inventari.turnstile_records_arranged.*
                             FROM ies_staff.staff LEFT JOIN ies_inventari.turnstile_records_arranged
-                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE ies_staff.staff.gr_lb_id = $laboratory AND $where ORDER BY `date_time` DESC LIMIT $row_count");
+                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE ies_staff.staff.gr_lb_id = $laboratory AND $where ORDER BY `date_time` DESC");
+      if ($filter_date_frequency == "week" || $filter_date_frequency == "month"){
+      $query = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_staff.staff.card_number FROM ies_staff.staff WHERE ies_staff.staff.gr_lb_id = $laboratory");
+      } 
     } else if (!empty($department)){
       $result = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_inventari.turnstile_records_arranged.*
                             FROM ies_staff.staff LEFT JOIN ies_inventari.turnstile_records_arranged
-                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE ies_staff.staff.dep_id = $department AND $where ORDER BY `date_time` DESC LIMIT $row_count");
+                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE ies_staff.staff.dep_id = $department AND $where ORDER BY `date_time` DESC");
+       if ($filter_date_frequency == "week" || $filter_date_frequency == "month"){
+      $query = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_staff.staff.card_number FROM ies_staff.staff WHERE ies_staff.staff.dep_id = $department");
+      } 
     } else
     {
       $result = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_inventari.turnstile_records_arranged.*
                             FROM ies_staff.staff LEFT JOIN ies_inventari.turnstile_records_arranged
                             ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE $where ORDER BY `date_time` DESC LIMIT $row_count");
+       if ($filter_date_frequency == "week" || $filter_date_frequency == "month"){
+       $query = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_staff.staff.card_number FROM ies_staff.staff");
+      } 
     }
 
     if (mysqli_num_rows($result) == 0) {
@@ -193,7 +420,7 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
     }
 
 ///////////////// TEST  ///////////////////////
-    $all_cards = array(); // array where all card numbers are stored, so it's easier to retrieve each item
+    $all_cards = array(); // array where all card numbers are stored
     function add_zero(&$str)
     {
         if(strlen($str) == 1)
@@ -227,65 +454,47 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
     {
       if ($filter_date_frequency == "week" || $filter_date_frequency == "month")
        {
-            
-            while ($row = mysqli_fetch_assoc($result)){
-              if (!array_key_exists($row['card_number'], $arr) && sizeof($week_month_main_array_temp) > 0)
-              {
-               
-              
+          // storing array with every chosen employee
+          while ($row = mysqli_fetch_assoc($query)){
+                if ($row['card_number'] != "")
+                {
                           $arr[$row['card_number']]['first_name'] = $row['first_name'];
                           $arr[$row['card_number']]['last_name'] = $row['last_name'];
-                          $arr[$row['card_number']]['date_time'] = $row['date_time'];
-                          $arr[$row['card_number']]['on_duty'] = $row['on_duty'];
-                          $arr[$row['card_number']]['off_duty'] = $row['off_duty'];
-                          $arr[$row['card_number']]['in_time'] = $row['in_time'];
-                          $arr[$row['card_number']]['out_time'] = $row['out_time'];
+                          
+                    
                           $tm_arr_1 = $week_month_main_array_temp;
                           $tm_arr_2 = $week_month_main_array_temp;
                           $tm_arr_3 = $week_month_main_array_temp;
                           $tm_arr_4 = $week_month_main_array_temp;
                 
-                          for ($i = 0; $i < sizeof($week_month_main_array); $i++)
-                          {
-                            for ($k = 0; $k < sizeof($week_month_main_array[$i]); $k++)
-                            {
-                              if ($row['date_time'] == $week_month_main_array[$i][$k])
-                              {
-                                $tm_arr_1[$i][$k] = $row['on_duty'];
-                                $tm_arr_2[$i][$k] = $row['off_duty'];
-                                $tm_arr_3[$i][$k] =  $row['in_time'];
-                                $tm_arr_4[$i][$k] = $row['out_time'];
-                              }
-                            }
-                          }
+                        
                           $arr[$row['card_number']]['on_duty_arr'] = $tm_arr_1;
                           $arr[$row['card_number']]['off_duty_arr'] = $tm_arr_2;
                           $arr[$row['card_number']]['in_time_arr'] = $tm_arr_3;
                           $arr[$row['card_number']]['out_time_arr'] = $tm_arr_4;
                      
                 
-                array_push($all_cards, $row['card_number']);
-              } else {
-                  if(isset($_POST['filter_date_frequency']))
-                  {
-                      if ($filter_date_frequency == "week" || $filter_date_frequency == "month")
-                      {
-                           for ($i = 0; $i < sizeof($week_month_main_array); $i++)
+                          array_push($all_cards, $row['card_number']);
+                }
+          }
+
+
+            // updating existing 
+            while ($row2 = mysqli_fetch_assoc($result)){               
+                          for ($i = 0; $i < sizeof($week_month_main_array); $i++)
                           {
                               for ($k = 0; $k < sizeof($week_month_main_array[$i]); $k++)
                               {
-                                if ($row['date_time'] == $week_month_main_array[$i][$k])
+                                if ($row2['date_time'] == $week_month_main_array[$i][$k])
                                 {
-                                  $arr[$row['card_number']]['on_duty_arr'][$i][$k] = $row['on_duty'];
-                                  $arr[$row['card_number']]['off_duty_arr'][$i][$k] = $row['off_duty'];
-                                  $arr[$row['card_number']]['in_time_arr'][$i][$k] = $row['in_time'];
-                                  $arr[$row['card_number']]['out_time_arr'][$i][$k] = $row['out_time'];
+                                  $arr[$row2['card_number']]['on_duty_arr'][$i][$k] = $row2['on_duty'];
+                                  $arr[$row2['card_number']]['off_duty_arr'][$i][$k] = $row2['off_duty'];
+                                  $arr[$row2['card_number']]['in_time_arr'][$i][$k] = $row2['in_time'];
+                                  $arr[$row2['card_number']]['out_time_arr'][$i][$k] = $row2['out_time'];
                                 }
                               }
-                          }
-                      }
-                  }
-              }
+                          } 
+              
             }
           }
         }
@@ -306,6 +515,8 @@ function subs_time($str, $len, $which)
                   $subtracted = floor($int / $len);
                 else if ($which == "ceil")
                   $subtracted = ceil($int / $len);
+                else if ($which == "round")
+                  $subtracted = round($int / $len);
                 $subtracted = strval($subtracted);
                 add_zero($subtracted);
                 $final[$i] = $subtracted; 
@@ -332,26 +543,21 @@ function add_time($str1, $str2)
   return join(":",$final);
 }
 
+$final_arr = array();
 
 // calculating the averages of weeks/months
   if(isset($_POST['filter_date_frequency']) && sizeof($arr) > 1)
   {
     ChromePhp::log(sizeof($arr) . "this is the size");
+    ChromePhp::log($all_cards);
+    ChromePhp::log($department);
     if (($filter_date_frequency == "week" || $filter_date_frequency == "month") && sizeof($arr) > 1)
 
     {
         for ($i = 0; $i < sizeof($all_cards); $i++)
         {
           // storing each week/month averages
-          $dro_sum_1_arr_dan = array();
-          $dro_sum_2_arr_dan = array();
-          $dro_sum_3_arr_dan = array();
-          $dro_sum_4_arr_dan = array();
-
-          $dro_sum_1_arr_mde = array();
-          $dro_sum_2_arr_mde = array();
-          $dro_sum_3_arr_mde = array();
-          $dro_sum_4_arr_mde = array();
+      
 
           for($k = 0; $k < sizeof($arr[$all_cards[$i]]['on_duty_arr']); $k++)
           {
@@ -360,83 +566,46 @@ function add_time($str1, $str2)
               $dro_sum_3 = "00:00:00";
               $dro_sum_4 = "00:00:00";
 
-              $dro_sum_1_dan = "00:00:00";
-              $dro_sum_2_dan = "00:00:00";
-              $dro_sum_3_dan = "00:00:00";
-              $dro_sum_4_dan = "00:00:00";
-
-              $dro_sum_1_mde = "00:00:00";
-              $dro_sum_2_mde = "00:00:00";
-              $dro_sum_3_mde = "00:00:00";
-              $dro_sum_4_mde = "00:00:00";
+    
               for ($z = 0; $z < sizeof($arr[$all_cards[$i]]['on_duty_arr'][$k]); $z++)
               {
                     $dro_sum_1 = add_time($arr[$all_cards[$i]]['on_duty_arr'][$k][$z], $dro_sum_1);
                     $dro_sum_2 = add_time($arr[$all_cards[$i]]['off_duty_arr'][$k][$z], $dro_sum_2);
                     $dro_sum_3 = add_time($arr[$all_cards[$i]]['in_time_arr'][$k][$z], $dro_sum_3);
                     $dro_sum_4 = add_time($arr[$all_cards[$i]]['out_time_arr'][$k][$z], $dro_sum_4);
-                    if ($z == 4)
+                    if ($z == sizeof($arr[$all_cards[$i]]['on_duty_arr'][$k]) - 1)
                     {
-                      $dro_sum_1_dan = subs_time($dro_sum_1, sizeof($arr[$all_cards[$i]]['on_duty_arr'][$k]), "floor");
-                      $dro_sum_2_dan = subs_time($dro_sum_2, sizeof($arr[$all_cards[$i]]['on_duty_arr'][$k]), "floor");
-                      $dro_sum_3_dan = subs_time($dro_sum_3, sizeof($arr[$all_cards[$i]]['on_duty_arr'][$k]), "floor");
-                      $dro_sum_4_dan = subs_time($dro_sum_4, sizeof($arr[$all_cards[$i]]['on_duty_arr'][$k]), "floor");
-                      $dro_sum_1_mde = subs_time($dro_sum_1, sizeof($arr[$all_cards[$i]]['on_duty_arr'][$k]), "ceil");
-                      $dro_sum_2_mde = subs_time($dro_sum_2, sizeof($arr[$all_cards[$i]]['on_duty_arr'][$k]), "ceil");
-                      $dro_sum_3_mde = subs_time($dro_sum_3, sizeof($arr[$all_cards[$i]]['on_duty_arr'][$k]), "ceil");
-                      $dro_sum_4_mde = subs_time($dro_sum_4, sizeof($arr[$all_cards[$i]]['on_duty_arr'][$k]), "ceil");
-
+                     
+                      $dro_sum_1 = subs_time($dro_sum_1, sizeof($arr[$all_cards[$i]]['on_duty_arr'][$k]), "round");
+                      $dro_sum_2 = subs_time($dro_sum_2, sizeof($arr[$all_cards[$i]]['on_duty_arr'][$k]), "round");
+                      $dro_sum_3 = subs_time($dro_sum_3, sizeof($arr[$all_cards[$i]]['on_duty_arr'][$k]), "round");
+                      $dro_sum_4 = subs_time($dro_sum_4, sizeof($arr[$all_cards[$i]]['on_duty_arr'][$k]), "round");
+                      $emp_arr = array();
+                      $emp_arr['card_number'] = $all_cards[$i];
+                      $emp_arr['first_name'] = $arr[$all_cards[$i]]['first_name'];
+                      $emp_arr['last_name'] = $arr[$all_cards[$i]]['last_name'];
+                      $wk = $k + 1;
+                      $emp_arr['week_month'] = 'კვირა '. $wk;
+                      $emp_arr['week_month_count'] = $wk;
+                      $emp_arr['on_duty'] = $dro_sum_1;
+                      $emp_arr['off_duty'] = $dro_sum_2;
+                      $emp_arr['in_time'] = $dro_sum_3;
+                      $emp_arr['out_time'] = $dro_sum_4;
+                      array_push($final_arr, $emp_arr);
                     }
               }
 
 
-              array_push($dro_sum_1_arr_dan, $dro_sum_1_dan);
-              array_push($dro_sum_2_arr_dan, $dro_sum_2_dan);
-              array_push($dro_sum_3_arr_dan, $dro_sum_3_dan);
-              array_push($dro_sum_4_arr_dan, $dro_sum_4_dan);
-
-              array_push($dro_sum_1_arr_mde, $dro_sum_1_mde);
-              array_push($dro_sum_2_arr_mde, $dro_sum_2_mde);
-              array_push($dro_sum_3_arr_mde, $dro_sum_3_mde);
-              array_push($dro_sum_4_arr_mde, $dro_sum_4_mde);
           } 
-          //calculating the main average
-          $dro_sum_1_dan_main = "00:00:00";
-          $dro_sum_2_dan_main = "00:00:00";
-          $dro_sum_3_dan_main = "00:00:00";
-          $dro_sum_4_dan_main = "00:00:00";
-
-          $dro_sum_1_mde_main = "00:00:00";
-          $dro_sum_2_mde_main = "00:00:00";
-          $dro_sum_3_mde_main = "00:00:00";
-          $dro_sum_4_mde_main = "00:00:00";
-          for ($m = 0; $m < sizeof($dro_sum_1_arr_dan); $m++)
-          {
-              $dro_sum_1_dan_main = add_time($dro_sum_1_dan_main, $dro_sum_1_arr_dan[$m]);
-              $dro_sum_2_dan_main = add_time($dro_sum_2_dan_main, $dro_sum_2_arr_dan[$m]);
-              $dro_sum_3_dan_main = add_time($dro_sum_3_dan_main, $dro_sum_3_arr_dan[$m]);
-              $dro_sum_4_dan_main = add_time($dro_sum_4_dan_main, $dro_sum_4_arr_dan[$m]);
-
-              $dro_sum_1_mde_main = add_time($dro_sum_1_mde_main, $dro_sum_1_arr_mde[$m]);
-              $dro_sum_2_mde_main = add_time($dro_sum_2_mde_main, $dro_sum_2_arr_mde[$m]);
-              $dro_sum_3_mde_main = add_time($dro_sum_3_mde_main, $dro_sum_3_arr_mde[$m]);
-              $dro_sum_4_mde_main = add_time($dro_sum_4_mde_main, $dro_sum_4_arr_mde[$m]);
-          }
-          $arr[$all_cards[$i]]['on_duty_arr_dan'] = subs_time($dro_sum_1_dan_main, sizeof($dro_sum_1_arr_dan), "floor");
-          $arr[$all_cards[$i]]['off_duty_arr_dan'] = subs_time($dro_sum_2_dan_main, sizeof($dro_sum_2_arr_dan), "floor");
-          $arr[$all_cards[$i]]['in_time_arr_dan'] = subs_time($dro_sum_3_dan_main, sizeof($dro_sum_3_arr_dan), "floor");
-          $arr[$all_cards[$i]]['out_time_arr_dan'] = subs_time($dro_sum_4_dan_main, sizeof($dro_sum_4_arr_dan), "floor");
-
-          $arr[$all_cards[$i]]['on_duty_arr_mde'] = subs_time($dro_sum_1_mde_main, sizeof($dro_sum_1_arr_mde), "ceil");
-          $arr[$all_cards[$i]]['off_duty_arr_mde'] = subs_time($dro_sum_2_mde_main, sizeof($dro_sum_2_arr_mde), "ceil");
-          $arr[$all_cards[$i]]['in_time_arr_mde'] = subs_time($dro_sum_3_mde_main, sizeof($dro_sum_3_arr_mde), "ceil");
-          $arr[$all_cards[$i]]['out_time_arr_mde'] = subs_time($dro_sum_4_mde_main, sizeof($dro_sum_4_arr_mde), "ceil");
+   
 
         }
         ChromePhp::log($arr);
       }
   }
 ChromePhp::log($arr);
+ChromePhp::log($final_arr);
+
 
 /////////////////////////////////////////////
      $i = 0;
@@ -444,29 +613,33 @@ ChromePhp::log($arr);
     {
     if ($filter_date_frequency == "week" || $filter_date_frequency == "month")
       {
-        if (sizeof($arr) > 1)
+        if (sizeof($arr) > 0)
         {
-            for ($k = 0; $k < sizeof($all_cards); $k++)
+            for ($k = 0; $k < sizeof($final_arr); $k++)
             {
-                echo '<tr><td>'.$arr[$all_cards[$k]]['first_name']." ".$arr[$all_cards[$k]]['last_name'].'</td> <td>' . $all_cards[$k] . '</td>
-                <td>' . $arr[$all_cards[$k]]['on_duty_arr_dan'] . "-დან ". $arr[$all_cards[$k]]['on_duty_arr_mde']."-მდე".'</td> <td>' . $arr[$all_cards[$k]]['off_duty_arr_dan']. "-დან " .$arr[$all_cards[$k]]['off_duty_arr_mde'] . "-მდე" .'</td> <td>' . $arr[$all_cards[$k]]['in_time_arr_dan'] . "-დან " . $arr[$all_cards[$k]]['in_time_arr_mde'] ."-მდე".'</td> <td>' . $arr[$all_cards[$k]]['out_time_arr_dan']."-დან ".$arr[$all_cards[$k]]['out_time_arr_mde']."-მდე </td>";
-                $i++;
+                if ($final_arr[$k]['week_month_count'] > (($page * $row_count) - $row_count) && $final_arr[$k]['week_month_count'] <= ($page * $row_count))
+                {
+                    echo '<tr><td>'.$final_arr[$k]['first_name']." ".$final_arr[$k]['last_name'].'</td> <td>' . $final_arr[$k]['week_month'] . '</td>
+                    <td>'.$final_arr[$k]['card_number'].'</td> <td>' .$final_arr[$k]['on_duty'].'</td> <td>' . $final_arr[$k]['off_duty'].'</td> <td>' . $final_arr[$k]['in_time'].'</td> <td>' . $final_arr[$k]['out_time'].'</td> </tr>';
+                    $i++;
+                }
             }
         }
       } else {
  
           while ($myrow = mysqli_fetch_assoc($result)){
-            echo '<tr><td>'.$myrow['first_name']." ".$myrow['last_name'].'</td> <td>' . $myrow['date_time'] . '<td>' . $myrow['card_number'] . '<td>' . $myrow['on_duty'] . '<td>' . $myrow['off_duty']. '<td>' . $myrow['in_time'] . '<td>' . $myrow['out_time'];
+            echo '<tr><td>'.$myrow['first_name']." ".$myrow['last_name'].'</td> <td>' . $myrow['date_time'] . '</td> <td>' . $myrow['card_number'] . '</td> <td>' . $myrow['on_duty'] . '</td> <td>' . $myrow['off_duty']. '</td> <td>' . $myrow['in_time'] . '</td> <td>' . $myrow['out_time'] . '</td>';
             $i++;
           }
         }
     } else {
  
           while ($myrow = mysqli_fetch_assoc($result)){
-            echo '<tr><td>'.$myrow['first_name']." ".$myrow['last_name'].'</td> <td>' . $myrow['date_time'] . '<td>' . $myrow['card_number'] . '<td>' . $myrow['on_duty'] . '<td>' . $myrow['off_duty']. '<td>' . $myrow['in_time'] . '<td>' . $myrow['out_time'];
+           echo '<tr><td>'.$myrow['first_name']." ".$myrow['last_name'].'</td> <td>' . $myrow['date_time'] . '</td> <td>' . $myrow['card_number'] . '</td> <td>' . $myrow['on_duty'] . '</td> <td>' . $myrow['off_duty']. '</td> <td>' . $myrow['in_time'] . '</td> <td>' . $myrow['out_time'] . '</td>';
             $i++;
           }
         }
+     
  ?>
 
  </table>
@@ -475,6 +648,19 @@ ChromePhp::log($arr);
    სულ: <?php echo $i. ' ჩანაწერი' ;?>
  </p>
 
+<select style="position:absolute; left:44%;" name="page" id="page" onchange="javascript:date_filter()">
+  <?php
+    for($i = 1; $i <= $pages; $i++)
+    {
+      if ($i == $page)
+        echo '<option value="'.$i.'" selected>'.$i.'</option>"';
+      else
+        echo '<option value="'.$i.'">'.$i.'</option>"';
+    }
+  ?>
+ 
+</select>
+<br><br><br><br><br>
 
  <script>
   // javascript - ცხრილში სახელების ძიება. input-ში ტექსტის ჩაწერისას სათითაოდ td-ებში ამოწმებს არის თუ არა მსგავსი ტექსტი, რაც არ დაემთხვევა იმას მალავს.

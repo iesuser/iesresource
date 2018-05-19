@@ -26,7 +26,8 @@ function date_filter(){
 		  	employee: $("#staff option:selected").val(),
 		  	laboratory: $("#jgufi_laboratoria option:selected").val(),
 		  	department: $("#ganyofileba option:selected").val(),
-			filter_date_frequency: $('input[name=optradio]:checked').val()
+			filter_date_frequency: $('input[name=optradio]:checked').val(),
+			page: $("#page option:selected").val()
 		},
 		success: function(responce){
 			$("#table_content").html(responce);
