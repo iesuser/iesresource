@@ -16,7 +16,7 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
 
 // PAGE TEST
 if (isset($_POST['page'])){
-    ChromePhp::log("this is the current page".$_POST['page']);
+    //ChromePhp::log("this is the current page".$_POST['page']);
     $page = $_POST['page'];
   } else {
   
@@ -108,7 +108,7 @@ if (isset($_POST['page'])){
           $from = new DateTime($start_date);
           $to   = new DateTime($end_date);
           $dif = $from->diff($to)->days;
-          ChromePhp::log("the difference is " . $dif);
+          //ChromePhp::log("the difference is " . $dif);
           $next_days = new DateTime($start_date);
           $weeks = array();
           $one_week = array();
@@ -249,7 +249,7 @@ if (isset($_POST['page'])){
               array_push($weeks, $one_week);
               $one_week = array();
             } else if($next_days->diff($to)->days > 6){
-               ChromePhp::log(date_format($next_days, 'Y-m-d'));
+               //ChromePhp::log(date_format($next_days, 'Y-m-d'));
               $rng = $next_days->diff($to)->days / 7;
               $rng2 = $next_days->diff($to)->days % 7;
               for ($i = 0; $i < floor($rng); $i++)
@@ -265,11 +265,11 @@ if (isset($_POST['page'])){
                  $one_week = array();
               }
               //date_add($next_days,date_interval_create_from_date_string("3 days"));
-              ChromePhp::log(date_format($next_days, 'Y-m-d'));
-              ChromePhp::log("yes");
+              //ChromePhp::log(date_format($next_days, 'Y-m-d'));
+              //ChromePhp::log("yes");
               if($next_days->diff($to)->days >= 0)
               {
-                ChromePhp::log("gela");
+                //ChromePhp::log("gela");
                   for ($k = 0; $k <= $rng2; $k++)
                   {
                     if ($next_days->format('w') == 6 || $next_days->format('w') == 0)
@@ -290,7 +290,7 @@ if (isset($_POST['page'])){
               if ($add_week)
               {
                    $rng3 = $next_days->diff($to)->days;
-                   ChromePhp::log($next_days);
+                   //ChromePhp::log($next_days);
                    for ($k = 0; $k <= $rng3; $k++)
                    {
                     if ($next_days->format('w') == 6 || $next_days->format('w') == 0)
@@ -335,7 +335,7 @@ if (isset($_POST['page'])){
               break;
             }
           } */
-          ChromePhp::log($weeks);
+          //ChromePhp::log($weeks);
           //var_dump($weeks);
           $week_month_main_array = $weeks;
           $pages = ceil(sizeof($week_month_main_array) / $row_count); 
@@ -444,7 +444,7 @@ if (isset($_POST['page'])){
                 $week_month_main_array_temp[$i][$k] = "00:00:00";
               }
             }
-            ChromePhp::log($week_month_main_array_temp);
+            //ChromePhp::log($week_month_main_array_temp);
         }
     }
 
@@ -548,9 +548,9 @@ $final_arr = array();
 // calculating the averages of weeks/months
   if(isset($_POST['filter_date_frequency']) && sizeof($arr) > 1)
   {
-    ChromePhp::log(sizeof($arr) . "this is the size");
-    ChromePhp::log($all_cards);
-    ChromePhp::log($department);
+    //ChromePhp::log(sizeof($arr) . "this is the size");
+    //ChromePhp::log($all_cards);
+    //ChromePhp::log($department);
     if (($filter_date_frequency == "week" || $filter_date_frequency == "month") && sizeof($arr) > 1)
 
     {
@@ -600,11 +600,11 @@ $final_arr = array();
    
 
         }
-        ChromePhp::log($arr);
+        //ChromePhp::log($arr);
       }
   }
-ChromePhp::log($arr);
-ChromePhp::log($final_arr);
+//ChromePhp::log($arr);
+//ChromePhp::log($final_arr);
 
 
 /////////////////////////////////////////////
