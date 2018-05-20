@@ -496,6 +496,13 @@ if (isset($_POST['page'])){
                           } 
               
             }
+          } else {
+              $pg_size = 0;
+              while ($row2 = mysqli_fetch_assoc($result)){  
+              $pg_size++;
+              }
+              $pages = ceil($pg_size / $row_count); 
+              mysqli_data_seek($result, 0);
           }
         }
     //var_dump($arr);
@@ -627,16 +634,24 @@ $final_arr = array();
         }
       } else {
  
+           $z = 1;
           while ($myrow = mysqli_fetch_assoc($result)){
-            echo '<tr><td>'.$myrow['first_name']." ".$myrow['last_name'].'</td> <td>' . $myrow['date_time'] . '</td> <td>' . $myrow['card_number'] . '</td> <td>' . $myrow['on_duty'] . '</td> <td>' . $myrow['off_duty']. '</td> <td>' . $myrow['in_time'] . '</td> <td>' . $myrow['out_time'] . '</td>';
+            if ($z > (($page * $row_count) - $row_count) && $z <= ($page * $row_count)){
+              echo '<tr><td>'.$myrow['first_name']." ".$myrow['last_name'].'</td> <td>' . $myrow['date_time'] . '</td> <td>' . $myrow['card_number'] . '</td> <td>' . $myrow['on_duty'] . '</td> <td>' . $myrow['off_duty']. '</td> <td>' . $myrow['in_time'] . '</td> <td>' . $myrow['out_time'] . '</td>';
+            }
             $i++;
+            $z++;
           }
         }
     } else {
  
+           $z = 1;
           while ($myrow = mysqli_fetch_assoc($result)){
-           echo '<tr><td>'.$myrow['first_name']." ".$myrow['last_name'].'</td> <td>' . $myrow['date_time'] . '</td> <td>' . $myrow['card_number'] . '</td> <td>' . $myrow['on_duty'] . '</td> <td>' . $myrow['off_duty']. '</td> <td>' . $myrow['in_time'] . '</td> <td>' . $myrow['out_time'] . '</td>';
+            if ($z > (($page * $row_count) - $row_count) && $z <= ($page * $row_count)){
+              echo '<tr><td>'.$myrow['first_name']." ".$myrow['last_name'].'</td> <td>' . $myrow['date_time'] . '</td> <td>' . $myrow['card_number'] . '</td> <td>' . $myrow['on_duty'] . '</td> <td>' . $myrow['off_duty']. '</td> <td>' . $myrow['in_time'] . '</td> <td>' . $myrow['out_time'] . '</td>';
+            }
             $i++;
+            $z++;
           }
         }
      
