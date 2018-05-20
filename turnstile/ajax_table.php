@@ -408,7 +408,7 @@ if (isset($_POST['page'])){
     {
       $result = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_inventari.turnstile_records_arranged.*
                             FROM ies_staff.staff LEFT JOIN ies_inventari.turnstile_records_arranged
-                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE $where ORDER BY `date_time` DESC LIMIT $row_count");
+                            ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE $where ORDER BY `date_time` DESC");
        if ($filter_date_frequency == "week" || $filter_date_frequency == "month"){
        $query = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_staff.staff.card_number FROM ies_staff.staff");
       } 
