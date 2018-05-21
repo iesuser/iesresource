@@ -31,7 +31,7 @@ function date_filter(){
 		},
 		success: function(responce){
 			$("#table_content").html(responce);
-			console.log(responce);
+			//console.log(responce);
 		},
 		error: function (xhr, textStatus, errorThrown) {
         console.log(xhr.responseText);
@@ -54,7 +54,7 @@ function select_department(){
 		},
 		success: function(responce){
 			// console.log(JSON.parse(responce));
-			console.log(responce);
+			//console.log(responce);
 
 			$('#jgufi_laboratoria').html($('<option>',));
 			for (i in responce['laboratory']){
@@ -81,7 +81,7 @@ function select_laboratory(){
 		  	laboratory: $("#jgufi_laboratoria option:selected").val()
 		},
 		success: function(responce){
-			console.log(responce);
+			//console.log(responce);
 			$('#staff').html($('<option>',));
 			$('#staff').html($('<option>',));
 			for (i in responce['staff']){
