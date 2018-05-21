@@ -31,7 +31,6 @@ function date_filter(){
 		},
 		success: function(responce){
 			$("#table_content").html(responce);
-			console.log($("#row_count option:selected").val());
 			console.log(responce);
 		},
 		error: function (xhr, textStatus, errorThrown) {

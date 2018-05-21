@@ -19,30 +19,40 @@ if (isset($_POST['page'])){
     //ChromePhp::log("this is the current page".$_POST['page']);
     $page = $_POST['page'];
   } else {
-  
-    $page = 1; 
+
+    $page = 1;
   }
 
 
 // საწყისი და საბოლოო თარიღის სხვადასხვა ვარიანტები
   if(!empty($start_date) and !empty($end_date)){
     $where = " `date_time` >= '$start_date' and `date_time` <= '$end_date' ";
-    $date_1 = strtotime($start_date);
-    $date_2 = strtotime($end_date);
-    $dw = date("w", $date_1);
-    $mo = date("m", $date_1);
-    //ChromePhp::log($dw);
-    //ChromePhp::log($mo);
   }
   elseif (!empty($start_date) and empty($end_date)) {
-    $where = " `date_time` >= '$start_date' ";
+    $q2 = mysqli_query($db, 'SELECT * from ies_inventari.turnstile_records_arranged order by id desc limit 1');
+    $r2 = mysqli_fetch_assoc($q2);
+    $end_date = $r2['date_time'];
+    $where = " `date_time` >= '$start_date' and `date_time` <= '$end_date' ";
   }
   elseif(empty($start_date) and !empty($end_date)){
-    $where = " `date_time` <= '$end_date' ";
-
+    $q1 = mysqli_query($db, 'SELECT * from ies_inventari.turnstile_records_arranged order by id asc limit 1');
+    $r1 = mysqli_fetch_assoc($q1);
+    $start_date = $r1['date_time'];
+    $where = " `date_time` >= '$start_date' and `date_time` <= '$end_date' ";
+    ChromePhp::log($start_date);
+    ChromePhp::log($end_date);
   }
   else{
-     $where = " 1 ";
+     //$where = " 1 ";
+     $q1 = mysqli_query($db, 'SELECT * from ies_inventari.turnstile_records_arranged order by id asc limit 1');
+     $r1 = mysqli_fetch_assoc($q1);
+     $start_date = $r1['date_time'];
+     //ChromePhp::log(sizeof($r1['date_time']));
+     $q2 = mysqli_query($db, 'SELECT * from ies_inventari.turnstile_records_arranged order by id desc limit 1');
+     $r2 = mysqli_fetch_assoc($q2);
+     $end_date = $r2['date_time'];
+     $where = " `date_time` >= '$start_date' and `date_time` <= '$end_date' ";
+
   }
 
   // DAMATEBULI
@@ -98,11 +108,11 @@ if (isset($_POST['page'])){
    $week_month_main_array = array();
   if(isset($_POST['filter_date_frequency']))
   {
-      
+
       if ($filter_date_frequency == "week")
-      { 
-        
-      
+      {
+
+
         if(isset($_POST['start_date']) and isset($_POST['end_date']))
         {
           $from = new DateTime($start_date);
@@ -119,11 +129,11 @@ if (isset($_POST['page'])){
           {
             date_add($next_days,date_interval_create_from_date_string("1 day"));
           } else if ($from->format('w') == 2)
-          { 
+          {
             if ($dif >= 6)
             {
               array_push($one_week, date_format($next_days, 'Y-m-d'));
-              array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d')); 
+              array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
               array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
               array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
               date_add($next_days,date_interval_create_from_date_string("3 days"));
@@ -150,7 +160,7 @@ if (isset($_POST['page'])){
               if ($dif >= 5)
               {
                 array_push($one_week, date_format($next_days, 'Y-m-d'));
-                array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d')); 
+                array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
                 array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
                 date_add($next_days,date_interval_create_from_date_string("3 days"));
                 array_push($weeks, $one_week);
@@ -177,7 +187,7 @@ if (isset($_POST['page'])){
             if ($dif >= 4)
               {
                 array_push($one_week, date_format($next_days, 'Y-m-d'));
-                array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d')); 
+                array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
                 date_add($next_days,date_interval_create_from_date_string("3 days"));
                 array_push($weeks, $one_week);
                 $one_week = array();
@@ -199,7 +209,7 @@ if (isset($_POST['page'])){
               $one_week = array();
             }
           } else if ($from->format('w') == 5)
-            {  
+            {
               if ($dif >= 3)
                 {
                 array_push($one_week, date_format($next_days, 'Y-m-d'));
@@ -225,7 +235,7 @@ if (isset($_POST['page'])){
             }
           } else if ($from->format('w') == 6 && $dif >= 2)
           {
-            date_add($next_days,date_interval_create_from_date_string("2 days")); 
+            date_add($next_days,date_interval_create_from_date_string("2 days"));
             $add_week = true;
           } else if ($from->format('w') == 1 || $dif < 7)
               $add_week = true;
@@ -242,7 +252,7 @@ if (isset($_POST['page'])){
             if ($next_days->diff($to)->days == 6)
             {
               array_push($one_week, date_format($next_days, 'Y-m-d'));
-              array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d')); 
+              array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
               array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
               array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
               array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
@@ -255,7 +265,7 @@ if (isset($_POST['page'])){
               for ($i = 0; $i < floor($rng); $i++)
               {
                  array_push($one_week, date_format($next_days, 'Y-m-d'));
-                 array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d')); 
+                 array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
                  array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
                  array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
                  array_push($one_week, date_format(date_add($next_days,date_interval_create_from_date_string("1 day")), 'Y-m-d'));
@@ -309,9 +319,9 @@ if (isset($_POST['page'])){
           /*
           while ($next_days->diff($to)->days <= $dif)
           {
-            
+
             $dif_2 = $next_days->diff($to)->days;
-            
+
             if ($next_days->format('w') != 0 && $next_days->format('w') != 6)
             {
               $add_week = true;
@@ -338,7 +348,7 @@ if (isset($_POST['page'])){
           //ChromePhp::log($weeks);
           //var_dump($weeks);
           $week_month_main_array = $weeks;
-          $pages = ceil(sizeof($week_month_main_array) / $row_count); 
+          $pages = ceil(sizeof($week_month_main_array) / $row_count);
         }
       }
   }
@@ -379,7 +389,7 @@ if (isset($_POST['page'])){
           <th><?php echo $wasvlis_dro; ?></th>
         </tr>
 
-    <?php 
+    <?php
 
     # mysql ორი ცხრილის გაერთიანება.
 
@@ -389,21 +399,21 @@ if (isset($_POST['page'])){
                             ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE ies_staff.staff.id = $employee AND $where ORDER BY `date_time` DESC");
       if ($filter_date_frequency == "week" || $filter_date_frequency == "month"){
       $query = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_staff.staff.card_number FROM ies_staff.staff WHERE ies_staff.staff.id = $employee");
-      } 
+      }
     } else if (!empty($laboratory)){
       $result = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_inventari.turnstile_records_arranged.*
                             FROM ies_staff.staff LEFT JOIN ies_inventari.turnstile_records_arranged
                             ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE ies_staff.staff.gr_lb_id = $laboratory AND $where ORDER BY `date_time` DESC");
       if ($filter_date_frequency == "week" || $filter_date_frequency == "month"){
       $query = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_staff.staff.card_number FROM ies_staff.staff WHERE ies_staff.staff.gr_lb_id = $laboratory");
-      } 
+      }
     } else if (!empty($department)){
       $result = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_inventari.turnstile_records_arranged.*
                             FROM ies_staff.staff LEFT JOIN ies_inventari.turnstile_records_arranged
                             ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE ies_staff.staff.dep_id = $department AND $where ORDER BY `date_time` DESC");
        if ($filter_date_frequency == "week" || $filter_date_frequency == "month"){
       $query = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_staff.staff.card_number FROM ies_staff.staff WHERE ies_staff.staff.dep_id = $department");
-      } 
+      }
     } else
     {
       $result = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_inventari.turnstile_records_arranged.*
@@ -411,7 +421,7 @@ if (isset($_POST['page'])){
                             ON ies_staff.staff.card_number = ies_inventari.turnstile_records_arranged.card_number WHERE $where ORDER BY `date_time` DESC");
        if ($filter_date_frequency == "week" || $filter_date_frequency == "month"){
        $query = mysqli_query($db, "SELECT ies_staff.staff.first_name, ies_staff.staff.last_name, ies_staff.staff.card_number FROM ies_staff.staff");
-      } 
+      }
     }
 
     if (mysqli_num_rows($result) == 0) {
@@ -428,7 +438,7 @@ if (isset($_POST['page'])){
           $str = "0".$str;
         }
     }
-    
+
 
 
     // preparing array
@@ -455,32 +465,35 @@ if (isset($_POST['page'])){
       if ($filter_date_frequency == "week" || $filter_date_frequency == "month")
        {
           // storing array with every chosen employee
+
           while ($row = mysqli_fetch_assoc($query)){
                 if ($row['card_number'] != "")
                 {
                           $arr[$row['card_number']]['first_name'] = $row['first_name'];
                           $arr[$row['card_number']]['last_name'] = $row['last_name'];
-                          
-                    
+
+
                           $tm_arr_1 = $week_month_main_array_temp;
                           $tm_arr_2 = $week_month_main_array_temp;
                           $tm_arr_3 = $week_month_main_array_temp;
                           $tm_arr_4 = $week_month_main_array_temp;
-                
-                        
+
+
                           $arr[$row['card_number']]['on_duty_arr'] = $tm_arr_1;
                           $arr[$row['card_number']]['off_duty_arr'] = $tm_arr_2;
                           $arr[$row['card_number']]['in_time_arr'] = $tm_arr_3;
                           $arr[$row['card_number']]['out_time_arr'] = $tm_arr_4;
-                     
-                
+
+
                           array_push($all_cards, $row['card_number']);
                 }
           }
 
 
-            // updating existing 
-            while ($row2 = mysqli_fetch_assoc($result)){               
+            // updating existing
+
+            while ($row2 = mysqli_fetch_assoc($result)){
+
                           for ($i = 0; $i < sizeof($week_month_main_array); $i++)
                           {
                               for ($k = 0; $k < sizeof($week_month_main_array[$i]); $k++)
@@ -493,15 +506,16 @@ if (isset($_POST['page'])){
                                   $arr[$row2['card_number']]['out_time_arr'][$i][$k] = $row2['out_time'];
                                 }
                               }
-                          } 
-              
+                          }
+
             }
+
           } else {
               $pg_size = 0;
-              while ($row2 = mysqli_fetch_assoc($result)){  
+              while ($row2 = mysqli_fetch_assoc($result)){
               $pg_size++;
               }
-              $pages = ceil($pg_size / $row_count); 
+              $pages = ceil($pg_size / $row_count);
               mysqli_data_seek($result, 0);
           }
         }
@@ -526,12 +540,12 @@ function subs_time($str, $len, $which)
                   $subtracted = round($int / $len);
                 $subtracted = strval($subtracted);
                 add_zero($subtracted);
-                $final[$i] = $subtracted; 
+                $final[$i] = $subtracted;
             }
   return join(":",$final);
 }
 
-// this functions adds two time strings together    
+// this functions adds two time strings together
 function add_time($str1, $str2)
 {
   $final = explode(":", $str1);
@@ -541,7 +555,7 @@ function add_time($str1, $str2)
             {
                 $int_1 = intval($arr1[$i]);
                 $int_2 = intval($arr2[$i]);
-                $final[$i] = strval($int_1 + $int_2); 
+                $final[$i] = strval($int_1 + $int_2);
             }
   foreach ($final as &$itm)
               {
@@ -564,7 +578,7 @@ $final_arr = array();
         for ($i = 0; $i < sizeof($all_cards); $i++)
         {
           // storing each week/month averages
-      
+
 
           for($k = 0; $k < sizeof($arr[$all_cards[$i]]['on_duty_arr']); $k++)
           {
@@ -573,7 +587,7 @@ $final_arr = array();
               $dro_sum_3 = "00:00:00";
               $dro_sum_4 = "00:00:00";
 
-    
+
               for ($z = 0; $z < sizeof($arr[$all_cards[$i]]['on_duty_arr'][$k]); $z++)
               {
                     $dro_sum_1 = add_time($arr[$all_cards[$i]]['on_duty_arr'][$k][$z], $dro_sum_1);
@@ -582,7 +596,7 @@ $final_arr = array();
                     $dro_sum_4 = add_time($arr[$all_cards[$i]]['out_time_arr'][$k][$z], $dro_sum_4);
                     if ($z == sizeof($arr[$all_cards[$i]]['on_duty_arr'][$k]) - 1)
                     {
-                     
+
                       $dro_sum_1 = subs_time($dro_sum_1, sizeof($arr[$all_cards[$i]]['on_duty_arr'][$k]), "round");
                       $dro_sum_2 = subs_time($dro_sum_2, sizeof($arr[$all_cards[$i]]['on_duty_arr'][$k]), "round");
                       $dro_sum_3 = subs_time($dro_sum_3, sizeof($arr[$all_cards[$i]]['on_duty_arr'][$k]), "round");
@@ -603,8 +617,8 @@ $final_arr = array();
               }
 
 
-          } 
-   
+          }
+
 
         }
         //ChromePhp::log($arr);
@@ -628,12 +642,13 @@ $final_arr = array();
                 {
                     echo '<tr><td>'.$final_arr[$k]['first_name']." ".$final_arr[$k]['last_name'].'</td> <td>' . $final_arr[$k]['week_month'] . '</td>
                     <td>'.$final_arr[$k]['card_number'].'</td> <td>' .$final_arr[$k]['on_duty'].'</td> <td>' . $final_arr[$k]['off_duty'].'</td> <td>' . $final_arr[$k]['in_time'].'</td> <td>' . $final_arr[$k]['out_time'].'</td> </tr>';
-                    $i++;
+
                 }
+                $i++;
             }
         }
       } else {
- 
+
            $z = 1;
           while ($myrow = mysqli_fetch_assoc($result)){
             if ($z > (($page * $row_count) - $row_count) && $z <= ($page * $row_count)){
@@ -644,7 +659,7 @@ $final_arr = array();
           }
         }
     } else {
- 
+
            $z = 1;
           while ($myrow = mysqli_fetch_assoc($result)){
             if ($z > (($page * $row_count) - $row_count) && $z <= ($page * $row_count)){
@@ -654,7 +669,7 @@ $final_arr = array();
             $z++;
           }
         }
-     
+
  ?>
 
  </table>
@@ -673,7 +688,7 @@ $final_arr = array();
         echo '<option value="'.$i.'">'.$i.'</option>"';
     }
   ?>
- 
+
 </select>
 <br><br><br><br><br>
 
