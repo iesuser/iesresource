@@ -13,21 +13,21 @@
  * http://www.mysqlajaxtableeditor.com
  */
 class Common
-{		
+{
 	// Mysql Variables
 	var $mysqlUser = 'ajax';
 	var $mysqlDb = 'ajax';
 	var $mysqlHost = 'localhost';
 	var $mysqlDbPass = 'ajax';
-	
-	
+
+
 	var $langVars;
 	var $dbc;
-	
+
 	function mysqlConnect()
 	{
-		if($this->dbc = mysqli_connect($this->mysqlHost, $this->mysqlUser, $this->mysqlDbPass)) 
-		{	
+		if($this->dbc = mysqli_connect($this->mysqlHost, $this->mysqlUser, $this->mysqlDbPass))
+		{
 			if(!mysqli_select_db ($this->dbc ,$this->mysqlDb))
 			{
 				$this->logError(sprintf($this->langVars->errNoSelect,$this->mysqlDb),__FILE__, __LINE__);
@@ -38,7 +38,7 @@ class Common
 			$this->logError($this->langVars->errNoConnect,__FILE__, __LINE__);
 		}
 	}
-	
+
 	function logError($message, $file, $line)
 	{
 		$message = sprintf($this->langVars->errInScript,$file,$line,$message);
@@ -58,25 +58,25 @@ class Common
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 			<link href="mysqlajaxtableeditor/css/table_styles.css" rel="stylesheet" type="text/css" />
 			<link href="mysqlajaxtableeditor/css/icon_styles.css" rel="stylesheet" type="text/css" />
-			<?php 
-				include("../block/formenu/formenu.php");   
+			<?php
+				include("../block/formenu/formenu.php");
 			?>
 			<script type="text/javascript" src="mysqlajaxtableeditor/js/prototype.js"></script>
 			<script type="text/javascript" src="mysqlajaxtableeditor/js/scriptaculous-js/scriptaculous.js"></script>
 			<script type="text/javascript" src="mysqlajaxtableeditor/js/lang/lang_vars-en.js"></script>
 			<script type="text/javascript" src="mysqlajaxtableeditor/js/ajax_table_editor.js"></script>
-            <script type='text/javascript' src="products.js"></script> 
-			
+            <script type='text/javascript' src="products.js"></script>
+
 			<!-- calendar files -->
-			<link rel="stylesheet" type="text/css" media="all" href="mysqlajaxtableeditor/js/jscalendar/skins/aqua/theme.css" title="win2k-cold-1" /> 
+			<link rel="stylesheet" type="text/css" media="all" href="mysqlajaxtableeditor/js/jscalendar/skins/aqua/theme.css" title="win2k-cold-1" />
             <link href="../block/style.css" rel="stylesheet" type="text/css" />
 			<script type="text/javascript" src="mysqlajaxtableeditor/js/jscalendar/calendar.js"></script>
 			<script type="text/javascript" src="mysqlajaxtableeditor/js/jscalendar/lang/calendar-en.js"></script>
 			<script type="text/javascript" src="mysqlajaxtableeditor/js/jscalendar/calendar-setup.js"></script>
-           
-<script type="text/javascript">		
 
-				var iesDataUrl = "<?php global $iesDataUrl;	echo $iesDataUrl;?>";	
+<script type="text/javascript">
+
+				var iesDataUrl = "<?php global $iesDataUrl;	echo $iesDataUrl;?>";
                     function showRowDetails(id,rowNum)
                     {
 						window.location = 'newEdit_products.php?id='+id;
@@ -86,18 +86,18 @@ class Common
                     }
             </script>
 
-		</head>	
+		</head>
 		<body onLoad="javascript:onPageLoad()">
 		<?php
-	}	
-	
+	}
+
 	function displayFooterHtml()
 	{
 		?>
 		</body>
 		</html>
 		<?php
-	}	
+	}
 
 }
 ?>
