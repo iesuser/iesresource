@@ -1,0 +1,130 @@
+@charset "utf-8";
+
+/* ----------------------------UP TO SIZES ------------------------------- */
+
+/* Extra small devices (portrait phones, less than 576px)
+No media query for `xs` since this is the default in Bootstrap */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .ies-container{
+      /* width: 50% !important; */
+  }
+}
+
+
+/* ----------------------------UP TO SIZES ------------------------------- */
+
+/* Up to Large devices (desktops, 0 up to 991px) */
+@media (max-width: 991px) {
+  .btn-block-up-to-lg{
+    display: block;
+    width: 100%;
+  }
+}
+
+
+/* Up to Large devices (desktops, 0 up to 767px) */
+@media (max-width: 767px) {
+  .btn-block-up-to-md{
+    display: block;
+    width: 100%;
+  }
+  .ies-container{
+    padding: 40px 50px !important;
+  }
+}
+
+.ies-container{
+  padding: 40px 100px;
+}
+
+.required-star{
+  color: #dc3545;
+}
+
+
+#inventory-result-table th,
+#inventory-result-table td,
+#turnstile-result-table th,
+#turnstile-result-table td{
+  vertical-align: middle;
+  font-weight: normal;
+  font-size: 14px;
+}
+
+
+#inventory-result-table th,
+#turnstile-result-table th{
+  font-family: 'BPGNinoMtavruli';
+  padding-top: 10px;
+}
+
+#inventory-result-table thead,
+#turnstile-result-table thead{
+  background-color: #343a40;
+  color: white;
+}
+
+#inventory-result-table th,
+#turnstile-result-table th{
+  border-color: #343a40;
+}
+
+table#inventory-result-table tbody tr {
+  cursor: pointer;
+}
+
+
+/*fonts*/
+@font-face {
+  font-family: 'Conv_bpg_nino_mtavruli_bold';
+  src: url('fonts/bpg_nino_mtavruli_bold.eot');
+  src: local('â˜º'), url('fonts/bpg_nino_mtavruli_bold.woff') format('woff'), url('fonts/bpg_nino_mtavruli_bold.ttf') format('truetype'), url('fonts/bpg_nino_mtavruli_bold.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'BPGNinoMtavruli';
+  src: url('fonts/BPGNinoMtavruli.eot');
+  src: local('â˜º'), url('fonts/BPGNinoMtavruli.woff') format('woff'), url('fonts/BPGNinoMtavruli.ttf') format('truetype'), url('fonts/BPGNinoMtavruli.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+.navbar{
+  font-family: 'BPGNinoMtavruli';
+}
+
+.card-header{
+  font-family: 'BPGNinoMtavruli';
+  padding-bottom: 6px;
+}
+
+
+
+div.inventory-search-form div.form-group > label,
+div.inventory-search-form div.custom-checkbox label,
+div.turnstile-search-form div.form-group > label,
+div.turnstile-search-form div.form-group > legend{
+  font-family: 'BPGNinoMtavruli';
+  margin-bottom: 0px !important;
+  padding-bottom: 0px;
+}

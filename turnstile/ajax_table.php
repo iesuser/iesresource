@@ -16,10 +16,8 @@ if (isset($_POST['row_count'])){ // არის თუ არა მითი�
 
 // PAGE TEST
 if (isset($_POST['page'])){
-    //ChromePhp::log("this is the current page".$_POST['page']);
     $page = $_POST['page'];
   } else {
-
     $page = 1;
   }
 
@@ -625,7 +623,7 @@ $final_arr = array();
       }
   }
 //ChromePhp::log($arr);
-//ChromePhp::log($final_arr);
+ChromePhp::log($final_arr);
 
 
 /////////////////////////////////////////////

@@ -1,7 +1,35 @@
-// ასუფთავებს ფილტრის input-ებს
+$( document ).ready(function() {
+    date_filter(1)
+ 	$.datetimepicker.setLocale('ka');
 
+	$('.datepicker').datetimepicker({
+	  datepicker:true,
+	  timepicker:false,
+	  format:'Y-m-d',
+	});
+
+	set_calendar_properties("button-tarigi-dan", "tarigi_dan");
+	set_calendar_properties("button-tarigi-mde", "tarigi_mde");
+
+	mask_date_input('tarigi_dan');
+  mask_date_input('tarigi_mde');
+});
+
+
+function set_calendar_properties(button_id, input_id){
+  $('#' + button_id).click(function(){
+    $('#' + input_id).datetimepicker('show');
+  });
+  $('#' + input_id).unbind( "mousewheel");
+}
+
+
+// ასუფთავებს ფილტრის input-ებს
 function clear_text(){
-	$('select').val('');
+	$('select#ganyofileba').val('');
+	$('select#jgufi_laboratoria').val('');
+	$('select#staff').val('');
+
 	$('input[type="text"]').val('');
 
 		// წაშლის ანიმაცია
@@ -15,10 +43,10 @@ function clear_text(){
 
 // ajax requestebis გაგზვნა-მიღება
 
-function date_filter(){
+function date_filter(currnet_page){
 	$.ajax({
 		type: "POST",
-		url: "ajax_table.php",
+		url: "get_turnstile_data.php",
 		data: {
 		  	start_date: $("#tarigi_dan").val(),
 		  	end_date: $("#tarigi_mde").val(),
@@ -27,11 +55,10 @@ function date_filter(){
 		  	laboratory: $("#jgufi_laboratoria option:selected").val(),
 		  	department: $("#ganyofileba option:selected").val(),
 			filter_date_frequency: $('input[name=optradio]:checked').val(),
-			page: $("#page option:selected").val()
+      page: currnet_page
 		},
 		success: function(responce){
 			$("#table_content").html(responce);
-			//console.log(responce);
 		},
 		error: function (xhr, textStatus, errorThrown) {
         console.log(xhr.responseText);
