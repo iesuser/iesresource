@@ -8,7 +8,7 @@ $(document).ready(function() {
 	  timepicker:false,
 	  format:'Y-m-d',
 	});
-  
+
   set_calendar_properties("button-tarigi-dan", "tarigi_dan");
 	set_calendar_properties("button-tarigi-mde", "tarigi_mde");
 
@@ -61,7 +61,7 @@ $(document).ready(function() {
 
   load_data()
 
- 
+
 });
 
 
@@ -71,7 +71,7 @@ function load_data(){
 		url: "get_inventory_data.php",
 		// url: "deleteme.js",
 		dataType: "script",
-		data: { 
+		data: {
 						inventaris_nomeri: $('#inventaris_nomeri').val(),
 						CPV: $('#CPV').val(),
 						ganyofileba: $('#ganyofileba').val() ,
@@ -115,7 +115,7 @@ function load_data(){
 			}
 		},
 		success: function(html){
-			console.log(html)
+			//console.log(html)
 			$("#loader").hide()
 			inventory_result_table = $('#inventory-result-table').DataTable({
         data: dataSet,
@@ -209,9 +209,9 @@ function load_data(){
 				data = inventory_result_table.row(this).data()
 				if (typeof data != "undefined"){
 					window.location = 'newEdit_products.php?id=' + data[0]
-				} 
+				}
 			})
-			
+
 		}
 	});
 
@@ -564,7 +564,7 @@ function AjaxRequest(url,paramStr,async,cfunc)
 //................................................................................................................
 
 function on_department_selected(){
-	ganyofileba = $('#ganyofileba').val()	
+	ganyofileba = $('#ganyofileba').val()
 	$("#jgufi_laboratoria").html("<option value=''></option>")
 	$("#pasuxismgebeli").html("<option value=''></option>")
 
@@ -580,13 +580,13 @@ function on_department_selected(){
 		success: function(xml){
 			$(xml).find('groupLaboratory').each(function (index, el){
 				laboratory = $(el).find('name:first').html()
-				$('#jgufi_laboratoria').append($('<option>', {value: laboratory, text: laboratory}));					
+				$('#jgufi_laboratoria').append($('<option>', {value: laboratory, text: laboratory}));
 			})
 
 			$(xml).find('employee').each(function (index, el){
 				 fullname = $(el).find("firstName:first").html() + ' ' + $(el).find("lastName:first").html()
 				 $('#pasuxismgebeli').append($('<option>', {value: fullname, text: fullname}));
-			})			
+			})
 		}
 	});
 }
@@ -596,7 +596,7 @@ function on_laboratory_selected(){
 	$("#pasuxismgebeli").html("<option value=''></option>")
 	jgufi_laboratoria = $('#jgufi_laboratoria').val()
 	if (jgufi_laboratoria == "") return
-		
+
 	$.ajax({
 		method: "POST",
 		url: "getAjaxXmlsproducts.php",
@@ -609,7 +609,7 @@ function on_laboratory_selected(){
 			$(xml).find('employee').each(function (index, el){
 				 fullname = $(el).find("firstName:first").html() + ' ' + $(el).find("lastName:first").html()
 				 $('#pasuxismgebeli').append($('<option>', {value: fullname, text: fullname}));
-			})			
+			})
 		}
 	});
 }

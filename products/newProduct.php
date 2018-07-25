@@ -15,7 +15,7 @@ include("../block/db.php");
 		<?php include("../block/mainmenu_bs.php");?>
 		<div class="container-fluid">
 			<div class="row border-bottom mb-5">
-				<div class="col-md-3 border-right p-3" >
+				<div class="col-md-3 border-right p-3" id="srch">
 					<div class="card inventory-search-form">
 	          <div class="card-header text-center">
 	            <h6 class="mb-0">ძიება</h6>
@@ -193,7 +193,7 @@ include("../block/db.php");
 				</div>
 				<div class="col-md-9 p-3">
 					<div id="loader" class="text-center" style="display: none;"><i class="fa fa-spinner fa-spin mt-5" style="font-size:48px;color: #007bff"></i></div>
-					<div clas="container-fluid text-center" id="container-inventory-result-table"></div>
+					<div class="container-fluid text-center" id="container-inventory-result-table"></div>
 				</div>
 			</div>
 		</div>
@@ -215,4 +215,28 @@ include("../block/db.php");
 	</body>
 	<link rel="stylesheet" type="text/css" href="../block/jqplugins/datetimepicker/jquery.datetimepicker.min.css"/ >
 	<script src="../block/jqplugins/datetimepicker/jquery.datetimepicker.full.min.js"></script>
+	<script>
+			$(document).ready(function(){
+				var a = parseInt($(".navbar").css( "width"));
+				var b = parseInt($("#inventory-result-table").css( "width"));
+				var c = parseInt($("#srch").css( "width"));
+				console.log(b + " this is width of table");
+				console.log(a + " this is width of header");
+				console.log(c + " this is width of srch");
+				console.log(b + c + " this is the sum!");
+				//$(".navbar").css( "width", (b + c + 20) + "px");
+
+				$(document).on('click', '.dt-button', function(){
+					console.log("WORKSSS");
+					var a = parseInt($(".navbar").css( "width"));
+					var b = parseInt($("#inventory-result-table").css( "width"));
+					var c = parseInt($("#srch").css( "width"));
+					console.log(b + c + " this is the sum!");
+						$(".navbar").css( "width", (b + c + 20) + "px");
+				});
+
+			});
+
+
+	</script>
 </html>
