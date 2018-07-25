@@ -46,14 +46,14 @@ font-size:12px;
   <div class="collapse navbar-collapse" id="main-manu">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="../products/products.php">ინვენტარი</a>
+        <a class="nav-link" href="../products/newProduct.php">ინვენტარი</a>
       </li>
       <li class="dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">
           სტრუქტურა/თანამშრომლები
         </a>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="../staff/departments.php">სტრუქტურა/თანამშრომლები</a>
+          <a class="dropdown-item" href="../staff/newDepartments.php">სტრუქტურა/თანამშრომლები</a>
             <a class="dropdown-item" href="../turnstile/turnstile.php">დასწრება</a>
             <a class="dropdown-item" href="">ექსპედიცია/შვებულება</a>
         </div>
