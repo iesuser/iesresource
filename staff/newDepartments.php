@@ -17,7 +17,7 @@ include("../block/db.php");
 mysqli_select_db($db, $dbStaff);
 if(isset($_GET['dep_id']) and ($_GET['dep_id'] != '') or isset($_GET['gr_lb_id']) and $_GET['gr_lb_id'] != ''):
 ?>
-<table class="table table-hover">
+<table class="table table-hover table-sm">
   <thead class="thead-light">
     <tr>
       <th scope="col">სახელი</th>
@@ -58,7 +58,7 @@ if(isset($_GET['dep_id']) and ($_GET['dep_id'] != '') or isset($_GET['gr_lb_id']
   {
   ?>
   <tr>
-    <td colspan="15" style="text-align:center;color:#F03;font-weight:bold;height:25px;">ჩანაწერები არ მოიძებნა</td>
+    <td colspan="15" style="text-align:center; font-size: 25px; font-weight: bold;" class="text-danger">ჩანაწერები არ მოიძებნა</td>
   </tr>
   <?php
   }
@@ -99,8 +99,8 @@ if(isset($_GET['dep_id']) and ($_GET['dep_id'] != '') or isset($_GET['gr_lb_id']
       <td><?php echo $home_number;?></td>
       <td><?php echo $mobile_phone;?></td>
       <td><?php echo $email;?></td>
-      <td style="width:16px;">
-        <img src="../images/edit.png" style="cursor:pointer;" />
+      <td>
+        <i class="far fa-edit" style="cursor:pointer;"></i>
       </td>
     </tr>
   </tbody>
@@ -113,50 +113,56 @@ if(isset($_GET['dep_id']) and ($_GET['dep_id'] != '') or isset($_GET['gr_lb_id']
 endif;
 ?>
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-md-8 offset-md-2 d-flex justify-content-between">
+  <div class="row mt-2">
+    <div class="col-md-8 offset-md-2 d-xl-flex justify-content-between">
       <a href="newEdit_staff.php" class="btn btn-secondary">თანამშრომლის დამატება</a>
       <a href="newEdit_group_laboratory.php" class="btn btn-secondary">ლაბორატორიის/ჯგუფის დამატება</a>
       <a href="newEdit_departament.php" class="btn btn-secondary">დეპარტამენტის დამატება</a>
     </div>
   </div>
-</div>
-<?php
-$query = "SELECT * FROM departments ORDER by id ASC";
-$departaments =  mysqli_query($db, $query) or die($query);
-while($departament = mysqli_fetch_array($departaments)):
-$department_id = $departament['id'];
-$departament_name = $departament['name'];
-?>
-<div class="container-fluid">
-  <div class="row">
+  <div class="row mt-2">
     <div class="col-md-8 offset-md-2">
       <div class="list-group">
-        <a href='newDepartments.php?dep_id=<?php echo $department_id;?>' class="list-group-item list-group-item-action list-group-item-primary"><?php echo $departament_name; ?></a>
+        <?php
+        $query = "SELECT * FROM departments ORDER by id ASC";
+        $departaments =  mysqli_query($db, $query) or die($query);
+        while($departament = mysqli_fetch_array($departaments)):
+        $department_id = $departament['id'];
+        $departament_name = $departament['name'];
+        ?>
+        <div class="list-group-item list-group-item-action list-group-item-primary" onclick="location.href='newDepartments.php?dep_id=<?php echo $department_id;?>';" style="cursor: pointer;">
+          <?php echo $departament_name; ?>
+          <!-- icon link -->
+          <a href="newEdit_departament.php?id=<?php echo $department_id;?>">
+          	<?php if ($_SESSION['name'] == $siteMaintenanceUsername): ?>
+              <i class="far fa-edit" style="cursor:pointer; float:right"></i>
+              <?php endif;?>
+          </a>
+        </div>
+        <?php
+        $query = "SELECT * FROM group_laboratories WHERE department_id = $department_id";
+        $group_laboratories =  mysqli_query($db, $query) or die($query);
+        while($group_laboratorie = mysqli_fetch_array($group_laboratories)):
+        $group_laboratorie_id = $group_laboratorie['id'];
+        $group_laboratorie_name = $group_laboratorie['name'];
+        ?>
+        <div class="list-group-item list-group-item-action list-group-item-light" onclick="location.href='newDepartments.php?gr_lb_id=<?php echo $group_laboratorie_id;?>';" style="cursor: pointer;">
+          <span href=''style="padding-left: 50px;"><?php echo $group_laboratorie_name; ?></span>
+          <!-- icon2 link -->
+          <a href="newEdit_group_laboratory.php?id=<?php echo $group_laboratorie_id;?>">
+            <?php if ($_SESSION['name'] == $siteMaintenanceUsername): ?>
+              <i class="far fa-edit" style="cursor:pointer; float:right;"></i>
+            <?php endif;?>
+          </a>
+        </div>
+        <?php
+        endwhile;
+        endwhile;
+        ?>
       </div>
     </div>
   </div>
 </div>
-<?php
-$query = "SELECT * FROM group_laboratories WHERE department_id = $department_id";
-$group_laboratories =  mysqli_query($db, $query) or die($query);
-while($group_laboratorie = mysqli_fetch_array($group_laboratories)):
-$group_laboratorie_id = $group_laboratorie['id'];
-$group_laboratorie_name = $group_laboratorie['name'];
-?>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-8 offset-md-2">
-      <div class="list-group">
-        <a href='newDepartments.php?gr_lb_id=<?php echo $group_laboratorie_id;?>' class="list-group-item list-group-item-action list-group-item-light"><?php echo $group_laboratorie_name; ?></a>
-      </div>
-    </div>
-  </div>
-</div>
-<?php
-endwhile;
-endwhile;
-?>
 <script type="text/javascript" src="../block/bootstrap-4.1.1-dist/js/jquery-3.3.1.min.js"></script>
 <script type='text/javascript' src="../block/bootstrap-4.1.1-dist/js/popper.min.js"></script>
 <script type='text/javascript' src="../block/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>

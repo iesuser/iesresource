@@ -59,7 +59,7 @@ font-size:12px;
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="../staff/baratebi.php">შეტყობინებები</a>
+        <a class="nav-link" href="../staff/baratebiNEW.php">შეტყობინებები</a>
       </li>
     </ul>
   </div>

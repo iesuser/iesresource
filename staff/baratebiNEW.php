@@ -178,10 +178,8 @@ mysqli_select_db($db, $dbInventari);
 				}
 ?>
 
-
-
-
-
-
+<script type="text/javascript" src="../block/bootstrap-4.1.1-dist/js/jquery-3.3.1.min.js"></script>
+<script type='text/javascript' src="../block/bootstrap-4.1.1-dist/js/popper.min.js"></script>
+<script type='text/javascript' src="../block/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
 </body>
 </html>
