@@ -76,7 +76,7 @@ if($id > 0 )
 			  $sql .= " WHERE id='$id';";
 		  }
 		 $result = mysqli_query($db, $sql) or die($sql);
-		 header('Location: departments.php');
+		 header('Location: newDepartments.php');
 		}else die("No post data");
 }
 else
@@ -106,7 +106,7 @@ else
 		 komentari='$komentari',
 		 password='$password'";
 		 $result = mysqli_query($sql) or die($sql);
-		 header('Location: departments.php');
+		 header('Location: newDepartments.php');
 		}else die("No post data");
 }
 ?>

@@ -1,23 +1,21 @@
 <?php
 include("../block/globalVariables.php");
 include("../block/db.php");
-include("../block/mainmenu.php");
+include("../block/mainmenu_bs.php");
+include("../checklogin1.php");
 if($_SESSION['name'] != $siteMaintenanceUsername) die("Error 333");
 //if(!HaveAccess("seismicData")){echo CreatePageData($_POST," ../login.php"); exit();}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>დეპარტამენტი</title>
-<link href="../block/style.css" rel="stylesheet" type="text/css"/>
-<script type='text/javascript' src='departmetns.js'></script>
-<script type='text/javascript' src="../js/mask.js"></script>
-<script type='text/javascript' src='../block/datetimepicker/datetimepicker_css_ge.js'></script>
-<script type='text/javascript' src="../js/jquery-1.7.2.min.js"></script>
-<?php include("../block/formenu/formenu.php");?>
-</head>
-<body>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>დეპარტამენტი</title>
+		<link rel="stylesheet" href="../block/bootstrap-4.1.1-dist/css/bootstrap.min.css">
+	  <link href="../block/custom-bs4-styles.css" rel="stylesheet" type="text/css"/>
+	  <link href="../block/fontawesome-free-5.1.0-web/css/all.css" rel="stylesheet">
+	</head>
+	<body>
 <?php
 mysqli_select_db($db, $dbStaff);
 if(isset($_GET['id'])) //რედაქტირება
@@ -81,158 +79,152 @@ if(isset($_GET['id'])) //რედაქტირება
 }
 ?>
 <form action="add_staff.php"method="post" name="formStaff" id="formStaff">
-
-<div align="center">
-      <table width="800px" border="0" class="formstyle" style="border-spacing:0px;padding:0px;margin:15px;">
-      <tr>
-        <td colspan="2" id="formtitle" class="formtitle"><?php echo $tableLabel;?> (შეავსეთ <span style="color:#F00;">*</span>-იანი ველები აუცილებლად)
-        <input type="hidden" id="id" name="id" value="<?php echo $id?>"/>
-        </td>
-      </tr>
-      <tr>
-        <td class="tablecolm1" width="45%" style="height:50px;">დეპარტამენტი</td>
-        <td>
-          <select name="dep_id" id= "dep_id" style="width:365px;margin-left:5px;" onchange="javascript:onDepartamentSelect();">
-            <option value=""></option>
-            <?php
-			$query = "SELECT * FROM departments ORDER by id ASC";
-            $departmnets = mysqli_query($db, $query) or die($query);
-            while($departmnet = mysqli_fetch_array($departmnets))
-            {
-				$db_department_id = $departmnet["id"];
-				$db_department_name = $departmnet["name"];
-                ?>
-            <option value="<?php echo $db_department_id;?>" <?php if($db_department_id == $dep_id) echo "selected='selected'";?>><?php echo $db_department_name;?></option>
-            <?php
-            }
-            ?>
-          </select><span style="color:#F00;">*</span></td>
-      </tr>
-      <tr>
-        <td class="tablecolm1"  style="height:50px;">ლაბორატორია/ჯგუფი</td>
-        <td><select name="gr_lb_id" id= "gr_lb_id" style="width:365px;margin-left:5px;">
-                <option value=""></option>
+	<div class="w-75 ies-container mb-5 border" style="margin: auto;">
+		<h4 id="formtitle" class="text-center"><?php echo $tableLabel; ?></h4>
+		<p class="text-center mb-4">(შეავსეთ <span class="required-star">*</span>-იანი ველები აუცილებლად)</p>
+		<input type="hidden" id="id" name="id" value="<?php echo $id?>">
+		<div class="form-group">
+			<label for="dep_id">დეპარტამენტი <span class="required-star">*</span></label>
+			<select class="custom-select" name="dep_id" id= "dep_id"  onchange="javascript:onDepartamentSelect();">
+				<option value=""></option>
 				<?php
-                $query = "SELECT * FROM group_laboratories WHERE department_id='$dep_id' ORDER by id ASC";
-                $group_laboratories = mysqli_query($db, $query) or die($query);
-                while($group_laboratory = mysqli_fetch_array($group_laboratories))
-                {
-                    $db_group_laboratories_id = $group_laboratory["id"];
-                    $db_group_laboratories_name = $group_laboratory["name"];
-                    ?>
-                <option value="<?php echo $db_group_laboratories_id;?>" <?php if($db_group_laboratories_id == $gr_lb_id) echo "selected='selected'";?>><?php echo $db_group_laboratories_name;?></option>
-                <?php
-                }
-                ?>
-        	</select>
-        </td>
-      </tr>
-      <tr>
-        <td class="tablecolm1"  style="height:50px;">სახელი</td>
-        <td><input type="text" name="first_name" id="first_name" value="<?php echo $first_name?>" style="width:150px;margin-left:5px;" /><span style="color:#F00;">*</span></td>
-      </tr>
-      <tr>
-        <td class="tablecolm1"  style="height:50px;">გვარი</td>
-        <td><input type="text" name="last_name" id="last_name" value="<?php echo $last_name?>" style="width:150px;margin-left:5px;" /><span style="color:#F00;">*</span></td>
-      </tr>
-      <tr>
-        <td class="tablecolm1"  style="height:50px;">დაბადების თარიღი</td>
-        <td><input type="text" name="date_of_birth" id="date_of_birth" onkeyup= "return maskdate(event,this);" value="<?php $date_of_birth = ($date_of_birth =="0000-00-00")?  "" : $date_of_birth; echo $date_of_birth;?>"
-         style="width:150px;margin-left:5px;" maxlength="10"/>
-            <a href="javascript:NewCssCal('date_of_birth','yyyymmdd','arrow',false,24,false,true)">
-            <img border="0" src="../block/datetimepicker/images/cal.gif" width="16" height="16" alt="Pick a date"></a>
-        </td>
-      </tr>
-       <tr>
-        <td class="tablecolm1"  style="height:50px;">მისამართი</td>
-        <td><input type="text" name="address" id="address" value="<?php echo $address?>" style="width:150px;margin-left:5px;" maxlength="255"/>
-      </td>
-      </tr>
-	  <tr>
-        <td class="tablecolm1"  style="height:50px;">პირადი №</td>
-        <td><input type="text" name="personal_number" id="personal_number" onkeyup="javascript:maskInt(this);" value="<?php echo $personal_number?>" style="width:150px;margin-left:5px;" maxlength="11" /></td>
-      </tr>
-    <tr>
-        <td class="tablecolm1"  style="height:50px;">სამსახუროებრივი ბარათის №</td>
-        <td><input type="text" name="card_number" id="card_number" onkeyup="javascript:maskInt(this);" value="<?php echo $card_number?>" style="width:150px;margin-left:5px;" maxlength="11" /></td>
-      </tr>
-      <tr>
-        <td class="tablecolm1"  style="height:50px;">თანამდებობა</td>
-        <td><input type="text" name="position" id="position" value="<?php echo $position?>" style="width:150px;margin-left:5px;" /></td>
-      </tr>
-            <tr>
-        <td class="tablecolm1"  style="height:50px;">დეპარტამენტის უფროსი</td>
-        <td><input type="checkbox" name="head_of_department" id="head_of_department"  onchange="javascript:showHideRows()" <?php if($head_of_department == "კი") echo "checked='checked'"; ?> /></td>
-      </tr>
-
-	  <tr id="password1" style="display:none">
-        <td class="tablecolm1"   style="height:50px;">პაროლი</td>
-        <td><input type="text" name="password" id="password"  value=""<?php echo $password?>" style="width:150px;margin-left:5px;" maxlength="11" /></td>
-      </tr>
-
-      <tr>
-        <td class="tablecolm1"  style="height:50px;">ხელშეკრულების დაწყების თარიღი</td>
-        <td><input type="text" name="contract_start_date" id="contract_start_date" onkeyup= "return maskdate(event,this);" value="<?php $contract_start_date = ($contract_start_date =="0000-00-00")?  "" : $contract_start_date; echo $contract_start_date;?>" style="width:150px;margin-left:5px;"
-="10"/>
-            <a href="javascript:NewCssCal('contract_start_date','yyyymmdd','arrow',false,24,false,true)">
-            <img border="0" src="../block/datetimepicker/images/cal.gif" width="16" height="16" alt="Pick a date"></a>
-        </td>
-      </tr>
-            <tr>
-        <td class="tablecolm1"  style="height:50px;">ხელშეკრულების დასრულების თარიღი</td>
-        <td><input type="text" name="contract_end_date" id="contract_end_date" onkeyup= "return maskdate(event,this);" value="<?php $contract_end_date = ($contract_end_date =="0000-00-00")?  "" : $contract_end_date; echo $contract_end_date;?>" style="width:150px;margin-left:5px;" maxlength="10"/>
-            <a href="javascript:NewCssCal('contract_end_date','yyyymmdd','arrow',false,24,false,true)">
-            <img border="0" src="../block/datetimepicker/images/cal.gif" width="16" height="16" alt="Pick a date"></a>
-        </td>
-      </tr>
-      <tr>
-        <td class="tablecolm1"  style="height:50px;">ხელშეკრულების №</td>
-        <td><input type="text" name="contract_number" id="contract_number" value="<?php echo $contract_number?>" style="width:150px;margin-left:5px;" onkeyup="javascript:maskInt(this);"/></td>
-      </tr>
-      <tr>
-        <td class="tablecolm1"  style="height:50px;">სახელფასო ბარათის ვადის დასაწყისი</td>
-        <td><input type="text" name="salary_card_start_date" id="salary_card_start_date" onkeyup= "return maskdate(event,this);" value="<?php $salary_card_start_date = ($salary_card_start_date =="0000-00-00")?  "" : $salary_card_start_date; echo $salary_card_start_date;?>" style="width:150px;margin-left:5px;" maxlength="10"/>
-            <a href="javascript:NewCssCal('salary_card_start_date','yyyymmdd','arrow',false,24,false,true)">
-            <img border="0" src="../block/datetimepicker/images/cal.gif" width="16" height="16" alt="Pick a date"></a>
-        </td>
-      </tr>
-      <tr>
-        <td class="tablecolm1"  style="height:50px;">სახელფასო ბარათის ვადის დასასრული</td>
-        <td><input type="text" name="salary_card_end_date" id="salary_card_end_date" onkeyup= "return maskdate(event,this);" value="<?php $salary_card_end_date = ($salary_card_end_date =="0000-00-00")?  "" : $salary_card_end_date; echo $salary_card_end_date;?>" style="width:150px;margin-left:5px;" maxlength="10"/>
-            <a href="javascript:NewCssCal('salary_card_end_date','yyyymmdd','arrow',false,24,false,true)">
-            <img border="0" src="../block/datetimepicker/images/cal.gif" width="16" height="16" alt="Pick a date"></a>
-        </td>
-      </tr>
-
-                  <tr>
-        <td class="tablecolm1"  style="height:50px;">ტელეფონი(სახლი)</td>
-        <td><input type="text" name="home_number" id="home_number" value="<?php echo $home_number?>" style="width:150px;margin-left:5px;" /></td>
-      </tr>
-      <tr>
-        <td class="tablecolm1"  style="height:50px;">მობილური</td>
-        <td><input type="text" name="mobile_phone" id="mobile_phone" value="<?php echo $mobile_phone?>" style="width:150px;margin-left:5px;" /></td>
-      </tr>
-      <tr>
-        <td class="tablecolm1"  style="height:50px;">ელ-ფოსტა</td>
-        <td><input type="text" name="email" id="email" value="<?php echo $email?>" style="width:150px;margin-left:5px;" /></td>
-      </tr>
-      <tr>
-        <td class="tablecolm1">დამატებითი ინფორმაცია</td>
-        <td><textarea style="resize: none;" cols="35" rows="6" name="komentari" id="komentari"><?php echo $komentari;?></textarea></td>
-      </tr>
-      <tr>
-        <td colspan="2" align="center" style="border-top:1px dotted #CCC;height:45px;">
-          <div class="Btns">
-            <div id="editbutton" class="Btn" onclick="javascript:checkStaffFormSubmit()"><?php echo $btnLabel;?></div>
-
-            <div class="splitDiv"></div>
-            <div class="Btn" onclick="javascript:goToDepartametnsPage()">უკან</div>
-          </div>
-        </td>
-      </tr>
-      </table>
-  </div>
+				$query = "SELECT * FROM departments ORDER by id ASC";
+				$departmnets = mysqli_query($db, $query) or die($query);
+				while($departmnet = mysqli_fetch_array($departmnets))
+				{
+					$db_department_id = $departmnet["id"];
+					$db_department_name = $departmnet["name"];
+				?>
+					<option value="<?php echo $db_department_id;?>" <?php if($db_department_id == $dep_id) echo "selected='selected'";?>><?php echo $db_department_name;?></option>
+				<?php
+				}
+				?>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="gr_lb_id">ლაბორატორია/ჯგუფი</label>
+			<select class="custom-select" name="gr_lb_id" id="gr_lb_id">
+				<option value=""></option>
+				<?php
+        $query = "SELECT * FROM group_laboratories WHERE department_id='$dep_id' ORDER by id ASC";
+        $group_laboratories = mysqli_query($db, $query) or die($query);
+        while($group_laboratory = mysqli_fetch_array($group_laboratories)) {
+					$db_group_laboratories_id = $group_laboratory["id"];
+          $db_group_laboratories_name = $group_laboratory["name"];
+        ?>
+        <option value="<?php echo $db_group_laboratories_id;?>" <?php if($db_group_laboratories_id == $gr_lb_id) echo "selected='selected'";?>><?php echo $db_group_laboratories_name;?></option>
+        <?php
+        }
+        ?>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="first_name">სახელი <span class="required-star">*</span></label>
+			<input type="text" class="form-control" name="first_name" id="first_name" value="<?php echo $first_name?>">
+		</div>
+		<div class="form-group">
+			<label for="last_name">გვარი <span class="required-star">*</span></label>
+			<input type="text" class="form-control" name="last_name" id="last_name" value="<?php echo $last_name?>">
+		</div>
+		<div class="form-group">
+			<label for="date_of_birth">დაბადების თარიღი</label>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<button class="btn btn-outline-secondary" type="button" id="button_date_of_birth"><i class="far fa-calendar-alt"></i></button>
+				</div>
+				<input type="text" id="date_of_birth" name="date_of_birth" class="form-control datepicker" value="<?php $date_of_birth = ($date_of_birth =="0000-00-00")?  "" : $date_of_birth; echo $date_of_birth;?>"></div>
+		</div>
+		<div class="form-group">
+			<label for="address">მისამართი</label>
+			<input type="text" class="form-control" name="address" id="address" value="<?php echo $address?>">
+		</div>
+		<div class="form-group">
+			<label for="personal_number">პირადი №</label>
+			<input type="text" class="form-control" name="personal_number" id="personal_number" value="<?php echo $personal_number?>">
+		</div>
+		<div class="form-group">
+			<label for="card_number">სამსახუროებრივი ბარათის №</label>
+			<input type="text" class="form-control" name="card_number" id="card_number" value="<?php echo $card_number?>">
+		</div>
+		<div class="form-group">
+			<label for="position">თანამდებობა</label>
+			<input type="text" class="form-control" name="position" id="position" value="<?php echo $position?>">
+		</div>
+		<div class="form-group">
+	    <div class="form-check">
+	      <input class="form-check-input" type="checkbox" name="head_of_department" id="head_of_department" onchange="javascript:showHideRows()" <?php if($head_of_department == "კი") echo "checked='checked'"; ?>>
+	      <label class="form-check-label" for="head_of_department">
+	        დეპარტამენტის უფროსი
+	      </label>
+	    </div>
+  	</div>
+		<div class="form-group" id="password1">
+			<label for="password">პაროლი</label>
+			<input type="text" class="form-control" name="password" id="password"  value="<?php echo $password?>">
+		</div>
+		<div class="form-group">
+			<label for="contract_start_date">ხელშეკრულების დაწყების თარიღი</label>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<button class="btn btn-outline-secondary" type="button" id="button_contract_start_date"><i class="far fa-calendar-alt"></i></button>
+				</div>
+				<input type="text" id="contract_start_date" name="contract_start_date" class="form-control datepicker" value="<?php $contract_start_date = ($contract_start_date =="0000-00-00")?  "" : $contract_start_date; echo $contract_start_date;?>"></div>
+		</div>
+		<div class="form-group">
+			<label for="contract_end_date">ხელშეკრულების დასრულების თარიღი</label>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<button class="btn btn-outline-secondary" type="button" id="button_contract_end_date"><i class="far fa-calendar-alt"></i></button>
+				</div>
+				<input type="text" id="contract_end_date" name="contract_end_date" class="form-control datepicker" value="<?php $contract_end_date = ($contract_end_date =="0000-00-00")?  "" : $contract_end_date; echo $contract_end_date;?>"></div>
+		</div>
+		<div class="form-group">
+			<label for="contract_number">ხელშეკრულების №</label>
+			<input type="text" class="form-control" name="contract_number" id="contract_number" value="<?php echo $contract_number?>">
+		</div>
+		<div class="form-group">
+			<label for="salary_card_start_date">სახელფასო ბარათის ვადის დასაწყისი</label>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<button class="btn btn-outline-secondary" type="button" id="button_salary_card_start_date"><i class="far fa-calendar-alt"></i></button>
+				</div>
+				<input type="text" id="salary_card_start_date" name="salary_card_start_date" class="form-control datepicker" value="<?php $salary_card_start_date = ($salary_card_start_date =="0000-00-00")?  "" : $salary_card_start_date; echo $salary_card_start_date;?>"></div>
+		</div>
+		<div class="form-group">
+			<label for="salary_card_end_date">სახელფასო ბარათის ვადის დასასრული</label>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<button class="btn btn-outline-secondary" type="button" id="button_salary_card_end_date"><i class="far fa-calendar-alt"></i></button>
+				</div>
+				<input type="text" id="salary_card_end_date" name="salary_card_end_date" class="form-control datepicker" value="<?php $salary_card_end_date = ($salary_card_end_date =="0000-00-00")?  "" : $salary_card_end_date; echo $salary_card_end_date;?>"></div>
+		</div>
+		<div class="form-group">
+			<label for="home_number">ტელეფონი(სახლი)</label>
+			<input type="text" class="form-control" name="home_number" id="home_number" value="<?php echo $home_number?>">
+		</div>
+		<div class="form-group">
+			<label for="mobile_phone">მობილური</label>
+			<input type="text" class="form-control" name="mobile_phone" id="mobile_phone" value="<?php echo $mobile_phone?>">
+		</div>
+		<div class="form-group">
+			<label for="email">ელ-ფოსტა</label>
+			<input type="email" class="form-control" name="email" id="email" value="<?php echo $email?>">
+		</div>
+		<div class="form-group">
+			<label for="komentari" >დამატებითი ინფორმაცია</label>
+			<textarea id="komentari" name="komentari" class="form-control"><?php echo mysqli_real_escape_string($db, $komentari);?></textarea>
+		</div>
+		<button class="btn btn-unique" onclick="javascript:goToDepartametnsPage()" type="button">უკან</button>
+		<button class="btn btn-primary" onclick="javascript:checkStaffFormSubmit()" type="button" style="float:right;"><?php echo $btnLabel;?></button>
+	</div>
 </form>
-
+<script type="text/javascript" src="../block/bootstrap-4.1.1-dist/js/jquery-3.3.1.min.js"></script>
+<script type='text/javascript' src="../block/bootstrap-4.1.1-dist/js/popper.min.js"></script>
+<script type='text/javascript' src="../block/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+<script type='text/javascript' src="../block/jQuery-Mask-Plugin-master/dist/jquery.mask.min.js"></script>
+<script type='text/javascript' src="../block/mask.js"></script>
+<script type='text/javascript' src='departmetns.js'></script>
 </body>
+<link rel="stylesheet" type="text/css" href="../block/jqplugins/datetimepicker/jquery.datetimepicker.min.css"/ >
+<script src="../block/jqplugins/datetimepicker/jquery.datetimepicker.full.min.js"></script>
 </html>

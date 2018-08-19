@@ -1,7 +1,7 @@
 <?php
 include("../block/globalVariables.php");
 include("../block/db.php");
-include("../block/mainmenu.php");
+include("../block/mainmenu_bs.php");
 if($_SESSION['name'] != $siteMaintenanceUsername) die("Error 333");
 //if(!HaveAccess("seismicData")){echo CreatePageData($_POST," ../login.php"); exit();}
 ?>
@@ -10,9 +10,9 @@ if($_SESSION['name'] != $siteMaintenanceUsername) die("Error 333");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>დეპარტამენტი</title>
-<link href="../block/style.css" rel="stylesheet" type="text/css"/>
-<script type='text/javascript' src='departmetns.js'></script>
-<?php include("../block/formenu/formenu.php");?>
+<link rel="stylesheet" href="../block/bootstrap-4.1.1-dist/css/bootstrap.min.css">
+<link href="../block/custom-bs4-styles.css" rel="stylesheet" type="text/css"/>
+<link href="../block/fontawesome-free-5.1.0-web/css/all.css" rel="stylesheet">
 </head>
 <body>
 <?php
@@ -36,30 +36,24 @@ if(isset($_GET['id'])) //რედაქტირება
 }
 ?>
 <form action="add_department.php"method="post" name="formDepartment" id="formDepartment">
-<div align="center">
-      <table width="800px" border="0" class="formstyle" style="border-spacing:0px;padding:0px;margin:15px;">
-      <tr>
-        <td colspan="2" id="formtitle" class="formtitle"><?php echo $tableLabel;?> (შეავსეთ <span style="color:#F00;">*</span>-იანი ველები აუცილებლად)
-        <input type="hidden" id="id" name="id" value="<?php echo $id?>"/>
-        </td>
-      </tr>
-      <tr>
-        <td class="tablecolm1" width="12%" style="height:50px;">სახელწოდება</td>
-        <td><input type="text" name="name" id="name" value="<?php echo $name?>" style="width:665px;margin-left:5px;" /><span style="color:#F00;">*</span></td>
-      </tr>
-      <tr>
-        <td colspan="2" align="center" style="border-top:1px dotted #CCC;height:45px;">
-          <div class="Btns">
-            <div id="editbutton" class="Btn" onclick="javascript:checkDepartamentFormSubmit()"><?php echo $btnLabel;?></div>
-
-            <div class="splitDiv"></div>
-            <div class="Btn" onclick="javascript:goToDepartametnsPage()">უკან</div>
-          </div>
-        </td>
-      </tr>
-      </table>
-  </div>
+	<div class="w-75 ies-container mb-5 border m-auto">
+		<h4 id="formtitle" class="text-center"><?php echo $tableLabel; ?></h4>
+		<p class="text-center mb-4">(შეავსეთ <span class="required-star">*</span>-იანი ველები აუცილებლად)</p>
+		<div class="form-group">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<label class="input-group-text" for="name">სახელწოდება</label>
+				</div>
+				<input type="text" class="form-control" name="name" id="name" value="<?php echo $name?>">
+			</div>
+		</div>
+		<button class="btn btn-unique" onclick="javascript:goToDepartametnsPage()" type="button">უკან</button>
+		<button class="btn btn-primary" onclick="javascript:checkDepartamentFormSubmit()" type="button" style="float:right;"><?php echo $btnLabel;?></button>
+	</div>
 </form>
-
+<script type="text/javascript" src="../block/bootstrap-4.1.1-dist/js/jquery-3.3.1.min.js"></script>
+<script type='text/javascript' src="../block/bootstrap-4.1.1-dist/js/popper.min.js"></script>
+<script type='text/javascript' src="../block/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+<script type='text/javascript' src='departmetns.js'></script>
 </body>
 </html>

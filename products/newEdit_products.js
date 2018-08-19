@@ -32,7 +32,7 @@ $( document ).ready(function() {
 	mask_int_input('raodenoba');
 	mask_float_input('saboloo_girebuleba');
 	mask_float_input('narcheni_girebuleba');
-  	mask_float_input('naecheni_girebulebis_angarishi');
+	mask_float_input('naecheni_girebulebis_angarishi');
 	$('#otaxis_nomeri').mask('000')
 
 });
