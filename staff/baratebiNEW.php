@@ -59,9 +59,6 @@ if(isset($_GET['id'])) //რედაქტირება
 <?php
 mysqli_select_db($db, $dbStaff);
 ////////////////////////////////
-if ($isAdmin)
-                {
-////////////////////////////////
 $currentDay = new DateTime(date("Y-m-d"));
 $currentDay->modify('-15 day');
 $minus15Day = $currentDay->format('Y-m-d');
@@ -175,7 +172,6 @@ while($row = mysqli_fetch_array($table6))
 <?php
 endif;
 mysqli_select_db($db, $dbInventari);
-				}
 ?>
 
 <script type="text/javascript" src="../block/bootstrap-4.1.1-dist/js/jquery-3.3.1.min.js"></script>

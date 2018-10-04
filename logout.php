@@ -8,6 +8,6 @@ if(isset($_SESSION['loggedin']))
     session_start();
     $_SESSION = array();
     session_destroy();
-   header('Location: login.php');
+   header('Location: newLogin.php');
 
 ?>

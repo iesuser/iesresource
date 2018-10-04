@@ -17,44 +17,31 @@ if(isset($_SESSION['loggedin']))
 
 if(isset($_POST['submit']))
 {
-   if($_POST['username'] == $siteMaintenanceUsername and $_POST['password'] == $siteMaintenancePass)
-   {
-	   $_SESSION['name'] = $siteMaintenanceUsername; // Make it so the username can be called by $_SESSION['name']
-	   $_SESSION['first_name'] = $siteMaintenanceFirstname;
-	   $_SESSION['last_name'] = $siteMaintenanceLastname;
-   }else if($_POST['username'] == $siteGuesteUsername and $_POST['password'] == $siteGuestPass)
-   {
-	   $_SESSION['name'] = $siteGuestUsername; // Make it so the username can be called by $_SESSION['name']
-	   $_SESSION['first_name'] = $siteGuestFirstname;
-	   $_SESSION['last_name'] = $siteGuestLastname;
-   }
-   else
-   {
-	   $name = mysqli_real_escape_string($_POST['username']); // The function mysql_real_escape_string() stops hackers!
-	   $pass = mysqli_real_escape_string($_POST['password']); // We won't use MD5 encryption here because it is the simple tutorial, if you don't know what MD5 is, dont worry!
-	   $pass = md5($pass);
-	   $staffs = mysqli_query($db, "SELECT * FROM staff WHERE email = '$name' AND password = '$pass'"); // This code uses MySQL to get all of the users in the database with that username and password.
-	   $we=mysqli_num_rows($staffs);
-	   $staff = mysqli_fetch_array($staffs);
-	   $first_name = $staff['first_name'];
-	   $last_name = $staff['last_name'];
-	   $dep_id = $staff['dep_id'];
 
-	   if($we < 1)
-	   {
+   $name = mysqli_real_escape_string($db, $_POST['username']); // The function mysql_real_escape_string() stops hackers!
+   $pass = mysqli_real_escape_string($db, $_POST['password']); // We won't use MD5 encryption here because it is the simple tutorial, if you don't know what MD5 is, dont worry!
+   // $pass = md5($pass);
+   $staffs = mysqli_query($db, "SELECT * FROM staff WHERE email = '$name' AND password = '$pass'"); // This code uses MySQL to get all of the users in the database with that username and password.
+   $we=mysqli_num_rows($staffs);
+   $staff = mysqli_fetch_assoc($staffs);
+   $first_name = $staff['first_name'];
+   $last_name = $staff['last_name'];
+   $dep_id = $staff['dep_id'];
+
+   if($we < 1) {
 		 header('Location: newLogin.php?wronguserpass=1');
-		 die("Password was probably incorrect!");
-	   } // That snippet checked to see if the number of rows the MySQL query was less than 1, so if it couldn't find a row, the password is incorrect or the user doesn't exist!
-	   $_SESSION['name'] = $name; // Make it so the username can be called by $_SESSION['name']
-	   $_SESSION['first_name'] = $first_name;
-	   $_SESSION['last_name'] = $last_name;
+	 	 die("Password was probably incorrect!");
+   } // That snippet checked to see if the number of rows the MySQL query was less than 1, so if it couldn't find a row, the password is incorrect or the user doesn't exist!
+   $_SESSION['name'] = $name; // Make it so the username can be called by $_SESSION['name']
+   $_SESSION['first_name'] = $first_name;
+   $_SESSION['last_name'] = $last_name;
 
-	   $query = "SELECT name FROM departments WHERE id = '$dep_id'";
-	  // die($query);
-	   $departments = mysqli_query($db, $query);
-	   $departament = mysqli_fetch_array($departments);
-	   $_SESSION['departmentName'] = $departament['name'];
-   }
+   $query = "SELECT name FROM departments WHERE id = '$dep_id'";
+  // die($query);
+   $departments = mysqli_query($db, $query);
+   $departament = mysqli_fetch_array($departments);
+   $_SESSION['departmentName'] = $departament['name'];
+
    $_SESSION['loggedin'] = "YES"; // Set it so the user is logged in!
    header('Location: products/newProduct.php');
 } // That bit of code logs you in! The "$_POST['submit']" bit is the submission of the form down below VV
@@ -114,7 +101,7 @@ if(isset($_POST['submit']))
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Login</title>
+    <title>ავტორიზაცია</title>
     <link rel="stylesheet" href="block/bootstrap-4.1.1-dist/css/bootstrap.min.css">
   </head>
 
