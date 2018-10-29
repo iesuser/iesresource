@@ -20,7 +20,7 @@ if(isset($_POST['submit']))
 
    $name = mysqli_real_escape_string($db, $_POST['username']); // The function mysql_real_escape_string() stops hackers!
    $pass = mysqli_real_escape_string($db, $_POST['password']); // We won't use MD5 encryption here because it is the simple tutorial, if you don't know what MD5 is, dont worry!
-   // $pass = md5($pass);
+   $pass = md5($pass);
    $staffs = mysqli_query($db, "SELECT * FROM staff WHERE email = '$name' AND password = '$pass'"); // This code uses MySQL to get all of the users in the database with that username and password.
    $we=mysqli_num_rows($staffs);
    $staff = mysqli_fetch_assoc($staffs);
