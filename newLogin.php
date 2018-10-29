@@ -5,14 +5,14 @@
 
 include("block/globalVariables.php");
 include("block/db.php");
-session_start(); // This starts the session which is like a cookie, but it isn't saved on your hdd and is much more secure.
-mysqli_connect("$dbHost","$dbUsername","$dbUsernamePass"); // Connect to the MySQL server
-mysqli_select_db($db, "$dbStaff"); // Select your Database
+session_start();
+mysqli_connect("$dbHost","$dbUsername","$dbUsernamePass");
+mysqli_select_db($db, "$dbStaff");
 if(isset($_SESSION['loggedin']))
 {
 	 header('Location: products/newProduct.php');
     die("You are already logged in!");
-} // That bit of code checks if you are logged in or not, and if you are, you can't log in again!
+}
 
 
 if(isset($_POST['submit']))
@@ -129,8 +129,8 @@ if(isset($_POST['submit']))
 
       <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
     </form>
-		<script type="text/javascript" src="../block/bootstrap-4.1.1-dist/js/jquery-3.3.1.min.js"></script>
-		<script type='text/javascript' src="../block/bootstrap-4.1.1-dist/js/popper.min.js"></script>
-		<script type='text/javascript' src="../block/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="block/bootstrap-4.1.1-dist/js/jquery-3.3.1.min.js"></script>
+		<script type='text/javascript' src="block/bootstrap-4.1.1-dist/js/popper.min.js"></script>
+		<script type='text/javascript' src="block/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
   </body>
 </html>

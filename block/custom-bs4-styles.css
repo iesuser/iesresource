@@ -117,13 +117,25 @@ table#inventory-result-table tbody tr {
   font-family: 'BPGNinoMtavruli';
   padding-bottom: 6px;
 }
-
-
+#depTable {
+  cursor: pointer;
+  font-size: 14px;
+  margin: 15px;
+}
+#depTable th {
+  border: none;
+  vertical-align: middle;
+  font-weight: normal;
+}
 
 div.inventory-search-form div.form-group > label,
 div.inventory-search-form div.custom-checkbox label,
 div.turnstile-search-form div.form-group > label,
-div.turnstile-search-form div.form-group > legend{
+div.turnstile-search-form div.form-group > legend,
+form#formGroupLaboratory label,
+#formtitle,
+#depTable
+{
   font-family: 'BPGNinoMtavruli';
   margin-bottom: 0px !important;
   padding-bottom: 0px;

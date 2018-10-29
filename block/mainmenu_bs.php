@@ -12,6 +12,19 @@ if(!isset($_SESSION['loggedin']))
 header('Location: ../newLogin.php');
   die("To access this page, you need to <a href='../newLogin.php'>LOGIN</a>"); // Make sure they are logged in!
 } // What the !isset() code does, is check to see if the variable $_SESSION['loggedin'] is there, and if it isn't it kills the script telling the user to log in!
+<<<<<<< Updated upstream
+=======
+
+
+
+if($currentFile!="newProduct.php" and isset($_SESSION['loggedin']) and isset($_SESSION['departmentName']))
+die("მხოლოდ ადმინისტრატორებს შეუძლიათ ამ გვერდის ნახვა"); // Make sure they are logged in!
+
+if(isset($_SESSION['loggedin']) and !isset($_SESSION['departmentName']))
+$isAdmin = true;
+else
+$isAdmin = false;
+>>>>>>> Stashed changes
 ?>
 
 
@@ -53,6 +66,7 @@ font-size:12px;
       </li>
     </ul>
   </div>
+<<<<<<< Updated upstream
   <nav class="navbar navbar-expand-sm navbar-dark bg-dark" style="padding: .4rem 1rem;">
     <ul class="navbar-nav">
       <li class="nav-item" style="float:right">
@@ -63,4 +77,10 @@ font-size:12px;
       </li>
     </ul>
   </nav>
+=======
+  <ul class="navbar-nav">
+    <li class="nav-item"><span class="nav-link"><?php  echo $_SESSION['first_name']." ".$_SESSION['last_name']."&nbsp&nbsp &nbsp |"; ?></span></li>
+    <li class="nav-item"><a class="nav-link" href="../logout.php">გასვლა</a></li>
+  </ul>
+>>>>>>> Stashed changes
 </nav>

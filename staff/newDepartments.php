@@ -17,9 +17,10 @@ include("../block/db.php");
 mysqli_select_db($db, $dbStaff);
 if(isset($_GET['dep_id']) and ($_GET['dep_id'] != '') or isset($_GET['gr_lb_id']) and $_GET['gr_lb_id'] != ''):
 ?>
-<table class="table table-hover table-sm">
-  <thead class="thead-light">
+<table class="table table-hover text-center table-bordered table-sm" id="depTable">
+  <thead class="thead-dark">
     <tr>
+      <th scope="col">#</th>
       <th scope="col">სახელი</th>
       <th scope="col">გვარი</th>
       <th scope="col">დაბადების თარიღი</th>

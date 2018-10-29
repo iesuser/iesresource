@@ -108,7 +108,6 @@ include("../block/db.php");
           </div>
           <button class="btn btn-sm btn-unique btn-block" type="button" onclick="clear_text()"><i class="fas fa-eraser" style="color: #888484;"></i>&nbsp გასუფთავება</button>
           <button class="btn btn-sm btn-primary btn-block" type="submit" id="editbutton" onclick="date_filter(1)"><i class="fas fa-search"></i>&nbsp ძიება</button>
-
         </div>
       </div>
     </div>
@@ -117,11 +116,6 @@ include("../block/db.php");
     </div>
   </div>
 </div>
-
-
-<br><br><br><br><br><br><br><br>
-
-
 <script type="text/javascript" src="../block/bootstrap-4.1.1-dist/js/jquery-3.3.1.min.js"></script>
 <script type='text/javascript' src="../block/bootstrap-4.1.1-dist/js/popper.min.js"></script>
 <script type='text/javascript' src="../block/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>

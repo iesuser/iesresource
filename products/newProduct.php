@@ -215,7 +215,7 @@ include("../block/db.php");
 	</body>
 	<link rel="stylesheet" type="text/css" href="../block/jqplugins/datetimepicker/jquery.datetimepicker.min.css"/ >
 	<script src="../block/jqplugins/datetimepicker/jquery.datetimepicker.full.min.js"></script>
-	<script>
+	<!-- <script>
 			$(document).ready(function(){
 				var a = parseInt($(".navbar").css( "width"));
 				var b = parseInt($("#inventory-result-table").css( "width"));
@@ -238,5 +238,5 @@ include("../block/db.php");
 			});
 
 
-	</script>
+	</script> -->
 </html>

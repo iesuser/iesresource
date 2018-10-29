@@ -42,7 +42,7 @@ if(isset($_GET['id'])) //რედაქტირება
 		<div class="form-group">
 			<div class="input-group">
 				<div class="input-group-prepend">
-					<label class="input-group-text" for="name">სახელწოდება</label>
+					<label class="input-group-text" for="name">დეპარტამენტი</label>
 				</div>
 				<input type="text" class="form-control" name="name" id="name" value="<?php echo $name?>">
 			</div>
