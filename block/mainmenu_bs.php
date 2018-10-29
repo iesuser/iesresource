@@ -1,13 +1,12 @@
 <!-- // DAMATEBULI -->
 <span style="float:right; font-size:10px; color:#999; margin-right:15px;">
   <?php
+$currentFile = $_SERVER["SCRIPT_NAME"];
+  $parts = Explode('/', $currentFile);
+  $currentFile = $parts[count($parts) - 1];
+if (session_status() == PHP_SESSION_NONE) {
   session_start();
-// $currentFile = $_SERVER["SCRIPT_NAME"];
-//   $parts = Explode('/', $currentFile);
-//   $currentFile = $parts[count($parts) - 1];
-// if (session_status() == PHP_SESSION_NONE) {
-//   session_start();
-// }
+}
 if(!isset($_SESSION['loggedin']))
 {
 header('Location: ../newLogin.php');
